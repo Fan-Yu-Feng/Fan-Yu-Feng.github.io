@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="这里记录，搭建博客中出现的一些问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo-搭建博客-常见问题(4)">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-problem-4/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="这里记录，搭建博客中出现的一些问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211122113733408.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112241638388.png">
+<meta property="article:published_time" content="2021-11-22T03:01:25.000Z">
+<meta property="article:modified_time" content="2021-12-31T06:46:18.179Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211122113733408.png">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-problem-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-problem-4/","path":"2021/11/22/Hexo搭建/hexo-problem-4/","title":"hexo-搭建博客-常见问题(4)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>hexo-搭建博客-常见问题(4) | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%98%85%E8%AF%BB%E5%85%A8%E6%96%87"><span class="nav-number">1.1.</span> <span class="nav-text">设置阅读全文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E9%A2%98%E5%B1%85%E4%B8%AD"><span class="nav-number">1.2.</span> <span class="nav-text">标题居中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-Next-%E8%83%8C%E6%99%AF-3D-%E5%8A%A8%E7%94%BB"><span class="nav-number">1.3.</span> <span class="nav-text">设置 Next 背景 3D 动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%BB%9F%E8%AE%A1%E5%AD%97%E6%95%B0%E6%97%B6%E9%95%BF%E7%AD%89"><span class="nav-number">1.4.</span> <span class="nav-text">设置统计字数时长等</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%AE%BF%E9%97%AE%E4%BA%BA%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">设置访问人数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%A1%B5%E8%84%9A%E3%80%81%E9%A1%B5%E9%9D%A2%E6%A0%B7%E5%BC%8F"><span class="nav-number">1.6.</span> <span class="nav-text">设置页脚、页面样式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7-Next-%E4%B8%BB%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">升级 Next 主题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">2.0.1.</span> <span class="nav-text">升级注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v7-4-2-Nunjucks-%E5%BC%95%E6%93%8E"><span class="nav-number">2.1.</span> <span class="nav-text">v7.4.2 Nunjucks 引擎</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">主题配置文件设置（推荐）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E8%AE%BA"><span class="nav-number">3.1.</span> <span class="nav-text">评论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA-Github-%E4%BB%93%E5%BA%93"><span class="nav-number">3.1.1.</span> <span class="nav-text">1. 创建 Github 仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA-Github-Application"><span class="nav-number">3.1.2.</span> <span class="nav-text">2. 创建 Github Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.3.</span> <span class="nav-text">3. 修改配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BA%E7%8E%B0-Error-Bad-credentials"><span class="nav-number">3.1.4.</span> <span class="nav-text">出现 Error: Bad credentials.</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-problem-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo-搭建博客-常见问题(4)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-22 11:01:25" itemprop="dateCreated datePublished" datetime="2021-11-22T11:01:25+08:00">2021-11-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-31 14:46:18" itemprop="dateModified" datetime="2021-12-31T14:46:18+08:00">2021-12-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-problem-4/" class="post-meta-item leancloud_visitors" data-flag-title="hexo-搭建博客-常见问题(4)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这里记录，搭建博客中出现的一些问题。</p>
+<a id="more"></a>
+
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><ul>
+<li>在 hexo 的配置和设置文件中，在冒号后面没留空格会导致出问题。</li>
+</ul>
+<p>Hexo 中的图标使用的是 <a target="_blank" rel="noopener" href="http://fontawesome.io/">Font Awesome</a> ，所以，我们的博客已经自带了 Font Awesome 中的所有图标，基本可以满足我们的所有需求，我们可以去 Font Awesome 中查找我们想要使用的图标。<br><code>&lt;i class=&quot;fa fa-github&quot;&gt;&lt;/i&gt;</code><br><code>&lt;i class=&quot;fa fa-github fa-lg&quot;&gt;&lt;/i&gt;</code><br><code>&lt;i class=&quot;fa fa-github fa-2x&quot;&gt;&lt;/i&gt;</code></p>
+<h3 id="设置阅读全文"><a href="#设置阅读全文" class="headerlink" title="设置阅读全文"></a>设置阅读全文</h3><ul>
+<li>没有<code>阅读全文</code>标志来进行截面，导致页面过长：在 md 文档中添加 <code>&lt;!--more--&gt;</code> 进行截取文章。</li>
+</ul>
+<h3 id="标题居中"><a href="#标题居中" class="headerlink" title="标题居中"></a>标题居中</h3><p>我此时的 Next 主题样式为 Mist，先看一下页面的样式。 标题的 <code>class=&quot;post-title&quot;</code> 添加了 <code>style=&quot;center&quot;</code>后居中。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211122113733408.png" alt="image-20211122113733408"></p>
+<p>然后再配置文件中修改，则是需要在<code>Hexo\themes\next\source\css\_schemes\Mist</code>目录下，这里<code>Hexo</code>为安装时自定义的目录名。首先得让博客内容居中，找到此目录下<code>_posts-expanded.styl</code>文件用文本编辑器打开，</p>
+<p>找到 .post-title 在 text-align 添加 center</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.post-title</span>,</span><br><span class="line"><span class="selector-class">.post-meta</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: $site-meta-text-align, center;</span><br><span class="line">  + mobile() &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-Next-背景-3D-动画"><a href="#设置-Next-背景-3D-动画" class="headerlink" title="设置 Next 背景 3D 动画"></a>设置 Next 背景 3D 动画</h3><p>将依赖下载到 Next 的文件夹下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes/next</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/theme-next-three <span class="built_in">source</span>/lib/three</span><br></pre></td></tr></table></figure>
+
+<p>在主题配置文件中，设置其中一个为 true</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">three:</span><br><span class="line">  three_waves: <span class="literal">false</span></span><br><span class="line">  canvas_lines: <span class="literal">false</span></span><br><span class="line">  canvas_sphere: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置统计字数时长等"><a href="#设置统计字数时长等" class="headerlink" title="设置统计字数时长等"></a>设置统计字数时长等</h3><p>需要安装 这个 next 集成的功能插件 hexo-symbols-count-time。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-symbols-count-time</span><br></pre></td></tr></table></figure>
+
+<p>在站点配置文件中设置相应的设置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 统计</span></span><br><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span> <span class="comment">#是否统计字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">false</span> <span class="comment">#是否统计阅读时长</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span> <span class="comment">#是否统计总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">false</span> <span class="comment">#是否统计总阅读时长</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="设置访问人数"><a href="#设置访问人数" class="headerlink" title="设置访问人数"></a>设置访问人数</h3><p>如果没有安装 Next 主题的话，那么请参照该 <a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15288309/3062193">链接进行设置</a></p>
+<p>因为 Next 集成了 <a target="_blank" rel="noopener" href="http://busuanzi.ibruce.info/">不蒜子</a> 这个统计插件。在主题配置文件下搜索 busuanzi 设置为 true 在 footer 下 添加<code>counter: true</code>就可以了。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">busuanzi_count:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_visitors_icon:</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">total_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">total_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br><span class="line">  <span class="attr">post_views:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post_views_icon:</span> <span class="string">fa</span> <span class="string">fa-eye</span></span><br><span class="line"></span><br><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="comment"># 添加阅读统计</span></span><br><span class="line">  <span class="attr">counter:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>需要修改，访问人数的具体内容的，可修改 <code>themes\next\layout\_third-party\statistics\busuanzi-counter.swig</code>该文件下的内容。如添加访客数文字。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;%- <span class="keyword">if</span> theme.busuanzi_count.total_visitors %&#125;</span><br><span class="line">  &lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;post-meta-item&quot;</span> id=<span class="string">&quot;busuanzi_container_site_uv&quot;</span> style=<span class="string">&quot;display: none;&quot;</span>&gt;</span><br><span class="line">    &lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;post-meta-item-icon&quot;</span>&gt;</span><br><span class="line">      &lt;i <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;&#123;&#123; theme.busuanzi_count.total_visitors_icon &#125;&#125;&quot;</span>&gt;&lt;/i&gt;</span><br><span class="line">      &lt;span&gt;访客数：&lt;/span&gt;</span><br><span class="line">    &lt;/span&gt;</span><br><span class="line">    &lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">&quot;site-uv&quot;</span> title=<span class="string">&quot;&#123;&#123; __(&#x27;footer.total_visitors&#x27;) &#125;&#125;&quot;</span>&gt;</span><br><span class="line">      &lt;span id=<span class="string">&quot;busuanzi_value_site_uv&quot;</span>&gt;&lt;/span&gt;</span><br><span class="line">    &lt;/span&gt;</span><br><span class="line">  &lt;/span&gt;</span><br><span class="line">&#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置页脚、页面样式"><a href="#设置页脚、页面样式" class="headerlink" title="设置页脚、页面样式"></a>设置页脚、页面样式</h3><p>设置页面、标题居中、样式等，可以在对应的主题文件进行修改， 如我修改页脚的居中样式，则修改<code>themes\next\source\css\_schemes\Mist</code>下的 <code>layout.styl</code>文件中的内容。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.footer-inner</span> &#123;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同理，如果需要设置其他内容，可以修改其他的文件。</p>
+<p>修改查看使用:<code>hexo g -w</code> 来 r 进行调试。</p>
+<h2 id="升级-Next-主题"><a href="#升级-Next-主题" class="headerlink" title="升级 Next 主题"></a>升级 Next 主题</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>年份</th>
+<th>仓库</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v5.1.4 或更低</td>
+<td>2014 ~ 2017</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next</a></td>
+</tr>
+<tr>
+<td>v6.0.0 ~ v7.8.0</td>
+<td>2018 ~ 2019</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a></td>
+</tr>
+<tr>
+<td>v8.0.0 或更高</td>
+<td>2020</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/next-theme/hexo-theme-next">https://github.com/next-theme/hexo-theme-next</a></td>
+</tr>
+</tbody></table>
+<h4 id="升级注意事项"><a href="#升级注意事项" class="headerlink" title="升级注意事项"></a>升级注意事项</h4><p>跨版本的升级可能并不顺滑（例如由 v5.1.4 或 v7.8.0 升级至 v8.0.0），请备份配置文件及修改过的文件（例如自定义模板文件）后，重新安装新的主题。具体操作请阅读文档： <a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/getting-started/upgrade.html">https://theme-next.js.org/docs/getting-started/upgrade.html</a></p>
+<h3 id="v7-4-2-Nunjucks-引擎"><a href="#v7-4-2-Nunjucks-引擎" class="headerlink" title="v7.4.2 Nunjucks 引擎"></a>v7.4.2 Nunjucks 引擎</h3><p>鉴于 swig 缺乏维护，NexT 自 7.4.2 版本开始，使用 Nunjucks 代替 swig 作为模版引擎。如果此前根据 swig 的语法写过自定义内容，请在更新前确认它们是与 Nunjucks 兼容的，否则会报错，且生成的页面为空白。例如， Nunjucks 只支持 <code>and</code> 运算符，需要替换掉 swig 中的 <code>&amp;&amp;</code>。见 <a target="_blank" rel="noopener" href="http://mozilla.github.io/nunjucks/getting-started.html">http://mozilla.github.io/nunjucks/getting-started.html</a></p>
+<p>Hexo 5.0 版本移除了对于 swig 模版的支持，改为独立的 hexo-renderer-swig 插件。如果你发现 Hexo 生成的 html 中输出了 NexT 模版源码，说明你正在使用旧版本的 NexT，请根据前面「Hexo 与 NexT 兼容性」部分的内容升级 NexT。</p>
+<h2 id="主题配置文件设置（推荐）"><a href="#主题配置文件设置（推荐）" class="headerlink" title="主题配置文件设置（推荐）"></a>主题配置文件设置（推荐）</h2><p> 我们习惯的方式是站点配置文件和主题配置文件分别存放不同的配置，这个方式很好，但是不适用升级 Next 主题或者提交 Merge，因此官方推荐使用新的配置文件，来放到同站点配置文件同目录下，并命名为新的配置文件 <code>_config.[themeName].yml</code>，themeName 就是你的主题名字，<a target="_blank" rel="noopener" href="https://hexo.io/docs/configuration.html#Using-an-Alternate-Config">Hexo 灵活配置说明</a> ，而原来的 主题配置文件就不用修改了，修改自己的配置文件就行了。</p>
+<p><strong>操作</strong></p>
+<p>在刚下载安装 Next 的时候，复制如下操作，并将 _config.next.yml 文件放置到 站点配置文件同目录下。</p>
+<p><code>cp themes/next/_config.yml _config.next.yml</code></p>
+<p>重新生成 public 文件即可。 <a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/getting-started/configuration.html">参考 Next 配置</a></p>
+<h3 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h3><p>有多种评论生成的方式，Disqus、ChangYan、GitTalk 等，具体需求可参考<a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/third-party-services/comments.htm">评论生成文档</a></p>
+<p>我换成了 <a target="_blank" rel="noopener" href="https://github.com/gitalk/gitalk#install">GitTalk</a></p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://github.com/gitalk/gitalk">Gitalk</a> 是一个基于 <code>Github Issue</code> 的评论插件，使用 <code>Github</code> 帐号登录，界面干净整洁，最喜欢的一点是支持 <code>MarkDown</code> 语法，在个人博客里添加了之后就可以很简便的进行评论和回复了。</p>
+<h4 id="1-创建-Github-仓库"><a href="#1-创建-Github-仓库" class="headerlink" title="1. 创建 Github 仓库"></a>1. 创建 Github 仓库</h4><p>需要在自己的 <code>Github</code> 账号下创建一个仓库来存放评论，创建的仓库只要 <code>public</code> 就行，其余没要求。</p>
+<h4 id="2-创建-Github-Application"><a href="#2-创建-Github-Application" class="headerlink" title="2. 创建 Github Application"></a>2. 创建 Github Application</h4><p>需要创建一个 <code>Github Application</code> 用来授权登录，如果没有 <a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://github.com/settings/applications/new">点击这里申请</a>，<code>Authorization callback URL</code> 填写你主页地址。其他的不用在意，没有用到就随意填。不知道怎么创建，请看 <a target="_blank" rel="noopener" href="https://docs.github.com/cn/developers/apps/building-oauth-apps/creating-an-oauth-app">这里</a></p>
+<h4 id="3-修改配置"><a href="#3-修改配置" class="headerlink" title="3. 修改配置"></a>3. 修改配置</h4><p>安装 gittalk</p>
+<p><code>npm i --save gitalk</code></p>
+<p>创建好 github app 后会生成 client_id 和 client_secret，填入即可，同时，需要你存放评论的仓库也一同放下去。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github_id:</span></span><br><span class="line">  <span class="attr">repo:</span></span><br><span class="line">  <span class="attr">client_id:</span></span><br><span class="line">  <span class="attr">client_secret:</span></span><br><span class="line">  <span class="attr">admin_user:</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="出现-Error-Bad-credentials"><a href="#出现-Error-Bad-credentials" class="headerlink" title="出现 Error: Bad credentials."></a>出现 Error: Bad credentials.</h4><p>按 F12 查看请求的链接地址,之前错误的网址不见了，只好贴这个成功的示例，之前的链接是<code>https://api.github.com/repos/github_id/Fan-Yu-Feng.github.io</code>  我以为 github_id 是去查看自己 github 的用户 id，填了 Github 的用户 id，在 next 主题配置文件中填入了自己的 github id，一直报这个错误，</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112241638388.png" alt="image-20211224163522104"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-config-3/" rel="prev" title="hexo-搭建博客-博客配置(3)">
+                  <i class="fa fa-chevron-left"></i> hexo-搭建博客-博客配置(3)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/22/JVM/JVM-Tool/" rel="next" title="JVM-Tool">
+                  JVM-Tool <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"de12aaaf27aea211c9a0046447008f4f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

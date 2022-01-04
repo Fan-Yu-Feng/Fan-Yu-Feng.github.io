@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前言 这里开始记录学习 CMU15-445 实现数据库的过程。学习数据库的实现过程，扩宽自己的知识面。  期望：学习完该课程，期望能对数据库有个比较深入的了解，同时，对 C++ 也有个比较全面的认识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cmu 环境搭建">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2021/12/29/CMU/CMU-Lab0/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="前言 这里开始记录学习 CMU15-445 实现数据库的过程。学习数据库的实现过程，扩宽自己的知识面。  期望：学习完该课程，期望能对数据库有个比较深入的了解，同时，对 C++ 也有个比较全面的认识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112311149965.jpg">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291535752.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840031.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840416.png">
+<meta property="og:image" content="https://fan-yu-feng.github.io/2021/12/29/CMU/CMU-Lab0/image/202111301307264.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840319.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840635.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840351.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840271.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840943.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291841662.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291841024.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291700132.png">
+<meta property="article:published_time" content="2021-12-29T01:48:36.000Z">
+<meta property="article:modified_time" content="2021-12-31T09:40:54.499Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="CMU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112311149965.jpg">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2021/12/29/CMU/CMU-Lab0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2021/12/29/CMU/CMU-Lab0/","path":"2021/12/29/CMU/CMU-Lab0/","title":"cmu 环境搭建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>cmu 环境搭建 | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E9%9C%80%E6%B1%82"><span class="nav-number">2.1.</span> <span class="nav-text">个人需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E6%90%AD%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">仓库搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">Docker 环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.1.</span> <span class="nav-text">安装工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-package-sh-%E5%AE%89%E8%A3%85%E7%8E%AF%E5%A2%83"><span class="nav-number">2.3.2.</span> <span class="nav-text">运行 package.sh 安装环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%8E%AF%E5%A2%83"><span class="nav-number">2.3.3.</span> <span class="nav-text">配置文件环境</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E5%AE%B9%E5%99%A8%E8%87%B3%E4%B8%AA%E4%BA%BA%E8%B4%A6%E6%88%B7"><span class="nav-number">3.</span> <span class="nav-text">上传容器至个人账户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh-%E8%BF%9E%E6%8E%A5%E5%AE%B9%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">ssh 连接容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-ssh-client-%E5%91%BD%E4%BB%A4"><span class="nav-number">4.1.</span> <span class="nav-text">安装 ssh-client 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-ssh-server-%E5%91%BD%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">安装 ssh-server 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E5%85%88%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.3.</span> <span class="nav-text">安装完成后，先启动服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91-sshd-config-%E6%96%87%E4%BB%B6"><span class="nav-number">4.4.</span> <span class="nav-text">编辑 sshd_config 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E5%85%88%E5%AE%89%E8%A3%85-vim-%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">4.4.1.</span> <span class="nav-text">需要先安装 vim 编辑器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%BE%91-sshd-config-%E6%96%87%E4%BB%B6-1"><span class="nav-number">4.4.2.</span> <span class="nav-text">编辑 sshd_config 文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%90%AF-ssh-%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.5.</span> <span class="nav-text">重启 ssh 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-ssh-%E5%AF%86%E7%A0%81"><span class="nav-number">4.6.</span> <span class="nav-text">设置 ssh 密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E7%9A%84-IP"><span class="nav-number">4.7.</span> <span class="nav-text">查看容器的 IP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%88%E5%AE%89%E8%A3%85-net-tools-%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">4.7.1.</span> <span class="nav-text">先安装 net-tools 工具包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-IP"><span class="nav-number">4.7.2.</span> <span class="nav-text">查看 IP</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.8.</span> <span class="nav-text">连接</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2021/12/29/CMU/CMU-Lab0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cmu 环境搭建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-29 09:48:36" itemprop="dateCreated datePublished" datetime="2021-12-29T09:48:36+08:00">2021-12-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-31 17:40:54" itemprop="dateModified" datetime="2021-12-31T17:40:54+08:00">2021-12-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CMU/" itemprop="url" rel="index"><span itemprop="name">CMU</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/12/29/CMU/CMU-Lab0/" class="post-meta-item leancloud_visitors" data-flag-title="cmu 环境搭建" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112311149965.jpg" alt="CMU数据库（15-445）Lab1-BufferPoolManager"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> 这里开始记录学习 CMU15-445 实现数据库的过程。学习数据库的实现过程，扩宽自己的知识面。</p>
+<p> 期望：学习完该课程，期望能对数据库有个比较深入的了解，同时，对 C++ 也有个比较全面的认识。</p>
+<a id="more"></a>
+
+<p>以下是课程地址，有 note 和 homework 以及实验的 pdf 等资料。</p>
+<p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2020/index.html">课程地址 2020</a></p>
+<p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2019/">课程地址 2019</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cmu-db/bustub">Github 地址 </a></p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><h3 id="个人需求"><a href="#个人需求" class="headerlink" title="个人需求"></a>个人需求</h3><p> 由于公司和自己电脑是不同的环境，期望搭建一个线上的环境进行实现，方便在不同电脑上进行同步的环境进行实验，这里我使用 Docker 来进行线上环境的搭建，个人开发者可以直接上传个性化的容器。</p>
+<h3 id="仓库搭建"><a href="#仓库搭建" class="headerlink" title="仓库搭建"></a>仓库搭建</h3><p>1、在 Github 上创建名为 bustub-private 的仓库，并设置该仓库为 Private</p>
+<p>2、拉取代码到本地，名为 bustub-public</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --bare https://github.com/cmu-db/bustub.git bustub-public</span><br></pre></td></tr></table></figure>
+
+<p>3、上传代码到你的 Github 仓库上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> bustub-public</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> student 为用户名</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> HTTPS 方式</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git push --mirror https://github.com/student/bustub-private.git</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> SSH 方式</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git push --mirror git@github.com:student/bustub-private.git</span></span><br></pre></td></tr></table></figure>
+
+<p>4、删除本地仓库，拉取自己账号的仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> rm -rf bustub-public</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> HTTPS</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/student/bustub-private.git</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> SSH</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> git@github.com:student/bustub-private.git</span></span><br></pre></td></tr></table></figure>
+
+<p>5、添加 CMU 仓库为远程仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git remote add public https://github.com/cmu-db/bustub.git</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证一下远程是否添加成功</span></span><br><span class="line">git remote -v</span><br><span class="line">origin    https://github.com/student/bustub-private.git (fetch)</span><br><span class="line">origin    https://github.com/student/bustub-private.git (push)</span><br><span class="line">public    https://github.com/cmu-db/bustub.git (fetch)</span><br><span class="line">public    https://github.com/cmu-db/bustub.git (push)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>6、从远程仓库更新代码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull public master</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-环境配置"><a href="#Docker-环境配置" class="headerlink" title="Docker 环境配置"></a>Docker 环境配置</h3><p>没下载的在官网下载。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/get-docker/">docker 下载</a></p>
+<p>切换到本地仓库目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建镜像文件</span></span><br><span class="line">docker build . -t bustub</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置目录  其中 /D:/CMU/bustub-private 为 windows 本地仓库目录</span></span><br><span class="line">docker create -t -i --name bustub -v /D:/CMU/bustub-private:/bustub bustub bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果系统为 linux 或 mac 可以切换到仓库目录运行以下命令</span></span><br><span class="line">docker create -t -i --name bustub -v $(pwd):/bustub bustub bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 运行 bustub 镜像容器</span></span><br><span class="line">docker start -a -i bustub</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者可以直接运行挂载目录</span></span><br><span class="line">docker run  -itd -v /D:/CMU/bustub-private:/bustub --name=bustub-lab -p 3316:22 bustub</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入容器</span></span><br><span class="line">docker exec -t -i bustub-lab /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装工具"><a href="#安装工具" class="headerlink" title="安装工具"></a>安装工具</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 先执行</span></span><br><span class="line">apt-get update</span><br><span class="line"><span class="meta">#</span><span class="bash"> ssh-client</span></span><br><span class="line">apt-get install openssh-client</span><br><span class="line"><span class="meta">#</span><span class="bash">openssh-server</span></span><br><span class="line">apt-get install openssh-server</span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo</span></span><br><span class="line">apt-get install sudo</span><br><span class="line"><span class="meta">#</span><span class="bash"> vim</span></span><br><span class="line">apt-get install vim</span><br></pre></td></tr></table></figure>
+
+<h4 id="运行-package-sh-安装环境"><a href="#运行-package-sh-安装环境" class="headerlink" title="运行 package.sh 安装环境"></a>运行 package.sh 安装环境</h4><p>我运行该文件出现如下错误。</p>
+<ul>
+<li><p>$’\r’:command not found</p>
+</li>
+<li><p>: not found: 2: packages.sh:</p>
+<p>: not found: 13: packages.sh:</p>
+</li>
+</ul>
+<p>如图，运行脚本均报错，由于是 window 下文本使用的格式是 dos 命令行，和 unix 不一样，导致解析出错。我明明是 git clone 下来的仓库，不太明白为啥会错。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291535752.png" alt="image-20211229153524653"></p>
+<h5 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h5><p>使用工具 dos2unix 文本转换工具，转换后运行既可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install dos2unix</span><br><span class="line">dos2unix packages.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件环境"><a href="#配置文件环境" class="headerlink" title="配置文件环境"></a>配置文件环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 运行以下命令既可</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake ..</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br></pre></td></tr></table></figure>
+
+<p>完成操作后，既可在本地编辑代码，然后再容器上运行我们的代码</p>
+<h2 id="上传容器至个人账户"><a href="#上传容器至个人账户" class="headerlink" title="上传容器至个人账户"></a>上传容器至个人账户</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看容器 id</span></span><br><span class="line">docker ps</span><br><span class="line"><span class="meta">#</span><span class="bash"> 提交容器镜像</span></span><br><span class="line">docker commit -m=&quot;CMU实验环境初始化&quot; -a=&quot;fanyufeng&quot; 58afd1af2086 fanyufeng/bustub-lab:0.1</span><br><span class="line"><span class="meta">#</span><span class="bash"> 推送到 docker 的个人账户</span></span><br><span class="line">docker push fanyufeng/ubuntu-cmu:1.0</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<ul>
+<li>-m: 提交的描述信息</li>
+<li>-a: 指定镜像作者</li>
+<li>58afd1af2086：容器 id</li>
+<li>fanyufeng/bustub-lab:0.1 指定要创建的目标镜像名</li>
+</ul>
+<h2 id="ssh-连接容器"><a href="#ssh-连接容器" class="headerlink" title="ssh 连接容器"></a>ssh 连接容器</h2><h3 id="安装-ssh-client-命令"><a href="#安装-ssh-client-命令" class="headerlink" title="安装 ssh-client 命令"></a>安装 ssh-client 命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install openssh-client</span><br></pre></td></tr></table></figure>
+
+<p>等待，输入 Y 就可以了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840031.png" alt="img"></p>
+<h3 id="安装-ssh-server-命令"><a href="#安装-ssh-server-命令" class="headerlink" title="安装 ssh-server 命令"></a>安装 ssh-server 命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install openssh-server</span><br></pre></td></tr></table></figure>
+
+<p>等待，输入 Y 就可以了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840416.png" alt="img"></p>
+<h3 id="安装完成后，先启动服务"><a href="#安装完成后，先启动服务" class="headerlink" title="安装完成后，先启动服务#"></a>安装完成后，先启动服务<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mengw/p/11413461.html#4201693076">#</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;ssh start</span><br></pre></td></tr></table></figure>
+
+<p><img src="image/202111301307264.png" alt="img"></p>
+<p>查看是否正确启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -e|grep ssh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840319.png" alt="img"></p>
+<h3 id="编辑-sshd-config-文件"><a href="#编辑-sshd-config-文件" class="headerlink" title="编辑 sshd_config 文件"></a>编辑 sshd_config 文件</h3><h4 id="需要先安装-vim-编辑器"><a href="#需要先安装-vim-编辑器" class="headerlink" title="需要先安装 vim 编辑器"></a>需要先安装 vim 编辑器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install vim</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840635.png" alt="img"></p>
+<h4 id="编辑-sshd-config-文件-1"><a href="#编辑-sshd-config-文件-1" class="headerlink" title="编辑 sshd_config 文件"></a>编辑 sshd_config 文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840351.png" alt="img"></p>
+<p>保存退出 ESC + : + WQ</p>
+<h3 id="重启-ssh-服务"><a href="#重启-ssh-服务" class="headerlink" title="重启 ssh 服务"></a>重启 ssh 服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840271.png" alt="img"></p>
+<h3 id="设置-ssh-密码"><a href="#设置-ssh-密码" class="headerlink" title="设置 ssh 密码"></a>设置 ssh 密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291840943.png" alt="img"></p>
+<h3 id="查看容器的-IP"><a href="#查看容器的-IP" class="headerlink" title="查看容器的 IP"></a>查看容器的 IP</h3><h4 id="先安装-net-tools-工具包"><a href="#先安装-net-tools-工具包" class="headerlink" title="先安装 net-tools 工具包"></a>先安装 net-tools 工具包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install net-tools</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291841662.png" alt="img"></p>
+<h4 id="查看-IP"><a href="#查看-IP" class="headerlink" title="查看 IP"></a>查看 IP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><p>运行钱 映射的断开 3316 映射到 容器的 22 端口，如图，进行连接既可。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291841024.png" alt="img"></p>
+<p>然后连接就可以了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/202112291700132.png" alt="image-20211229170006772"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CMU/" rel="tag"># CMU</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/28/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/update-jdk1-8/" rel="prev" title="JDK 1.7 升级 到 1.8 出现跨域问题">
+                  <i class="fa fa-chevron-left"></i> JDK 1.7 升级 到 1.8 出现跨域问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/30/CMU/cmu-hw1/" rel="next" title="cmu 作业1">
+                  cmu 作业1 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"fb15c67a3379e3d48a3fec4525e0c725"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

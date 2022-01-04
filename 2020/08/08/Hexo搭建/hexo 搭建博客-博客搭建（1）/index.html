@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="补充：之前没怎么看官方文档，现在看了官方文档，发现许多问题都好解决了挺多。贴几个相关的官方链接和 Github链接。 hexo next  yilia 安装Nodejs和git Node.js (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本) Git  在dos命令行下输入以下命令安装  npm install -g cnpm –registry&#x3D;htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo 搭建博客-博客搭建（1）">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="补充：之前没怎么看官方文档，现在看了官方文档，发现许多问题都好解决了挺多。贴几个相关的官方链接和 Github链接。 hexo next  yilia 安装Nodejs和git Node.js (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本) Git  在dos命令行下输入以下命令安装  npm install -g cnpm –registry&#x3D;htt">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AE%BF%E9%97%AE%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%88%9B%E5%BB%BA%E7%A0%81%E4%BA%91%E4%BB%93%E5%BA%93.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%BC%80%E5%90%AFgitee%20page.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%BC%80%E5%90%AFgitee%20page1.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E9%83%A8%E7%BD%B2%E5%88%B0gitee.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/yilia%E5%85%8B%E9%9A%86.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A2%98%E9%83%A8%E7%BD%B2.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A2%98%E4%B9%8B%E5%90%8E%E9%83%A8%E7%BD%B2%E5%88%B0gitee.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E4%BF%AE%E6%94%B9blog%E5%A4%B4%E5%83%8F.png">
+<meta property="article:published_time" content="2020-08-08T08:54:41.000Z">
+<meta property="article:modified_time" content="2021-12-24T03:26:59.016Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2.png">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/","path":"2020/08/08/Hexo搭建/hexo 搭建博客-博客搭建（1）/","title":"hexo 搭建博客-博客搭建（1）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>hexo 搭建博客-博客搭建（1） | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Nodejs%E5%92%8Cgit"><span class="nav-number">1.</span> <span class="nav-text">安装Nodejs和git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-hexo%E6%A1%86%E6%9E%B6"><span class="nav-number">2.</span> <span class="nav-text">安装 hexo框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2"><span class="nav-number">3.</span> <span class="nav-text">访问博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAgitee-%E4%BB%93%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">创建gitee 仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AFgitee-page"><span class="nav-number">5.</span> <span class="nav-text">开启gitee page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2%E5%88%B0gitee"><span class="nav-number">6.</span> <span class="nav-text">部署博客到gitee</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E7%AB%A0-%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">文章&#x2F;主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E5%83%8F%E8%AE%BE%E7%BD%AE"><span class="nav-number">7.1.</span> <span class="nav-text">头像设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%98%E6%94%BE%E4%BD%8D%E7%BD%AE"><span class="nav-number">7.1.1.</span> <span class="nav-text">存放位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E8%AE%BE%E7%BD%AE"><span class="nav-number">7.1.2.</span> <span class="nav-text">配置设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E8%AE%BE%E7%BD%AE"><span class="nav-number">7.2.</span> <span class="nav-text">文章设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E2%80%9C%E5%88%86%E7%B1%BB%E2%80%9D%E9%80%89%E9%A1%B9"><span class="nav-number">7.2.1.</span> <span class="nav-text">创建“分类”选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%99%E6%96%87%E7%AB%A0%E6%B7%BB%E5%8A%A0%E2%80%9Ccategories%E2%80%9D%E5%B1%9E%E6%80%A7"><span class="nav-number">7.2.2.</span> <span class="nav-text">给文章添加“categories”属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E2%80%9C%E6%A0%87%E7%AD%BE%E2%80%9D%E9%80%89%E9%A1%B9"><span class="nav-number">7.2.3.</span> <span class="nav-text">创建“标签”选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E2%80%9C%E6%A0%87%E7%AD%BE%E2%80%9D%E9%A1%B5%E5%B9%B6%E6%B7%BB%E5%8A%A0tpye%E5%B1%9E%E6%80%A7"><span class="nav-number">7.2.4.</span> <span class="nav-text">生成“标签”页并添加tpye属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E7%BB%99%E6%96%87%E7%AB%A0%E6%B7%BB%E5%8A%A0%E2%80%9Ctags%E2%80%9D%E5%B1%9E%E6%80%A7"><span class="nav-number">7.2.5.</span> <span class="nav-text">2.2 给文章添加“tags”属性</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo 搭建博客-博客搭建（1）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-08 16:54:41" itemprop="dateCreated datePublished" datetime="2020-08-08T16:54:41+08:00">2020-08-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="hexo 搭建博客-博客搭建（1）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>补充：之前没怎么看官方文档，现在看了官方文档，发现许多问题都好解决了挺多。贴几个相关的官方链接和 Github链接。</p>
+<p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">hexo</a> <a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/">next</a>  <a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia">yilia</a></p>
+<h2 id="安装Nodejs和git"><a href="#安装Nodejs和git" class="headerlink" title="安装Nodejs和git"></a>安装Nodejs和git</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://nodejs.org/">Node.js</a> (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)</li>
+<li><a target="_blank" rel="noopener" href="http://git-scm.com/">Git</a></li>
+</ul>
+<p>在dos命令行下输入以下命令安装</p>
+<blockquote>
+<p>npm install -g cnpm –registry=<a target="_blank" rel="noopener" href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org</a> </p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="安装-hexo框架"><a href="#安装-hexo框架" class="headerlink" title="安装 hexo框架"></a>安装 hexo框架</h2><blockquote>
+<p> cnpm install -g hexo-cli </p>
+<p>hexo -v #查看hexo版本</p>
+<p>cd进入你的博客文件</p>
+<p>hexo init  #生成博客 初始化博客</p>
+</blockquote>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2.png" alt="初始化博客"></p>
+<h2 id="访问博客"><a href="#访问博客" class="headerlink" title="访问博客"></a>访问博客</h2><blockquote>
+<p> hexo -s   访问博客</p>
+</blockquote>
+<p>在浏览器中输入 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AE%BF%E9%97%AE%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2.png" alt="第一次访问本地博客"></p>
+<p>现在博客就初期搭建好了，接下来就准备将其部署到网上，可以选择github或者gitee  我选择码云，速度比较快一点</p>
+<h2 id="创建gitee-仓库"><a href="#创建gitee-仓库" class="headerlink" title="创建gitee 仓库"></a>创建gitee 仓库</h2><p>准备工作</p>
+<p>接下来 去码云创建一个仓库（名字和你用户名一样）</p>
+<p>如果没有注册码云的可以去注册一个</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%88%9B%E5%BB%BA%E7%A0%81%E4%BA%91%E4%BB%93%E5%BA%93.png" alt="创建码云仓库"></p>
+<p>创建完之后在hexo的目录使用git  输入以下内容</p>
+<blockquote>
+<p> vim _condfig.yml  </p>
+<p>在里面修改添加如下内容（最末尾位置）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type: git</span><br><span class="line">repo: 你创建的码云仓库名称</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>部署之前需要先下载git依赖</p>
+<p>cpnm install –save hexo-deployer-git  </p>
+<p>hexo clean  清理一下</p>
+<p>hexo g    重新生成内容</p>
+<p>hexo  d    部署</p>
+</blockquote>
+<h2 id="开启gitee-page"><a href="#开启gitee-page" class="headerlink" title="开启gitee page"></a>开启gitee page</h2><p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%BC%80%E5%90%AFgitee%20page.png" alt="开启gitee page"></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E5%BC%80%E5%90%AFgitee%20page1.png" alt="开启gitee page1"></p>
+<h2 id="部署博客到gitee"><a href="#部署博客到gitee" class="headerlink" title="部署博客到gitee"></a>部署博客到gitee</h2><p>这样就可以部署到码云上了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E9%83%A8%E7%BD%B2%E5%88%B0gitee.png" alt="部署到gitee"></p>
+<h2 id="文章-主题配置"><a href="#文章-主题配置" class="headerlink" title="文章/主题配置"></a>文章/主题配置</h2><p>更换主题：我使用yilia的主题  </p>
+<p>源地址：<a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia">https://github.com/litten/hexo-theme-yilia</a></p>
+<p>在hexo的源目录下</p>
+<p>切换到主题目录 theme   使用git克隆该仓库</p>
+<blockquote>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/litten/hexo-theme-yilia.git">https://github.com/litten/hexo-theme-yilia.git</a></p>
+</blockquote>
+<p>然后打开 _config.yml文件，将主题改成如下（对应下载的目录名字）  记得将 .git文件目录删除掉，</p>
+<p>不删除的话会影响后续分支目录的上传</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/yilia%E5%85%8B%E9%9A%86.png" alt="image-20200813212100533"></p>
+<p>重新启动一下 看看有没有错误</p>
+<blockquote>
+<p>hexo clean </p>
+<p>hexo g </p>
+<p>hexo s </p>
+</blockquote>
+<p>如果出现下图就没问题了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A2%98%E9%83%A8%E7%BD%B2.png" alt="更新主题部署"></p>
+<p>将其部署到gitee上去</p>
+<p>使用命令就行了</p>
+<blockquote>
+<p>hexo d</p>
+</blockquote>
+<p>但是部署后出现了一个问题，在本地是更新主题后的页面，而远程更新后的页面没改变</p>
+<p>我去查了一下，hexo clean  只是把public文件删除，但是hexo g的时候发现你并没有改配置文件，所以就没有改动，记录没改变，.deploy_git提交记录也就没改动，所以远程没改动配置文件。</p>
+<p>我将.deploy_git文件删除之后，再执行hexo d -g 就更新成功了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E6%9B%B4%E6%96%B0%E4%B8%BB%E9%A2%98%E4%B9%8B%E5%90%8E%E9%83%A8%E7%BD%B2%E5%88%B0gitee.png" alt="image-20200808192045357"></p>
+<h3 id="头像设置"><a href="#头像设置" class="headerlink" title="头像设置"></a>头像设置</h3><h4 id="存放位置"><a href="#存放位置" class="headerlink" title="存放位置"></a>存放位置</h4><p>头像/图标图片的存放位置是<code>/themes/yilia/source/</code>下任意位置，可以自己新建一个文件夹存放，我存放在<code>assets</code>文件夹下。</p>
+<h4 id="配置设置"><a href="#配置设置" class="headerlink" title="配置设置"></a>配置设置</h4><p>配置文件为<code>/themes/yilia/_config.yml</code>。设置头像为配置文件中<code>avatar</code>一项，设置图标为配置文件中<code>favicon</code>一项，设置路径的根目录为<code>/themes/yilia/source/</code>。例如，我的头像存放的地址是<code>/themes/yilia/source/assets/me.png</code>，设置则为<code>avatar: /assets/me.png</code>。（图标同理）</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/hexo/%E4%BF%AE%E6%94%B9blog%E5%A4%B4%E5%83%8F.png" alt="image-20200808192349719"></p>
+<h3 id="文章设置"><a href="#文章设置" class="headerlink" title="文章设置"></a>文章设置</h3><h4 id="创建“分类”选项"><a href="#创建“分类”选项" class="headerlink" title="创建“分类”选项"></a>创建“分类”选项</h4><p>打开命令行，进入博客所在文件夹。执行命令</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> page categories</span><br></pre></td></tr></table></figure>
+
+<p>成功后会提示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO  Created: ~/Documents/blog/<span class="built_in">source</span>/categories/index.md</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的路径，找到<code>index.md</code>这个文件，打开后默认内容是这样的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 文章分类</span><br><span class="line">date:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>添加<code>type: &quot;categories&quot;</code>到内容中，添加后是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categorise</span><br><span class="line">date: 2020-08-08 17:06:45</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&quot;categories&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>保存并关闭文件。</p>
+<h4 id="给文章添加“categories”属性"><a href="#给文章添加“categories”属性" class="headerlink" title="给文章添加“categories”属性"></a>给文章添加“categories”属性</h4><p>打开需要添加分类的文章，为其添加categories属性。下方的<code>categories: web前端</code>表示添加这篇文章到“web前端”这个分类。注意：hexo一篇文章只能属于一个分类，也就是说如果在“- web前端”下方添加“-xxx”，hexo不会产生两个分类，而是把分类嵌套（即该文章属于 “- web前端”下的 “-xxx ”分类）。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 计算机网络概述</span><br><span class="line">date: <span class="number">2020</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">17</span>:<span class="number">15</span>:<span class="number">37</span></span><br><span class="line">categories:  </span><br><span class="line"> - 计算机网络</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>至此，成功给文章添加分类，点击首页的“分类”可以看到该分类下的所有文章。当然，只有添加了<code>categories: xxx</code>的文章才会被收录到首页的“分类”中。</p>
+<h4 id="创建“标签”选项"><a href="#创建“标签”选项" class="headerlink" title="创建“标签”选项"></a>创建“标签”选项</h4><h4 id="生成“标签”页并添加tpye属性"><a href="#生成“标签”页并添加tpye属性" class="headerlink" title="生成“标签”页并添加tpye属性"></a>生成“标签”页并添加tpye属性</h4><p>打开命令行，进入博客所在文件夹。执行命令</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo <span class="keyword">new</span> page tags</span><br></pre></td></tr></table></figure>
+
+<p>成功后会提示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO  Created: ~/Documents/blog/<span class="built_in">source</span>/tags/index.md</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的路径，找到<code>index.md</code>这个文件，打开后默认内容是这样的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line">date: <span class="number">2020</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">17</span>:<span class="number">06</span>:<span class="number">45</span></span><br><span class="line">type: <span class="string">&quot;categories&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>可以改成你要该的分类名称，添加<code>type: &quot;tags&quot;</code>到内容中，添加后是这样的：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">date: <span class="number">2020</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">17</span>:<span class="number">08</span>:<span class="number">42</span></span><br><span class="line">type: <span class="string">&quot;tags&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>保存并关闭文件。</p>
+<h4 id="2-2-给文章添加“tags”属性"><a href="#2-2-给文章添加“tags”属性" class="headerlink" title="2.2 给文章添加“tags”属性"></a>2.2 给文章添加“tags”属性</h4><p>打开需要添加标签的文章，为其添加tags属性。下方的<code>tags:</code>下方的<code>- jQuery</code> <code>- 表格</code><br> <code>- 表单验证</code>就是这篇文章的标签了</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">title: 计算机网络概述</span><br><span class="line">date: <span class="number">2020</span>-<span class="number">08</span>-<span class="number">08</span> <span class="number">17</span>:<span class="number">15</span>:<span class="number">37</span></span><br><span class="line">categories:  </span><br><span class="line"> - 计算机网络</span><br><span class="line">tags: </span><br><span class="line"> - <span class="number">408</span></span><br><span class="line"> - 网络</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>至此，成功给文章添加分类，点击首页的“标签”可以看到该标签下的所有文章。当然，只有添加了<code>tags: xxx</code>的文章才会被收录到首页的“标签”中。</p>
+<p>细心的朋友可能已经发现，这两个的设置几乎一模一样！是的，没错，思路都是一样的。所以我们可以打开scaffolds/post.md文件，在tages:上面加入categories:,保存后，之后执行<code>hexo new 文章名</code>命令生成的文件，页面里就有<code>categories:</code>项了。</p>
+<p>scaffolds目录下，是新建页面的模板，执行新建命令时，是根据这里的模板页来完成的，所以可以在这里根据你自己的需求添加一些默认值。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/" rel="next" title="计算机网络-物理层">
+                  计算机网络-物理层 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"08a643c752e0aa871ed34a435dca5c9f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

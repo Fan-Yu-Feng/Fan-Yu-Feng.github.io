@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="作业地址：2020 CMU 15-445 HW1 作业有说明环境及作业文件下载等数据。 这个作业后面的有些题还是挺复杂的，训练逻辑思维还是可以的，不过工作的话，用不到这么复杂的语句。复杂的题也是想了很久才理清逻辑。 完成该作业有 Sql基础知识 或了解 CTEs（Common Table Expressions）| CTEs  公用表达式会更好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cmu 作业1">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2021/12/30/CMU/cmu-hw1/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="作业地址：2020 CMU 15-445 HW1 作业有说明环境及作业文件下载等数据。 这个作业后面的有些题还是挺复杂的，训练逻辑思维还是可以的，不过工作的话，用不到这么复杂的语句。复杂的题也是想了很久才理清逻辑。 完成该作业有 Sql基础知识 或了解 CTEs（Common Table Expressions）| CTEs  公用表达式会更好">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-30T02:23:09.000Z">
+<meta property="article:modified_time" content="2021-12-31T09:40:48.669Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="CMU">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2021/12/30/CMU/cmu-hw1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2021/12/30/CMU/cmu-hw1/","path":"2021/12/30/CMU/cmu-hw1/","title":"cmu 作业1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>cmu 作业1 | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q1-0-POINTS-Q1-SAMPLE"><span class="nav-number">1.</span> <span class="nav-text">Q1 [0 POINTS] (Q1_SAMPLE):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q2-5-POINTS-Q2-LONG-NAME"><span class="nav-number">2.</span> <span class="nav-text">Q2 [5 POINTS] (Q2_LONG_NAME):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q3-5-POINTS-Q3-OLD-MUSIC-NATIONS"><span class="nav-number">3.</span> <span class="nav-text">Q3 [5 POINTS] (Q3_OLD_MUSIC_NATIONS):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q4-10-POINTS-Q4-DUBBED-SMASH"><span class="nav-number">4.</span> <span class="nav-text">Q4 [10 POINTS] (Q4_DUBBED_SMASH):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q5-10-POINTS-Q5-VINYL-LOVER"><span class="nav-number">5.</span> <span class="nav-text">Q5 [10 POINTS] (Q5_VINYL_LOVER):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q6-10-POINTS-Q6-OLD-IS-NOT-GOLD"><span class="nav-number">6.</span> <span class="nav-text">Q6 [10 POINTS] (Q6_OLD_IS_NOT_GOLD):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q7-15-POINTS-Q7-RELEASE-PERCENTAGE"><span class="nav-number">7.</span> <span class="nav-text">Q7 [15 POINTS] (Q7_RELEASE_PERCENTAGE):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q8-15-POINTS-Q8-COLLABORATE-ARTIST"><span class="nav-number">8.</span> <span class="nav-text">Q8 [15 POINTS] (Q8_COLLABORATE_ARTIST):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q9-15-POINTS-Q9-DRE-AND-EMINEM"><span class="nav-number">9.</span> <span class="nav-text">Q9 [15 POINTS] (Q9_DRE_AND_EMINEM):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q10-15-POINTS-Q10-AROUND-THE-WORLD"><span class="nav-number">10.</span> <span class="nav-text">Q10 [15 POINTS] (Q10_AROUND_THE_WORLD):</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2021/12/30/CMU/cmu-hw1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cmu 作业1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-30 10:23:09" itemprop="dateCreated datePublished" datetime="2021-12-30T10:23:09+08:00">2021-12-30</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-31 17:40:48" itemprop="dateModified" datetime="2021-12-31T17:40:48+08:00">2021-12-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CMU/" itemprop="url" rel="index"><span itemprop="name">CMU</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/12/30/CMU/cmu-hw1/" class="post-meta-item leancloud_visitors" data-flag-title="cmu 作业1" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.9k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>作业地址：<a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2020/homework1/">2020 CMU 15-445 HW1</a> 作业有说明环境及作业文件下载等数据。</p>
+<p>这个作业后面的有些题还是挺复杂的，训练逻辑思维还是可以的，不过工作的话，用不到这么复杂的语句。复杂的题也是想了很久才理清逻辑。</p>
+<p>完成该作业有 <a target="_blank" rel="noopener" href="https://www.runoob.com/sqlite/sqlite-tutorial.html">Sql基础知识</a> 或了解 <a target="_blank" rel="noopener" href="https://blog.csdn.net/caoxiaohong1005/article/details/53868332">CTEs</a>（Common Table Expressions）| <a target="_blank" rel="noopener" href="https://sqlite.org/lang_with.html">CTEs</a>  公用表达式会更好</p>
+<a id="more"></a>
+
+<h3 id="Q1-0-POINTS-Q1-SAMPLE"><a href="#Q1-0-POINTS-Q1-SAMPLE" class="headerlink" title="Q1 [0 POINTS] (Q1_SAMPLE):"></a>Q1 [0 POINTS] (Q1_SAMPLE):</h3><p>The purpose of this query is to make sure that the formatting of your output matches exactly the formatting of our auto-grading script.</p>
+<p><strong>Details:</strong> List all types of work ordered by type ascendingly.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name from work_type order by name</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q2-5-POINTS-Q2-LONG-NAME"><a href="#Q2-5-POINTS-Q2-LONG-NAME" class="headerlink" title="Q2 [5 POINTS] (Q2_LONG_NAME):"></a>Q2 [5 POINTS] (Q2_LONG_NAME):</h3><p>List works with longest name of each type.</p>
+<p><strong>Details:</strong> For each work type, find works that have the longest names. There might be cases where there is a tie for the longest names - in that case, return all of them. Display work names and corresponding type names, and order it according to work type (ascending) and use work name (ascending) as tie-breaker.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 每种类型最长名字分组 表: tem_work</span><br><span class="line">select max(length(work.name)) as max_length,work.type as type</span><br><span class="line">from work</span><br><span class="line">group by work.type </span><br><span class="line">&#x2F;&#x2F; 和类型表取交集 </span><br><span class="line">select work.name,work_type.name </span><br><span class="line">from tem_work </span><br><span class="line">inner join work on work.type &#x3D; tem_work.type </span><br><span class="line">    and tem_work.max_length &#x3D; length(work.name) </span><br><span class="line">inner join work_type on work_type.id &#x3D; work.type</span><br><span class="line">order by work.name asc, work.type asc;</span><br><span class="line">&#x2F;&#x2F; emmm 第二种实现方式</span><br><span class="line">select count(*)</span><br><span class="line">from (select max(length(work.name)) as max_length, work.name as name ,work.type as type</span><br><span class="line">from work</span><br><span class="line">group by work.type ) as tem_work </span><br><span class="line">inner join work_type on work_type.id &#x3D; tem_work.type</span><br><span class="line">order by tem_work.name asc, tem_work.type asc;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q3-5-POINTS-Q3-OLD-MUSIC-NATIONS"><a href="#Q3-5-POINTS-Q3-OLD-MUSIC-NATIONS" class="headerlink" title="Q3 [5 POINTS] (Q3_OLD_MUSIC_NATIONS):"></a>Q3 [5 POINTS] (Q3_OLD_MUSIC_NATIONS):</h3><p>List top 10 countries with the most classical music artists (born or started before 1850) along with the number of associated artists.</p>
+<p><strong>Details:</strong> Print country and number of associated arists before 1850. For example, <code>Russia|191</code>. Sort by number of artists in descending order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 条件：在<span class="number">1850</span>年之前出生、限制 TOP10，</span><br><span class="line"># 查询：数目和国家名</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> number,a.name  </span><br><span class="line"><span class="keyword">from</span> artist </span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> area a </span><br><span class="line"><span class="keyword">on</span> a.id <span class="operator">=</span> artist.area</span><br><span class="line"><span class="keyword">where</span> begin_date_year <span class="operator">&lt;</span> <span class="number">1850</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> area</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> number <span class="keyword">desc</span> </span><br><span class="line">limit <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Q4-10-POINTS-Q4-DUBBED-SMASH"><a href="#Q4-10-POINTS-Q4-DUBBED-SMASH" class="headerlink" title="Q4 [10 POINTS] (Q4_DUBBED_SMASH):"></a>Q4 [10 POINTS] (Q4_DUBBED_SMASH):</h3><p>List the top 10 dubbed artist names with the number of dubs.</p>
+<p><strong>Details:</strong> Count the number of distinct names in <code>artist_alias</code> for each artist in the <code>artist</code> table, and list only the top ten who’s from the United Kingdom and started after 1950 (not included). Print the artist name in the <code>artist</code> table and the number of corresponding distinct dubbed artist names in the <code>artist_alias</code> table.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 条件 英国地区、获得艺术家别名前十的艺术家、(艺术别名有重复 注意去重)</span><br><span class="line"># 查询 艺术家名称、别名数量</span><br><span class="line"></span><br><span class="line"># 获取英国的地区 id 为 <span class="number">221</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> area <span class="keyword">where</span> area.name <span class="keyword">like</span> <span class="string">&#x27;united%&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> a.name,<span class="built_in">count</span>(<span class="keyword">distinct</span> al.name) <span class="keyword">as</span> num</span><br><span class="line"><span class="keyword">from</span> artist <span class="keyword">as</span> a</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> artist_alias <span class="keyword">as</span> al</span><br><span class="line"><span class="keyword">on</span> al.artist <span class="operator">=</span> a.id</span><br><span class="line"><span class="keyword">where</span> a.begin_date_year <span class="operator">&gt;</span> <span class="number">1950</span></span><br><span class="line"><span class="keyword">and</span> a.area <span class="operator">=</span> <span class="number">221</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.id</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> num <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q5-10-POINTS-Q5-VINYL-LOVER"><a href="#Q5-10-POINTS-Q5-VINYL-LOVER" class="headerlink" title="Q5 [10 POINTS] (Q5_VINYL_LOVER):"></a>Q5 [10 POINTS] (Q5_VINYL_LOVER):</h3><p>List the distinct names of releases issued in vinyl format by the British band Coldplay.</p>
+<p><strong>Details:</strong> Vinyl format includes ALL vinyl dimensions excluding <code>VinylDisc</code>. Sort the release names by release date ascendingly.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 查询 由 Coldplay 以 vinyl  格式发行的 releases </span><br><span class="line"># 按时间升序、格式以 Vinyl 结尾</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> r1.name <span class="keyword">as</span> rname</span><br><span class="line"><span class="keyword">from</span> artist_credit_name a1</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> artist_credit a2 <span class="keyword">on</span> a1.artist_credit <span class="operator">=</span> a2.id</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> <span class="keyword">release</span> r1 <span class="keyword">on</span> a2.id <span class="operator">=</span> r1.artist_credit</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> release_info r2 <span class="keyword">on</span> r1.id <span class="operator">=</span> r2.release</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> medium m1 <span class="keyword">on</span> r1.id <span class="operator">=</span> m1.release</span><br><span class="line">    <span class="keyword">inner</span> <span class="keyword">join</span> medium_format m2 <span class="keyword">on</span> m1.format <span class="operator">=</span> m2.id</span><br><span class="line"><span class="keyword">where</span> a1.name <span class="operator">=</span> <span class="string">&#x27;Coldplay&#x27;</span></span><br><span class="line">    <span class="keyword">and</span> m2.name <span class="keyword">like</span> <span class="string">&#x27;%Vinyl&#x27;</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> date_year,</span><br><span class="line">    date_month,</span><br><span class="line">    date_day;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q6-10-POINTS-Q6-OLD-IS-NOT-GOLD"><a href="#Q6-10-POINTS-Q6-OLD-IS-NOT-GOLD" class="headerlink" title="Q6 [10 POINTS] (Q6_OLD_IS_NOT_GOLD):"></a>Q6 [10 POINTS] (Q6_OLD_IS_NOT_GOLD):</h3><p>Which decades saw the most number of official releases? List the number of official releases in every decade since 1900. Like <code>1970s|57210</code>.</p>
+<p><strong>Details:</strong> Print all decades and the number of official releases. Releases with different issue dates or countries are considered different releases. Print the relevant decade in a fancier format by constructing a string that looks like this: <code>1970s</code>. Sort the decades in decreasing order with respect to the number of official releases and use decade (descending) as tie-breaker. Remember to exclude releases whose dates are <code>NULL</code>.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 查询 relase 每十年发行的数量</span><br><span class="line"># 每十年<span class="operator">|</span>数量  在<span class="number">1900</span>年之后,不同国家和不同 issue dates 算<span class="number">1</span>条</span><br><span class="line"></span><br><span class="line"><span class="keyword">Select</span> decade,</span><br><span class="line">    <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> cnt</span><br><span class="line"><span class="keyword">from</span> (</span><br><span class="line">        <span class="keyword">select</span> (<span class="built_in">CAST</span>((date_year <span class="operator">/</span> <span class="number">10</span>) <span class="keyword">as</span> <span class="type">int</span>) <span class="operator">*</span> <span class="number">10</span>) <span class="operator">||</span> <span class="string">&#x27;s&#x27;</span> <span class="keyword">as</span> decade</span><br><span class="line">        <span class="keyword">from</span> <span class="keyword">release</span></span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> release_info <span class="keyword">on</span> release.id <span class="operator">=</span> release_info.release</span><br><span class="line">        <span class="keyword">where</span> release.status <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">and</span> date_year <span class="operator">&gt;=</span> <span class="number">1900</span></span><br><span class="line">    )</span><br><span class="line"><span class="keyword">Group</span> <span class="keyword">by</span> decade</span><br><span class="line"><span class="keyword">Order</span> <span class="keyword">by</span> cnt <span class="keyword">desc</span>,</span><br><span class="line">    decade <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q7-15-POINTS-Q7-RELEASE-PERCENTAGE"><a href="#Q7-15-POINTS-Q7-RELEASE-PERCENTAGE" class="headerlink" title="Q7 [15 POINTS] (Q7_RELEASE_PERCENTAGE):"></a>Q7 [15 POINTS] (Q7_RELEASE_PERCENTAGE):</h3><p>List the month and the percentage of all releases issued in the corresponding month all over the world in the past year. Display like <code>2020.01|5.95</code>.</p>
+<p><strong>Details:</strong> The percentage of releases for a month is the number of releases issued in that month devided by the total releases in the past year from 07/2019 to 07/2020, both included. Releases with different issue dates or countries are considered different releases. Round the percentage to  decimal places using <code>ROUND()</code>. Sort by dates in ascending order.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># 查询： <span class="number">2019</span><span class="operator">/</span><span class="number">07</span><span class="number">-2020</span><span class="operator">/</span><span class="number">07</span> 每个月分发行唱片的百分比 格式：<span class="number">2020.01</span><span class="operator">|</span><span class="number">5.95</span></span><br><span class="line"># 条件： 时间：<span class="number">07</span><span class="operator">/</span><span class="number">2019</span> <span class="keyword">to</span> <span class="number">07</span><span class="operator">/</span><span class="number">2020</span>、 按时间升序</span><br><span class="line"><span class="keyword">with</span> past_year_release (<span class="keyword">year</span>, <span class="keyword">month</span>) <span class="keyword">as</span> (</span><br><span class="line">    <span class="keyword">select</span> date_year,</span><br><span class="line">        date_month</span><br><span class="line">    <span class="keyword">from</span> release_info r1</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> <span class="keyword">release</span> r2 <span class="keyword">on</span> r1.release <span class="operator">=</span> r2.id</span><br><span class="line">    <span class="keyword">where</span> (</span><br><span class="line">            (</span><br><span class="line">                date_year <span class="operator">=</span> <span class="number">2019</span></span><br><span class="line">                <span class="keyword">and</span> date_month <span class="operator">&gt;=</span> <span class="number">7</span></span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">or</span> (</span><br><span class="line">                date_year <span class="operator">=</span> <span class="number">2020</span></span><br><span class="line">                <span class="keyword">and</span> date_month <span class="operator">&lt;=</span> <span class="number">7</span></span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">cast</span>(<span class="keyword">year</span> <span class="keyword">as</span> <span class="type">varchar</span>) <span class="operator">||</span> <span class="string">&#x27;.&#x27;</span> <span class="operator">||</span> (</span><br><span class="line">        <span class="keyword">case</span></span><br><span class="line">            <span class="keyword">when</span> <span class="keyword">month</span> <span class="operator">&lt;</span> <span class="number">10</span> <span class="keyword">then</span> <span class="string">&#x27;0&#x27;</span></span><br><span class="line">            <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    ) <span class="operator">||</span> <span class="built_in">cast</span>(<span class="keyword">month</span> <span class="keyword">as</span> <span class="type">varchar</span>) <span class="keyword">as</span> <span class="type">date</span>,</span><br><span class="line">    round(</span><br><span class="line">        <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">*</span> <span class="number">100.0</span> <span class="operator">/</span> (</span><br><span class="line">            <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>)</span><br><span class="line">            <span class="keyword">from</span> past_year_release</span><br><span class="line">        ),</span><br><span class="line">        <span class="number">2</span></span><br><span class="line">    )</span><br><span class="line"><span class="keyword">from</span> past_year_release</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="type">date</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="type">date</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q8-15-POINTS-Q8-COLLABORATE-ARTIST"><a href="#Q8-15-POINTS-Q8-COLLABORATE-ARTIST" class="headerlink" title="Q8 [15 POINTS] (Q8_COLLABORATE_ARTIST):"></a>Q8 [15 POINTS] (Q8_COLLABORATE_ARTIST):</h3><p>List the number of artists who have collaborated with Ariana Grande.</p>
+<p><strong>Details:</strong> Print only the total number of artists. An artist is considered a collaborator if they appear in the same artist_credit with Ariana Grande. The answer should include Ariana Grande herself.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询和  Ariana Grande 合作的艺术家数量</span><br><span class="line"><span class="keyword">Select</span> <span class="built_in">count</span>(<span class="keyword">distinct</span> artist)</span><br><span class="line"><span class="keyword">From</span> artist_credit_name</span><br><span class="line"><span class="keyword">Where</span> artist_credit <span class="keyword">in</span> (</span><br><span class="line">        <span class="keyword">select</span> artist_credit</span><br><span class="line">        <span class="keyword">from</span> artist_credit_name</span><br><span class="line">        <span class="keyword">where</span> name <span class="operator">=</span> <span class="string">&#x27;Ariana Grande&#x27;</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q9-15-POINTS-Q9-DRE-AND-EMINEM"><a href="#Q9-15-POINTS-Q9-DRE-AND-EMINEM" class="headerlink" title="Q9 [15 POINTS] (Q9_DRE_AND_EMINEM):"></a>Q9 [15 POINTS] (Q9_DRE_AND_EMINEM):</h3><p>List the rank, artist names, along with the number of collaborative releases of Dr. Dre and Eminem among other most productive duos (as long as they appear in the same release) both started after 1960 (not included). Display like <code>[rank]|Dr. Dre|Eminem|[# of releases]</code>.</p>
+<p><strong>Details:</strong> For example, if you see a release by A, B, and C, it will contribute to three pairs of duos: <code>A|B|1</code>, <code>A|C|1</code>, and <code>B|C|1</code>. You will first need to calculate a rank of these duos by number of collaborated releases (release with artist_credit shared by both artists) sorted descendingly, and then find the rank of <code>Dr. Dre</code> and <code>Eminem</code>. Only releases in English are considered. Both artists should be solo artists. All pairs of names should have the alphabetically smaller one first. Use artist names (asc) as tie breaker.</p>
+<p><strong>Hint:</strong> Artist aliases may be used everywhere. When doing aggregation, using artist ids will ensure you get the correct results. One example entry in the rank list is <code>9|Benj Pasek|Justin Paul|27</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"># 查询和 Dr. Dre、Eminem 合作的艺术家 格式 [顺序]<span class="operator">|</span>name<span class="operator">|</span>name<span class="operator">|</span>[# <span class="keyword">of</span> releases]</span><br><span class="line"># 条件：<span class="number">1960</span>年后、 与 Dr. Dre、Eminem 合作，<span class="keyword">release</span>:英语、艺术家：独唱艺术家（Person）、升序</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> duos_list (id1, id2, count) <span class="keyword">as</span> (</span><br><span class="line">    <span class="keyword">select</span> a1.artist <span class="keyword">as</span> id1,</span><br><span class="line">        a2.artist <span class="keyword">as</span> id2,</span><br><span class="line">        <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> c</span><br><span class="line">    <span class="keyword">from</span> artist_credit_name a1</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> artist_credit_name a2 <span class="keyword">on</span> a1.artist_credit <span class="operator">=</span> a2.artist_credit</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> <span class="keyword">release</span> r <span class="keyword">on</span> a2.artist_credit <span class="operator">=</span> r.artist_credit</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> artist a3 <span class="keyword">on</span> a1.artist <span class="operator">=</span> a3.id</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> artist a4 <span class="keyword">on</span> a2.artist <span class="operator">=</span> a4.id</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> artist_type a5 <span class="keyword">on</span> a3.type <span class="operator">=</span> a5.id</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> artist_type a6 <span class="keyword">on</span> a4.type <span class="operator">=</span> a6.id</span><br><span class="line">        <span class="keyword">inner</span> <span class="keyword">join</span> <span class="keyword">language</span> l <span class="keyword">on</span> r.language <span class="operator">=</span> l.id</span><br><span class="line">    <span class="keyword">where</span> a3.name <span class="operator">&lt;</span> a4.name</span><br><span class="line">        <span class="keyword">and</span> a5.name <span class="operator">=</span> &quot;Person&quot;</span><br><span class="line">        <span class="keyword">and</span> a6.name <span class="operator">=</span> &quot;Person&quot;</span><br><span class="line">        <span class="keyword">and</span> l.name <span class="operator">=</span> <span class="string">&#x27;English&#x27;</span></span><br><span class="line">        <span class="keyword">and</span> a3.begin_date_year <span class="operator">&gt;</span> <span class="number">1960</span></span><br><span class="line">        <span class="keyword">and</span> a4.begin_date_year <span class="operator">&gt;</span> <span class="number">1960</span></span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> a1.artist,</span><br><span class="line">        a2.artist</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span> (</span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">row_number</span> () <span class="keyword">over</span> (</span><br><span class="line">                <span class="keyword">order</span> <span class="keyword">by</span> count <span class="keyword">desc</span>,</span><br><span class="line">                    a1.name,</span><br><span class="line">                    a2.name</span><br><span class="line">            ) <span class="keyword">as</span> rank,</span><br><span class="line">            a1.name <span class="keyword">as</span> name1,</span><br><span class="line">            a2.name <span class="keyword">as</span> name2,</span><br><span class="line">            count</span><br><span class="line">        <span class="keyword">from</span> duos_list d</span><br><span class="line">            <span class="keyword">inner</span> <span class="keyword">join</span> artist a1 <span class="keyword">on</span> d.id1 <span class="operator">=</span> a1.id</span><br><span class="line">            <span class="keyword">inner</span> <span class="keyword">join</span> artist a2 <span class="keyword">on</span> d.id2 <span class="operator">=</span> a2.id</span><br><span class="line">    )</span><br><span class="line"><span class="keyword">where</span> name1 <span class="operator">=</span> <span class="string">&#x27;Dr. Dre&#x27;</span></span><br><span class="line">    <span class="keyword">and</span> name2 <span class="operator">=</span> <span class="string">&#x27;Eminem&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q10-15-POINTS-Q10-AROUND-THE-WORLD"><a href="#Q10-15-POINTS-Q10-AROUND-THE-WORLD" class="headerlink" title="Q10 [15 POINTS] (Q10_AROUND_THE_WORLD):"></a>Q10 [15 POINTS] (Q10_AROUND_THE_WORLD):</h3><p>Concat all dubbed names of The Beatles using comma-separated values(like “<code>Beetles, fab four</code>“).</p>
+<p><strong>Details:</strong> Find all dubbed names of artist “<code>The Beatles</code>“ in artist_alias and order them by id (ascending). Print a single string containing all the dubbed names separated by commas.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> c <span class="keyword">as</span> (</span><br><span class="line">        </span><br><span class="line">      <span class="keyword">select</span> <span class="built_in">row_number</span>() <span class="keyword">over</span> (</span><br><span class="line">                  <span class="keyword">order</span> <span class="keyword">by</span> c.id <span class="keyword">asc</span></span><br><span class="line">            ) <span class="keyword">as</span> seqnum,</span><br><span class="line">            c.name <span class="keyword">as</span> name</span><br><span class="line">      <span class="keyword">from</span> artist_alias c</span><br><span class="line">            <span class="keyword">join</span> artist <span class="keyword">on</span> c.artist <span class="operator">=</span> artist.id</span><br><span class="line">      <span class="keyword">where</span> artist.name <span class="operator">=</span> <span class="string">&#x27;The Beatles&#x27;</span></span><br><span class="line">),</span><br><span class="line">flattened <span class="keyword">as</span> (</span><br><span class="line">      <span class="keyword">select</span> seqnum,</span><br><span class="line">            name <span class="keyword">as</span> name</span><br><span class="line">      <span class="keyword">from</span> c</span><br><span class="line">      <span class="keyword">where</span> seqnum <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">      <span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line">      <span class="keyword">select</span> c.seqnum,</span><br><span class="line">            f.name <span class="operator">||</span> <span class="string">&#x27;, &#x27;</span> <span class="operator">||</span> c.name</span><br><span class="line">      <span class="keyword">from</span> c</span><br><span class="line">            <span class="keyword">join</span> flattened f <span class="keyword">on</span> c.seqnum <span class="operator">=</span> f.seqnum <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> name</span><br><span class="line"><span class="keyword">from</span> flattened</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> seqnum <span class="keyword">desc</span></span><br><span class="line">limit <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CMU/" rel="tag"># CMU</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/29/CMU/CMU-Lab0/" rel="prev" title="cmu 环境搭建">
+                  <i class="fa fa-chevron-left"></i> cmu 环境搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/31/CMU/cmu-lab-c/" rel="next" title="cmu C++ 学习">
+                  cmu C++ 学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"eb2f3d7f6a4fc64bd0ff5eb92c15fa84"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

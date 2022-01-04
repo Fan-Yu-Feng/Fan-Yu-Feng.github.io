@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="物理层物理层的基本概念物理层解决如何在连接各种计算机的传输媒体上传输数据比特流，而不是指具体的传输媒体 主要任务：确定与传输媒体接口的一些特性：  机械特性：接口形状、大小、引脚 数码 电气特性：如规定电压范围（-5V到+5） 功能特性：如规定-5V表示0.+5V表示1 过程特性：规定连接时各个相关部件的工作步骤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-物理层">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="物理层物理层的基本概念物理层解决如何在连接各种计算机的传输媒体上传输数据比特流，而不是指具体的传输媒体 主要任务：确定与传输媒体接口的一些特性：  机械特性：接口形状、大小、引脚 数码 电气特性：如规定电压范围（-5V到+5） 功能特性：如规定-5V表示0.+5V表示1 过程特性：规定连接时各个相关部件的工作步骤">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%9F%BA%E5%B8%A6%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%8D%95%E6%9E%81%E4%B8%8D%E5%BD%92%E9%9B%B6%E4%B8%8E%E5%8F%8C%E6%9E%81%E4%B8%8D%E5%BD%92%E9%9B%B6.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%8D%95%E6%9E%81%E5%BD%92%E9%9B%B6%E4%B8%8E%E5%8F%8C%E6%9E%81%E5%BD%92%E9%9B%B6.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A4%9A%E6%A8%A1%E5%85%89%E7%BA%A4%E5%92%8C%E5%8D%95%E6%A8%A1%E5%85%89%E7%BA%A4.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E4%BF%A1%E9%81%93%E5%B9%B2%E6%89%B0%E5%9B%BE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%90%84%E7%A7%8D%E7%94%B5%E7%BC%86.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%85%89%E7%BA%A41.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A5%88%E6%B0%8F%E5%87%86%E5%88%99%E5%92%8C%E9%A6%99%E5%86%9C%E5%AE%9A%E7%90%86%E5%BA%94%E7%94%A8%E8%8C%83%E5%9B%B4.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E9%A2%91%E5%88%86%E5%A4%8D%E7%94%A8.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%85%89%E7%BA%A42.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E5%9B%BE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E7%BB%9F%E8%AE%A1%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%B3%A2%E5%88%86%E5%A4%8D%E7%94%A8.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E7%BC%BA%E7%82%B9%E5%9B%BE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E8%A7%84%E6%A0%BC%E5%8C%96%E5%86%85%E7%A7%AF1.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E8%A7%84%E6%A0%BC%E5%8C%96%E5%86%85%E7%A7%AF.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/CMDA%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/xDSL%E7%9A%84%E6%8E%A5%E5%85%A5%E5%88%86%E9%A2%91%E5%9B%BE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/xDLS.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E9%9B%86%E7%BA%BF%E5%99%A8.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/HFC%E7%BD%91%E7%82%B9%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95.png">
+<meta property="article:published_time" content="2020-08-08T09:15:37.000Z">
+<meta property="article:modified_time" content="2021-12-24T03:26:59.066Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%9F%BA%E5%B8%A6%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95.png">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/","path":"2020/08/08/计算机网络/计算机网络-1-物理层/","title":"计算机网络-物理层"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络-物理层 | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">物理层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">物理层的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.1.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%85%B3%E4%BF%A1%E9%81%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">有关信道的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%88%E6%B0%8F%E5%87%86%E5%88%99%E5%92%8C%E5%92%8C%E9%A6%99%E5%86%9C%E5%AE%9A%E7%90%86"><span class="nav-number">1.1.3.</span> <span class="nav-text">奈氏准则和和香农定理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E4%B8%8B%E7%9A%84%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93"><span class="nav-number">1.2.</span> <span class="nav-text">物理层下的传输媒体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%BC%95%E5%9E%8B%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93"><span class="nav-number">1.2.1.</span> <span class="nav-text">导引型传输媒体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%AF%BC%E5%BC%95%E5%9E%8B%E4%BC%A0%E8%BE%93%E5%AA%92%E4%BD%93"><span class="nav-number">1.2.2.</span> <span class="nav-text">非导引型传输媒体</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E9%81%93%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">1.3.</span> <span class="nav-text">信道复用技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%91%E5%88%86%E5%A4%8D%E7%94%A8FDM"><span class="nav-number">1.3.1.</span> <span class="nav-text">频分复用FDM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%EF%BC%88Time-Diviion-Mutiplexing%EF%BC%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">时分复用（Time Diviion Mutiplexing）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A2%E5%88%86%E5%A4%8D%E7%94%A8WDM"><span class="nav-number">1.3.3.</span> <span class="nav-text">波分复用WDM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%81%E5%88%86%E5%A4%8D%E7%94%A8CDM-code-Division-multiplexing"><span class="nav-number">1.3.4.</span> <span class="nav-text">码分复用CDM(code Division multiplexing)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E4%BC%A0%E8%BE%93%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.4.</span> <span class="nav-text">数字传输系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%BD%E5%B8%A6%E6%8E%A5%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-number">1.5.</span> <span class="nav-text">宽带接入技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ADSL%E6%8A%80%E6%9C%AF"><span class="nav-number">1.5.1.</span> <span class="nav-text">ADSL技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DMT%E6%8A%80%E6%9C%AF"><span class="nav-number">1.5.2.</span> <span class="nav-text">DMT技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%89%E7%BA%A4%E5%90%8C%E8%BD%B4%E6%B7%B7%E5%90%88%E7%BD%91%EF%BC%88HFC%EF%BC%89Hybrid-Fiber-Coax"><span class="nav-number">1.5.3.</span> <span class="nav-text">光纤同轴混合网（HFC）Hybrid Fiber Coax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FTTx-%E6%8A%80%E6%9C%AF-%EF%BC%88%E5%85%89%E7%BA%A4%E5%88%B0%E2%80%A6%E2%80%A6%EF%BC%89"><span class="nav-number">1.5.4.</span> <span class="nav-text">FTTx 技术 （光纤到……）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E8%AE%BE%E5%A4%87"><span class="nav-number">1.6.</span> <span class="nav-text">物理层设备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E7%BB%A7%E5%99%A8"><span class="nav-number">1.6.1.</span> <span class="nav-text">中继器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.6.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8%EF%BC%88Hub%EF%BC%89"><span class="nav-number">1.6.3.</span> <span class="nav-text">集线器（Hub）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">几种基本的调制方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络-物理层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-08 17:15:37" itemprop="dateCreated datePublished" datetime="2020-08-08T17:15:37+08:00">2020-08-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">计算机基础知识</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络-物理层" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1><h2 id="物理层的基本概念"><a href="#物理层的基本概念" class="headerlink" title="物理层的基本概念"></a>物理层的基本概念</h2><p><strong>物理层解决如何在连接各种计算机的传输媒体上传输数据比特流，而不是指具体的传输媒体</strong></p>
+<p><strong>主要任务：确定与传输媒体接口的一些特性：</strong></p>
+<ul>
+<li>机械特性：接口形状、大小、引脚 数码</li>
+<li>电气特性：如规定电压范围（-5V到+5）</li>
+<li>功能特性：如规定-5V表示0.+5V表示1</li>
+<li>过程特性：规定连接时各个相关部件的工作步骤</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h3><ol>
+<li><p>数据：运送消息的实体</p>
+</li>
+<li><p>信号：数据的电气的或者电磁的表现，或者说信号时适合在传输介质上传输的对象</p>
+<ol>
+<li>模拟信号：代表消息的参数的取值时连续的</li>
+<li>数字信号：代表消息的参数子在取值时时离散的</li>
+</ol>
+</li>
+<li><p>码元：使用时间域的波形来表示数字信号时，表示不同的离散数值的基本波形。</p>
+</li>
+<li><p>比特率：单位时间内传送的比特数</p>
+</li>
+<li><p>波特率：单位时间内载波调制状态改变的次数，针对数据信号对载波的调制速率</p>
+</li>
+<li><p>奈氏准则：在任何信道中，码元的传输的效率是有上限的，传输速率超过此上限，就会出现严重的码间串扰问题。使接收端对码元的判决（即识别）成为不可能。</p>
+</li>
+<li><p>信噪比：信号的平均功率和噪声的平均功率之比，记为S/N。信噪比（dB）=10*log10（S/N）</p>
+</li>
+</ol>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="有关信道的基本概念"><a href="#有关信道的基本概念" class="headerlink" title="有关信道的基本概念"></a>有关信道的基本概念</h3><p><strong>信道</strong>：信号的传输媒体，有以下几种通信方式</p>
+<ul>
+<li>单工通信（单向通信)：只有一个方向的通信，无反方向的通信（如广播电视）</li>
+<li>半双工通信（双向交替通信）：通信双方可以互发消息，但是不能同时发消息（如对讲机）</li>
+<li>全双工通信（双向同时通信）：可以同时收发信息（如打电话）</li>
+</ul>
+<p><strong>基带信号：</strong>来自信源的信号，指没有经过调制的数字信号或模拟信号。如计算机输出的数据信号：文件，</p>
+<p><strong>调制：</strong>基带信号中包含了许多低频的成分，甚至直流的成分，许多信道不支持低频或者直流分量，因此必须对基带信号进行调频</p>
+<p><strong>带通信号</strong>：基带信号经过载波调制后，把频率范围搬移到较高判断以便在信道中传输（频率高能使信号传输距离更远）<br><strong>几种最基本的调制方法</strong></p>
+<ul>
+<li>调幅（AM）：载波的振幅随基带数字信号而变化。</li>
+<li>调频（FM）：载波的频率随基带的数字信号而变化</li>
+<li>调相（PM）：在波的初始相位随基带数字信号而变化</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%9F%BA%E5%B8%A6%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95.png" alt="基带调制方法"></p>
+<p><strong>常用编码</strong></p>
+<ul>
+<li>单极性不归零码：只使用一个电压值，高电平表示1，没电压表示0（如图a）</li>
+<li>双极性不归零码：用正电平和负电平分别表示二进制数据的0和1，正负幅值相等(如图b)</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png" alt="单极不归零与双极不归零"></p>
+<ul>
+<li>单极性归零码：只使用一个电压值，高电平表示1，没电压表示0（如图a）</li>
+<li>双极性归零码：用正电平和负电平分别表示二进制数据的0和1，正负幅值相等(如图b)</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%8D%95%E6%9E%81%E4%B8%8D%E5%BD%92%E9%9B%B6%E4%B8%8E%E5%8F%8C%E6%9E%81%E4%B8%8D%E5%BD%92%E9%9B%B6.png" alt="单极归零与双极归零"></p>
+<ul>
+<li>曼彻斯特编码：位周期中心向上跳代表0，向下跳代表1</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%8D%95%E6%9E%81%E5%BD%92%E9%9B%B6%E4%B8%8E%E5%8F%8C%E6%9E%81%E5%BD%92%E9%9B%B6.png" alt="曼彻斯特编码"></p>
+<ul>
+<li>差分曼彻斯特编码：位中心始终有跳变，边界有跳变代表0，无跳变代表1</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81.png" alt="差分曼彻斯特编码"></p>
+<blockquote>
+<p>差分曼彻斯特编码与曼彻斯特编码相同，但是抗干扰性能强于曼彻斯特编码</p>
+<p>曼彻斯特编码与前两种相比能够表示没有数据传输，具有自同步能力</p>
+</blockquote>
+<h3 id="奈氏准则和和香农定理"><a href="#奈氏准则和和香农定理" class="headerlink" title="奈氏准则和和香农定理"></a>奈氏准则和和香农定理</h3><p>因为在任何实际的信道中，在传输信号的适合会产生各种失真以及带来多种干扰， 码元传输的速率越高，或者传输的距离越远，在信道中输出端的波形的失真就越严重</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A4%9A%E6%A8%A1%E5%85%89%E7%BA%A4%E5%92%8C%E5%8D%95%E6%A8%A1%E5%85%89%E7%BA%A4.png" alt="信道干扰图"></p>
+<p><strong>奈氏准则</strong>：在任何信道中，码元传输的速率是有<strong>上限</strong>的，否则就会出现码间串扰的问题，使接收端对码元的判决（即识别）成为不可能。如果信道的<strong>频带越宽</strong>，也就是能够通过的信号<strong>高频分量</strong>越多，那么就可以用更高的速率传送码元而不出现码间串扰。</p>
+<p> 理想低通信道最高码元传输速率=2WBaud（无干扰）</p>
+<ul>
+<li>W是理想低通信道的带宽，单位是Hz</li>
+<li>Baud是波特，是码元传输速率的单位</li>
+</ul>
+<p><strong>波特和比特的区别</strong></p>
+<blockquote>
+<p>Bit是信息量，如果一个码元含有三个Bit的信息量，1波特=3Bit/s （000-111）</p>
+</blockquote>
+<p><strong>香农定理</strong></p>
+<blockquote>
+<p>香农定理给出了带宽受限且有高斯白噪声干扰的信道的极限，无差错的信息传输速率</p>
+</blockquote>
+<p><strong>定义为：</strong><br>$$<br>C=Wlog2(1+S/N)   b/s<br>$$</p>
+<ul>
+<li>W为信道的带宽（Hz）</li>
+<li>S为信道内所传信号的平均功率</li>
+<li>N为信道内部的高斯噪声功率</li>
+</ul>
+<p>信噪比：信号的平均规律和噪声的平均功率之比。记为S/N，用dB为度量单位。<br>香农公式表明：信道的<strong>带宽</strong>或信道中的<strong>信噪比越大</strong>，信息的<strong>极限传输速率就越高。</strong><br>香农公式和奈氏准则适用范围：<br>香农公式：仅模拟信<br>奈氏准则：模拟信号、数字信号都可。</p>
+<p><strong>奈氏准则和香农定理应用范围：</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E4%BF%A1%E9%81%93%E5%B9%B2%E6%89%B0%E5%9B%BE.png" alt="奈氏准则和香农定理应用范围"></p>
+<h2 id="物理层下的传输媒体"><a href="#物理层下的传输媒体" class="headerlink" title="物理层下的传输媒体"></a>物理层下的传输媒体</h2><p>传输媒体分两大类</p>
+<ol>
+<li>导引型传输媒体：通过固定媒体（铜线或者光纤）传播</li>
+<li>非导引型传输媒体：在自由空间中传播（无线传播）</li>
+</ol>
+<h3 id="导引型传输媒体"><a href="#导引型传输媒体" class="headerlink" title="导引型传输媒体"></a>导引型传输媒体</h3><p><strong>双绞线</strong></p>
+<ul>
+<li>屏蔽双绞线STP</li>
+<li>无屏蔽双绞线UTP</li>
+</ul>
+<p><strong>同轴电缆</strong></p>
+<ul>
+<li>50欧同轴电缆：用于数字传输，多用于基带传输</li>
+<li>70欧同轴电缆：用于模拟传输</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%90%84%E7%A7%8D%E7%94%B5%E7%BC%86.png" alt="各种电缆"></p>
+<p><strong>光纤</strong>（外部干扰对其影响比较小）</p>
+<p><strong>光线在光纤中的反折射</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%85%89%E7%BA%A41.png" alt="光纤1"></p>
+<p>光纤内部工作原理</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A5%88%E6%B0%8F%E5%87%86%E5%88%99%E5%92%8C%E9%A6%99%E5%86%9C%E5%AE%9A%E7%90%86%E5%BA%94%E7%94%A8%E8%8C%83%E5%9B%B4.png" alt="光纤2"></p>
+<p>多模光纤和单模光纤</p>
+<ul>
+<li>单模光纤：光纤直径较小到一定的范围，使光线在传播中不产生多次反射，传播性能好</li>
+<li>多模光纤：多条不同角度入射的光线在同一条光纤中传输（适合近距离）</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E9%A2%91%E5%88%86%E5%A4%8D%E7%94%A8.png" alt="多模光纤和单模光纤"></p>
+<h3 id="非导引型传输媒体"><a href="#非导引型传输媒体" class="headerlink" title="非导引型传输媒体"></a>非导引型传输媒体</h3><ul>
+<li>无线传输所使用的<strong>频段很广</strong>。</li>
+<li>短波通信主要是靠电离层的反射，但短波信道的<strong>通信质量较差</strong>。</li>
+<li>微波在空间主要是直线传播<ul>
+<li>地面微波接力通信</li>
+<li>卫星通信</li>
+</ul>
+</li>
+</ul>
+<h2 id="信道复用技术"><a href="#信道复用技术" class="headerlink" title="信道复用技术"></a>信道复用技术</h2><p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%85%89%E7%BA%A42.png" alt="复用技术"></p>
+<h3 id="频分复用FDM"><a href="#频分复用FDM" class="headerlink" title="频分复用FDM"></a>频分复用FDM</h3><p>用户在分配到一定的频带后，在通信过程中自始至终都占用这个频带。<br>频分复用的所有用户在同样的时间占用不同的带宽资源（请注意，这里的“带宽”是频率带宽而不是数据的发送速率）</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E5%9B%BE.png" alt="频分复用"></p>
+<h3 id="时分复用（Time-Diviion-Mutiplexing）"><a href="#时分复用（Time-Diviion-Mutiplexing）" class="headerlink" title="时分复用（Time Diviion Mutiplexing）"></a>时分复用（Time Diviion Mutiplexing）</h3><p>时分复用技术则是将时间划分为一段段等长的<strong>时分复用帧</strong>（TDM帧）。每一个时分复用的用户在每一个TMD帧中占用了固定的时间段，时分复用的所有用户是在不同的时间占用同样的<strong>频带宽度</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF.png" alt="image-20200731211519780"></p>
+<p>对于一些用户没使用信道时，则会造成资源浪费。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E7%BB%9F%E8%AE%A1%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E6%8A%80%E6%9C%AF.png" alt="image-20200731211614472"></p>
+<p>因此对于这个缺点，出现了改进的时分复用技术：<strong>统计时分复用技术</strong></p>
+<p>在数据帧中添加标记，来区分数据来源</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%B3%A2%E5%88%86%E5%A4%8D%E7%94%A8.png" alt="image-20200731212124057"></p>
+<h3 id="波分复用WDM"><a href="#波分复用WDM" class="headerlink" title="波分复用WDM"></a>波分复用WDM</h3><p>波分复用就是对光的频分复用</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E6%97%B6%E5%88%86%E5%A4%8D%E7%94%A8%E7%BC%BA%E7%82%B9%E5%9B%BE.png" alt="image-20200731212922321"></p>
+<h3 id="码分复用CDM-code-Division-multiplexing"><a href="#码分复用CDM-code-Division-multiplexing" class="headerlink" title="码分复用CDM(code Division multiplexing)"></a>码分复用CDM(code Division multiplexing)</h3><p>​    各个用户使用经过挑选的不同码型，靠不同的编码来区分各个用户原始信号的一种复用方式</p>
+<p>​    每一个比特时间划分为<strong>m个短的时间间隔</strong>，称为<strong>码片</strong></p>
+<p>​    每个站被指派一个唯一的一个m bit码片序列</p>
+<ul>
+<li><p>如果发送比特1，则发送自己的m bit码片序列</p>
+</li>
+<li><p>如果发送比特0，则发送该码片序列的二进制反码</p>
+<p><strong>特点</strong></p>
+</li>
+<li><p>每个站分配的码片序列不仅必须各不相同，并且还必须互相正交(orthogonal)。</p>
+</li>
+<li><p>在实用的系统中是使用伪随机码序列。</p>
+</li>
+<li><p>令向量 S 表示站 S 的码片向量，令 T 表示其他任何站的码片向量。两个不同站的码片序列正交，就是向量 S 和T 的规格化内积(inner product)都是 0：</p>
+</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E8%A7%84%E6%A0%BC%E5%8C%96%E5%86%85%E7%A7%AF1.png" alt="image-20200731235013658"> </p>
+<p>示例：</p>
+<p>令向量 S 为(–1 –1 –1 +1 +1 –1 +1 +1)，向量 T 为(–1 –1 +1 –1 +1 +1 +1 –1)。<br>把向量 S 和 T 的各分量值代入(2-3)式就可看出这两个码片序列是正交的。 </p>
+<p>他们每个位数相乘，除于8结果为0</p>
+<p>另一个特点就是任何一个码片向量和该码片向量自己的规格化内积都是1 。<br>一个码片向量和该码片反码的向量的规格化内积值是 –1。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E8%A7%84%E6%A0%BC%E5%8C%96%E5%86%85%E7%A7%AF.png" alt="image-20200731235358104"></p>
+<p><strong>CDMA的工作原理</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/CMDA%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png" alt="image-20200731235456843"></p>
+<p>分析：在S站发送1时，与<strong>S站的码片序列与扩频序列Sx的内积为1</strong>，<strong>发送0时内积为-1.**而其他站</strong>（T）<strong>的发送信号与</strong>S站<strong>的码片序列</strong>内积都为0**，就会被过滤掉，因此最终就能得到我们需要的接受的站的信号。（可以对照着图看格式化内积的公式，动手运算一遍就理解了）</p>
+<p>例题：如下面四个码片序列</p>
+<p> A：（-1，-1，-1，+1，+1，-1，+1，+1）</p>
+<p> B：（-1，-1，+1，-1，+1，+1，+1，-1）</p>
+<p> C：（-1，+1，-1，+1，+1，+1，-1，-1）</p>
+<p> D：（-1，+1，-1，-1，-1，-1，+1，+1）</p>
+<p>收到的码片序列为R：（-1，+1，-3，+1，-1，-3，+1，+1）</p>
+<p>A*R=(1-1+3+1-1+3+1+1)/8=1                   </p>
+<p> B*R=(1-1-3-1-1-3+1-1)/8=-1          </p>
+<p>C和R的格式化内积为0，D和R的格式化内积为1 </p>
+<p>由结果可知，C没收到信号，其他的均收到了这个格式化内积的信号</p>
+<h2 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h2><p>早期数字传输系统主要有两个缺点：</p>
+<ul>
+<li><p>速率标准不统一</p>
+<ul>
+<li>如果不对高次群的数字传输速率进行标准化，国际范围的高速数据传输就很难实现。 </li>
+</ul>
+</li>
+<li><p>不是同步传输</p>
+<ul>
+<li>在过去相当长的时间，为了节约经费，各国的数字网主要是采用<strong>准同步方式。</strong> </li>
+</ul>
+</li>
+</ul>
+<p>脉码调制 PCM 体制最初是为了在电话局之间的中继线上传送多路的电话。</p>
+<ul>
+<li><p>由于历史上的原因，PCM 有两个互不兼容的国际标准，即北美的 24 路PCM（简称为 T1）和欧洲的 30 路 PCM（简称为 E1）。我国采用的是欧洲的 E1 标准。</p>
+</li>
+<li><p>E1 的速率是 2.048 Mb/s，而 T1 的速率是 1.544Mb/s。</p>
+</li>
+<li><p>当需要有更高的数据率时，可采用复用的方法</p>
+</li>
+</ul>
+<p>1、<strong>同步光纤网络</strong>SONET。整个同步光纤网络的主时钟来自于一个非常昂贵的铯原子钟；其基础传输速率是51.82Mbit/s，此速率对电信号称为<strong>第1级同步传送信号</strong>，即STS-1；对光信号称为第1级<strong>光载波</strong>，即OC-1。</p>
+<p>2、<strong>同步数字系列</strong>SDH（以SONET为基础），一般认为SDH和SONET是同义词，不同点在于 SDH的基本速率是155.52Mbit/s，称为<strong>第1级同步传送模块</strong>，即STM-1，相当于SONET中OC-3的速率。</p>
+<h2 id="宽带接入技术"><a href="#宽带接入技术" class="headerlink" title="宽带接入技术"></a>宽带接入技术</h2><h3 id="ADSL技术"><a href="#ADSL技术" class="headerlink" title="ADSL技术"></a>ADSL技术</h3><p>ADSL(Asymmetric Digital Subscriber Line)：非对称</p>
+<p>xDSL技术就时用数字技术对现有的模拟电话用户线进行改造，使它能够承载宽带业务（DSL 就是数字用户线(Digital Subscriber Line)的缩写。而 DSL 的前缀 x 则表示在数字用户线上实现的不同宽带方案。 ）</p>
+<p>如图，该技术将0-4kHz的地段频率谱段留给传统的电话使用，而原来没有使用的高端频率谱段留给用户上网使用。其中，26-108Hz的频谱留给用户上传数据、138-1104留给用户下载数据使用</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/xDSL%E7%9A%84%E6%8E%A5%E5%85%A5%E5%88%86%E9%A2%91%E5%9B%BE.png" alt="image-20200801104806430"></p>
+<p>而接入则使用分离器分离信号，低频的信号则接电话，高频的接电脑。（一般在用户的两端都有ADSL调制解调器）</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/xDLS.png" alt="image-20200801105143843"></p>
+<h3 id="DMT技术"><a href="#DMT技术" class="headerlink" title="DMT技术"></a>DMT技术</h3><ol>
+<li>DMT 调制技术采用<strong>频分复用</strong>的方法，把 40 kHz 以上一直到 1.1 MHz 的高端频谱划分为许多的子信道，其中 25 个子信道用于上行信道，而 249 个子信道用于下行信道。</li>
+<li>每个子信道占据 4 kHz 带宽（严格讲是 4.3125 kHz），并使用不同的载波（即不同的音调）进行数字调制。这种做法相当于在一对用户线上使用许多小的调制解调器并行地传送数据。</li>
+</ol>
+<p>![image-20200801105743973](<a target="_blank" rel="noopener" href="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/DMT">https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/计算机网络/2.物理层/DMT</a> 技术的频谱分布.png)</p>
+<h3 id="光纤同轴混合网（HFC）Hybrid-Fiber-Coax"><a href="#光纤同轴混合网（HFC）Hybrid-Fiber-Coax" class="headerlink" title="光纤同轴混合网（HFC）Hybrid Fiber Coax"></a>光纤同轴混合网（HFC）Hybrid Fiber Coax</h3><p>HFC网是在目前覆盖很广的有线电视网CATV的基础上开发的一种居民宽带接入网。</p>
+<p>HFC 网除可传送 CATV 外，还提供电话、数据和其他宽带交互型业务。</p>
+<p>现有的 CATV 网是树形拓扑结构的同轴电缆网络，它采用模拟技术的频分复用对电视节目进行单向传输。而 HFC 网则需要对 CATV 网进行改造，  </p>
+<p><strong>HFC的主要特点</strong></p>
+<ul>
+<li>HFC网的主干线路采用<strong>光纤</strong>，HFC 网将原 CATV 网中的同轴电缆主干部分改换为光纤，并使用<strong>模拟光纤技术。</strong></li>
+<li>在模拟光纤中采用光的<strong>振幅调制 AM</strong>，这比使用数字光纤更为经济。</li>
+<li>模拟光纤从头端连接到光纤结点(fiber node)，即光分配结点 ODN (Optical Distribution Node)。在光纤结点光信号被转换为电信号。在光纤结点以下就是同轴电缆。</li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E9%9B%86%E7%BA%BF%E5%99%A8.png" alt="image-20200801111107789"></p>
+<h3 id="FTTx-技术-（光纤到……）"><a href="#FTTx-技术-（光纤到……）" class="headerlink" title="FTTx 技术 （光纤到……）"></a>FTTx 技术 （光纤到……）</h3><p>FTTx（光纤到……）也是一种实现宽带居民接入网的方案。这里字母 x 可代表不同意思。</p>
+<ul>
+<li>光纤到家 FTTH (Fiber To The Home)：光纤一直铺设到用户家庭可能是居民接入网最后的解决方法。</li>
+<li><strong>光纤到大楼 FTTB</strong> (Fiber To The Building)：光纤进入大楼后就转换为电信号，然后用电缆或双绞线分配到各用户。</li>
+<li>光纤到路边 FTTC (Fiber To The Curb)：从路边到各用户可使用星形结构双绞线作为传输媒体。 </li>
+</ul>
+<h2 id="物理层设备"><a href="#物理层设备" class="headerlink" title="物理层设备"></a>物理层设备</h2><h3 id="中继器"><a href="#中继器" class="headerlink" title="中继器"></a>中继器</h3><p>​    中继器又称转发器，主要工作内容是将信号放大再转发出去，以消除信号经过一段长时间的电缆后，因为噪声或者其他原因而造成的失真和衰减。（增加信号强度），他工作于物理层，只是起到扩展传输距离的作用，对高层协议是透明的。</p>
+<p>优点</p>
+<ul>
+<li>扩大了通信距离。</li>
+<li>增加了节点的最大数目。</li>
+<li>各个网段可使用不同的通信速率。</li>
+<li>提高了可靠性。当网络出现故障时，一般只影响个别网段。</li>
+<li>性能得到改善</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>由于中继器对收到被衰减的信号再生（恢复）到发送时的状态，并转发出去，增加了延时。</li>
+<li>CAN总线的MAC子层并没有流量控制功能。当网络上的负荷很重时，可能因中继器中缓冲区的存储空间不够而发生溢出，以致产生帧丢失的现象。</li>
+<li>中继器若出现故障，对相邻两个子网的工作都将产生影响。</li>
+</ul>
+<h3 id="集线器（Hub）"><a href="#集线器（Hub）" class="headerlink" title="集线器（Hub）"></a>集线器（Hub）</h3><p>集线器实质上是一个多端口的中继器，Hub主要使用双绞线组建共享网络，集线器的主要功能是对接收到的信号进行再生整形放大，以扩大网络的传输距离，同时把所有节点集中在以它为中心的节点上。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/HFC%E7%BD%91%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="s"></p>
+<h2 id="几种基本的调制方法"><a href="#几种基本的调制方法" class="headerlink" title="几种基本的调制方法"></a>几种基本的调制方法</h2><p>基带信号往往包含有较多的低频成分，甚至有直流成分，而许多信道并不能传输这种低频分量或直流分量。为了解决这一问题，就必须对基带信号进行调制(modulation)。</p>
+<p>最基本的二元制调制方法有以下几种：</p>
+<ul>
+<li>调幅(AM)：载波的振幅随基带数字信号而变化。 </li>
+<li>调频(FM)：载波的频率随基带数字信号而变化。</li>
+<li>调相(PM) ：载波的初始相位随基带数字信号而变化。  </li>
+</ul>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E7%89%A9%E7%90%86%E5%B1%82/%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%B0%83%E5%88%B6%E6%96%B9%E6%B3%95.png" alt="image-20200801112308991"></p>
+<p>最近访客</p>
+<div class="ds-recent-visitors" data-num-items="39" data-avatar-size="40" id="ds-recent-visitors"></div>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/08/Hexo%E6%90%AD%E5%BB%BA/hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%881%EF%BC%89/" rel="prev" title="hexo 搭建博客-博客搭建（1）">
+                  <i class="fa fa-chevron-left"></i> hexo 搭建博客-博客搭建（1）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/" rel="next" title="计算机网络概述">
+                  计算机网络概述 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"ed424bda804f32df0fbe9adf7ebc9f5f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

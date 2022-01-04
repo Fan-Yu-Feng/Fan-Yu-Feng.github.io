@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="部署Linux集群最近开始搞linux集群搭建，方便项目部署集群到linux服务器上，我选择安装的是centos7 （据说大多数企业使用的都是这个） 虚拟机比较方便，就算炸了重新安装就好了。 centos下载： 访问其官网，官网            点击Get CentOS Now，点击alternative downloads，点击CentOS 7列表中的x86_64，点击 http:&#x2F;&#x2F;mi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux集群搭建">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2020/08/17/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="FYF&#39;s Blog">
+<meta property="og:description" content="部署Linux集群最近开始搞linux集群搭建，方便项目部署集群到linux服务器上，我选择安装的是centos7 （据说大多数企业使用的都是这个） 虚拟机比较方便，就算炸了重新安装就好了。 centos下载： 访问其官网，官网            点击Get CentOS Now，点击alternative downloads，点击CentOS 7列表中的x86_64，点击 http:&#x2F;&#x2F;mi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144209165.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144227158.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE1.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723152934777.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723153112140.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144448701.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144351201.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Nat%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AEIp%E5%9C%B0%E5%9D%80.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/ssh%E7%99%BB%E5%BD%95%E8%99%9A%E6%8B%9F%E6%9C%BA.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%B9%B3%E5%A4%96%E7%BD%91%E5%92%8C%E6%9C%AC%E6%9C%BA%E5%9C%B0%E5%9D%80.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/DHCP%E8%AE%BE%E7%BD%AE.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%BD%91%E5%8D%A1.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%AE%8C%E6%95%B4%E5%85%8B%E9%9A%86.png">
+<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E4%B8%BB%E6%9C%BA%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%BD%91%E7%BB%9C%E8%83%BD%E9%80%9A.png">
+<meta property="article:published_time" content="2020-08-17T04:45:16.000Z">
+<meta property="article:modified_time" content="2021-12-24T03:26:59.063Z">
+<meta property="article:author" content="FYF">
+<meta property="article:tag" content="集群">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144209165.png">
+
+
+<link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/17/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2020/08/17/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/","path":"2020/08/17/Linux/Linux集群搭建/","title":"Linux集群搭建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux集群搭建 | FYF's Blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FYF's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Linux%E9%9B%86%E7%BE%A4"><span class="nav-number">1.</span> <span class="nav-text">部署Linux集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">虚拟机网络模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%A5%E6%8E%A5"><span class="nav-number">2.1.</span> <span class="nav-text">桥接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT"><span class="nav-number">2.2.</span> <span class="nav-text">NAT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Host-Only"><span class="nav-number">2.3.</span> <span class="nav-text">Host-Only</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%BC%E8%BF%B0"><span class="nav-number">2.4.</span> <span class="nav-text">综述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85centos7"><span class="nav-number">3.</span> <span class="nav-text">安装centos7</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%EF%BC%9A%E6%8C%89%E9%9C%80%E9%80%89%E6%8B%A9%E3%80%82"><span class="nav-number">3.1.</span> <span class="nav-text">安装配置：按需选择。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="nav-number">3.2.</span> <span class="nav-text">配置网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.3.</span> <span class="nav-text">插件下载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">克隆虚拟机</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="FYF"
+      src="/images/me.png">
+  <p class="site-author-name" itemprop="name">FYF</p>
+  <div class="site-description" itemprop="description">Welcome to my world</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2020/08/17/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/me.png">
+      <meta itemprop="name" content="FYF">
+      <meta itemprop="description" content="Welcome to my world">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FYF's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux集群搭建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-17 12:45:16" itemprop="dateCreated datePublished" datetime="2020-08-17T12:45:16+08:00">2020-08-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/08/17/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="Linux集群搭建" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="部署Linux集群"><a href="#部署Linux集群" class="headerlink" title="部署Linux集群"></a>部署Linux集群</h2><p>最近开始搞linux集群搭建，方便项目部署集群到linux服务器上，我选择安装的是centos7 （据说大多数企业使用的都是这个）</p>
+<p>虚拟机比较方便，就算炸了重新安装就好了。</p>
+<p>centos下载：</p>
+<p>访问其官网，<a target="_blank" rel="noopener" href="https://www.centos.org/">官网</a>            点击Get CentOS Now，点击alternative downloads，点击CentOS 7列表中的x86_64，点击</p>
+<p><a target="_blank" rel="noopener" href="http://mirrors.163.com/centos/7/isos/x86_64/">http://mirrors.163.com/centos/7/isos/x86_64/</a></p>
+<p>里边有几个不同的版本。其中这两个比较常用。其他的可以查看0_README.txt中查看各版本的区别。</p>
+<p>阿里云站点进行下载</p>
+<p>Actual Country 国内资源          Nearby Countries 周边国家资源</p>
+<p><a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/centos/7/isos/x86_64/">阿里云站点</a></p>
+<p>每个链接都包括了镜像文件的地址、类型及版本号等信息</p>
+<p>选择当前国家资源区站点下载，获取资源速度比较快</p>
+<a id="more"></a>
+
+<p>在安装时有个三个网络模式不太懂，参考这位博客答主的讲解</p>
+<h2 id="虚拟机网络模式"><a href="#虚拟机网络模式" class="headerlink" title="虚拟机网络模式"></a>虚拟机网络模式</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ggjucheng/archive/2012/08/19/2646007.html">网络模式参考链接</a></p>
+<p>无论是vmware,virtual box,virtual pc等虚拟机软件，一般来说，虚拟机有三种网络模式:</p>
+<p>1.桥接</p>
+<p>2.NAT</p>
+<p>3.Host-Only</p>
+<h3 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a><strong>桥接</strong></h3><p>  桥接网络是指本地物理网卡和虚拟网卡通过VMnet0虚拟交换机进行桥接，物理网卡和虚拟网卡在拓扑图上处于同等地位，那么物理网卡和虚拟网卡就相当于处于同一个网段，虚拟交换机就相当于一台现实网络中的交换机,所以两个网卡的IP地址也要设置为同一网段。</p>
+<p>  所以当我们要在局域网使用虚拟机，对局域网其他pc提供服务时，例如提供ftp，提供ssh，提供http服务，那么就要选择桥接模式。</p>
+<p>  例如大学宿舍里有一个路由器，宿舍里四个人连接这个路由器，路由器的wanip就不理会了，这个ip是动态获取的，而lanip默认是192.168.1.1,子网掩码是255.255.255.0。而其他四个人是自动获取ip，假设四个人的ip是:</p>
+<p>  A:192.168.1.100/255.255.255.0, B:192.168.1.101/255.255.255.0, C:192.168.1.102/255.255.255.0, D:192.168.1.103/255.255.255.0</p>
+<p>  那么虚拟机的ip可以设置的ip地址是192.168.1.2-192.168.1.99,192.168.1.104-192.168.1.254(网络地址全0和全1的除外，再除去ABCD四个人的ip地址)</p>
+<p> 那么虚拟机的ip地址可以设置为192.168.1.98/255.255.255.0,设置了这个ip地址，ABCD这四个人就可以通过192.168.1.98访问虚拟机了，如果虚拟机需要上外网，那么还需要配置虚拟机的路由地址，就是192.168.1.1了，这样，虚拟机就可以上外网了，但是，上网我们一般是通过域名去访问外网的，所以我们还需要为虚拟机配置一个dns服务器，我们可以简单点，把dns服务器地址配置为google的dns服务器:8.8.8.8,到此，虚拟机就可以上网了。</p>
+<h3 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a><strong>NAT</strong></h3><p>NAT模式中，就是让虚拟机借助NAT(网络地址转换)功能，通过宿主机器所在的网络来访问公网。</p>
+<p>  NAT模式中，虚拟机的网卡和物理网卡的网络，不在同一个网络，虚拟机的网卡，是在vmware提供的一个虚拟网络。</p>
+<p>  NAT和桥接的比较:</p>
+<p>  (1) NAT模式和桥接模式虚拟机都可以上外网。</p>
+<p>  (2) 由于NAT的网络在vmware提供的一个虚拟网络里，所以局域网其他主机是无法访问虚拟机的，而宿主机可以访问虚拟机，虚拟机可以访问局域网的所有主机，因为真实的局域网相对于NAT的虚拟网络，就是NAT的虚拟网络的外网，不懂的人可以查查NAT的相关知识。</p>
+<p>  (3) 桥接模式下，多个虚拟机之间可以互相访问；NAT模式下，多个虚拟机之间也可以相互访问。</p>
+<p>  如果你建一个虚拟机，只是给自己用，不需要给局域网其他人用，那么可以选择NAT，毕竟NAT模式下的虚拟系统的TCP/IP配置信息是由VMnet8(NAT)虚拟网络的DHCP服务器提供的，只要虚拟机的网路配置是DHCP，那么你不需要进行任何其他的配置，只需要宿主机器能访问互联网即可，就可以让虚拟机联网了。</p>
+<p> 例如你想建多个虚拟机集群，作为测试使用，而宿主机可能是一个笔记本，ip不固定。这种应用场景，我们需要采用nat模式了，但是我们要考虑一个问题，虚拟机之间是需要互访的，默认采用dhcp，虚拟机的ip每次重启，ip都是不固定的，所以我们需要手工设置虚拟机的ip地址。</p>
+<p> 但是我们对虚拟机网卡所在的虚拟网络的信息还一无所知，例如虚拟机网络的路由地址，子网掩码，所以我们需要先查下nat虚拟网络的信息。</p>
+<p> 使用vmware,在Edit-&gt;Virtual Network Editor中配置好虚拟网络信息后看到下图所示，注意VMnet8，VMnet8相当于是本机的一个路由，虚拟机设置NAT后就通过这个路由进行上网的，可以查看其网络地址，路由地址，子网掩码。</p>
+<p> 选择VMnet8-&gt;NAT设置,可以看到子网ip显示为192.168.233.0，子网掩码是255.255.255.0，那路由地址呢，其实就是网关IP了，都是同个东西，这里是192.168.233.2。</p>
+<p> 接下来就好办了，在对应的虚拟机设置好ip，子网掩码，路由地址就可以上外网了，至于dns可以设置为8.8.8.8.</p>
+<h3 id="Host-Only"><a href="#Host-Only" class="headerlink" title="Host-Only"></a><strong>Host-Only</strong></h3><p> 在Host-Only模式下，虚拟网络是一个全封闭的网络，它唯一能够访问的就是主机。其实Host-Only网络和NAT网络很相似，不同的地方就是Host-Only网络没有NAT服务，所以虚拟网络不能连接到Internet。主机和虚拟机之间的通信是通过VMware Network Adepter VMnet1虚拟网卡来实现的。</p>
+<p>　　Host-Only的宗旨就是建立一个与外界隔绝的内部网络，来提高内网的安全性。这个功能或许对普通用户来说没有多大意义，但大型服务商会常常利用这个功能。如果你想为VMnet1网段提供路由功能，那就需要使用RRAS，而不能使用XP或2000的ICS，因为ICS会把内网的IP地址改为192.168.0.1，但虚拟机是不会给VMnet1虚拟网卡分配这个地址的，那么主机和虚拟机之间就不能通信了。</p>
+<h3 id="综述"><a href="#综述" class="headerlink" title="综述"></a><strong>综述</strong></h3><p>　　在VMware的3中网络模式中，NAT模式是最简单的，基本不需要手动配置IP地址等相关参数。至于桥接模式则需要额外的IP地址，如果是在内网环境中还很容易，如果是ADSL宽带就比较麻烦了，ISP一般是不会大方的多提供一个公网IP的。</p>
+<h2 id="安装centos7"><a href="#安装centos7" class="headerlink" title="安装centos7"></a>安装centos7</h2><p>虚拟机点击新建，新建虚拟机，然后选择下载好的centos7安装包就好了。</p>
+<p>设置分配内存的大小为20G</p>
+<p>自定义硬件设置</p>
+<p>内存建议至少1GB。处理器数量选择1，每个处理器的核心数量选择2，这样相当于1颗物理CPU，2颗逻辑CPU。网络适配器，选择NAT模式，这种网络模式是兼容性最好的。选择下载的ISO镜像文件。</p>
+<p>网络部分我选择了桥接模式</p>
+<ul>
+<li>桥接模式：这种模式下，虚拟机和物理机连的是同一个网络，虚拟机和物理机是并列关系，地位是相当的。比如，你家有路由器，那么你的电脑和你的手机同时连接这个路由器提供的Wi-Fi，那么它们的关系就是这种模式。</li>
+<li>NAT模式：这种模式下，物理机会充当一个“路由器”的角色，虚拟机要想上网，必须经过物理机，那物理机如果不能上网，虚拟机也就不能上网了。之所以说这种模式兼容性最好，是因为物理机的网络环境变化时，虚拟机的网络并不会有影响，比如，上班时你把物理机连接在公司的网络环境中，下班后又把物理机连接在你家的路由器上。你公司的网段有可能和你家的网段是不同的。桥接模式下，虚拟机和物理机一样，都要自动获取IP才可以上网，而做实验的时候，是需要把虚拟机设置为静态IP的，这样就导致虚拟机网络不稳定。而设置为NAT模式，虚拟机的网络并不需要依赖你公司的网络环境或者你家的网络环境。</li>
+<li>仅主机模式：这种模式下，相当于拿一根网线直连了物理机和虚拟机。</li>
+</ul>
+<h3 id="安装配置：按需选择。"><a href="#安装配置：按需选择。" class="headerlink" title="安装配置：按需选择。"></a>安装配置：按需选择。</h3><p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144209165.png" alt="image-20200723144209165"></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144227158.png" alt="image-20200723144227158"></p>
+<p>安装位置：我选择自动安装</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E7%BD%91%E5%85%B3%E9%85%8D%E7%BD%AE1.png" alt="image-20200723144351201"></p>
+<p>设置密码，也可以创建用户，我选择安装完之后在创建</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723152934777.png" alt="image-20200723144448701"></p>
+<p>安装完成后重启</p>
+<p>同意协议后完成配置</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723153112140.png" alt="image-20200723152934777"></p>
+<p>设置用户：</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144448701.png" alt="image-20200723153112140"></p>
+<p>安装完成，接下来配置网络</p>
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><p><strong>子网Ip设置</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/image-20200723144351201.png" alt="image-20200817003918081"></p>
+<p><strong>Nat设置</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Nat%E8%AE%BE%E7%BD%AE.png" alt="image-20200817004200255"></p>
+<p><strong>DHCP设置</strong></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE.png" alt="image-20200817004238527"></p>
+<p>打开控制中心的网络设置，再VMnet8中设置IP地址和网关</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AEIp%E5%9C%B0%E5%9D%80.png" alt="image-20200817010918519"></p>
+<p>再设置界面中手动设置IP地址</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/ssh%E7%99%BB%E5%BD%95%E8%99%9A%E6%8B%9F%E6%9C%BA.png" alt="image-20200817005146362"></p>
+<p>还有手动配置网卡</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%B9%B3%E5%A4%96%E7%BD%91%E5%92%8C%E6%9C%AC%E6%9C%BA%E5%9C%B0%E5%9D%80.png" alt="image-20200816234553228"></p>
+<p>试着ping一下外网和本机地址，发现都能测通，那就没问题了</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/DHCP%E8%AE%BE%E7%BD%AE.png" alt="image-20200817010017038"></p>
+<p>这样网络就配置好了；也可以手动配置   </p>
+<blockquote>
+<p>cd /etc/sysconfig/network-scripts/<br>vim ifcfg-ens33 </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static <span class="comment"># 设置静态Ip地址  不然会自动分配（DHCP）</span></span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=2822479b-53eb-45cc-ba8e-78fe5b353ee4</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.80.128   <span class="comment">#手动指定Ip地址</span></span><br><span class="line">GETWAY=192.168.80.1        <span class="comment">#网关</span></span><br><span class="line">NETMASK=255.255.255.0    <span class="comment">#子网掩码</span></span><br><span class="line">DNS1=8.8.8.8</span><br><span class="line">DNS2=114.114.114.114</span><br><span class="line">HWADDR=00:0C:29:A2:87:C1    <span class="comment">#网卡MAC地址</span></span><br><span class="line">PREFIX=24</span><br><span class="line">GATEWAY=192.168.80.1    </span><br><span class="line"></span><br><span class="line"><span class="comment">#最后更新一下网络服务</span></span><br><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+<p>配置完，刷新一下网络，然后就发现外网和主机都能ping通了</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qqxyy99/article/details/80864862">参考链接</a></p>
+<p>ping通之后就可以ssh登录虚拟机来进行远程的操作，</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%BD%91%E5%8D%A1.png" alt="image-20200817000006478"></p>
+<p>ps：如果没关防火墙记得关</p>
+<blockquote>
+<p>1.查看状态：service iptables status<br>2.关闭： service iptables stop<br>3.查看启动：chkconfig iptables –list<br>4.禁止启动：chkconfig iptables off</p>
+</blockquote>
+<ol>
+<li>查看防火墙状态  </li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>暂时关闭防火墙 </li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">service  iptables stop</span><br></pre></td></tr></table></figure>
+
+<p>   3.永久关闭防火墙</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld</span><br><span class="line"></span><br><span class="line">chkconfig iptables off</span><br></pre></td></tr></table></figure>
+
+<p>​    4:重启防火墙</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable firewalld</span><br><span class="line"></span><br><span class="line">service iptables restart</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件下载"><a href="#插件下载" class="headerlink" title="插件下载"></a>插件下载</h3><p>时间同步插件</p>
+<blockquote>
+<p> yum -y install ntpdate   时间同步插件</p>
+<p> ntpdate cn.pool.ntp.org # 同步时间</p>
+<p> hwclock –systohc   将时间写入硬盘</p>
+</blockquote>
+<h2 id="克隆虚拟机"><a href="#克隆虚拟机" class="headerlink" title="克隆虚拟机"></a>克隆虚拟机</h2><p>在原有的虚拟机上右键点击克隆，完整克隆，在新的目录下保存就好了，这一步克隆好了没截图</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA.png" alt="image-20200817020432436"></p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%AE%8C%E6%95%B4%E5%85%8B%E9%9A%86.png" alt="image-20200817020701106"></p>
+<p>这样另外两台虚拟主机就完成了，只需要将IP地址和主机MAC地址相应的修改一下就好了,对应关系</p>
+<blockquote>
+<p>Centos01 192.168.80.128</p>
+<p>Centos02 192.168.80.129</p>
+<p>Centos03 192.168.80.130</p>
+</blockquote>
+<p>然后测试一下相互之间的网络能通，这样一个linux的网络集群就搭建好了，接下来就是安装软件已经环境配置了，你们也可以先在一部虚拟机上安装好需要的软件和环境在克隆。</p>
+<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/Linux/Linux%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E4%B8%BB%E6%9C%BA%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%BD%91%E7%BB%9C%E8%83%BD%E9%80%9A.png" alt="image-20200817124025700"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9B%86%E7%BE%A4/" rel="tag"># 集群</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-5-%E5%BA%94%E7%94%A8%E5%B1%82/" rel="prev" title="计算机网络-5-应用层">
+                  <i class="fa fa-chevron-left"></i> 计算机网络-5-应用层
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/04/JUC/juc-base/" rel="next" title="并发编程-基础">
+                  并发编程-基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">FYF</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"66a32f973a552f98d6d1fcadeb0ed4e1"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

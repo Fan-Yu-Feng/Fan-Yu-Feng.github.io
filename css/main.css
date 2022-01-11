@@ -2892,7 +2892,7 @@ mark.search-keyword {
     padding: 10px 12px;
   }
 }
-.post-block {
+.main-inner .post-block {
   background-color: #fff;
   margin-bottom: 24px !important;
   border-radius: 30px 30px 30px 30px !important;

@@ -20,32 +20,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="记录一下，以防以后踩坑。 使用 blog 写文章的时候需要上传一些图片，不然只能在本地看。这时候就需要图床来保存博客中的图片。 我使用的是 typora + picgo 的方式。">
+<meta name="description" content="线性表排序算法栈和队列字符串数组和广义表图深度优先搜索深度优先搜索的关键是解决当下应该怎么做，下一步的做法和当下的做法是一样的。当下的做法如何做到尝试每一种可能，我们用for循环遍历，对于每一种可能的确定后，我们继续下一步，当前的可能等到从下一步会退之后再处理DFS常见的模型:DFS(当前这一步的逻辑){1.判断边界,是否已经撞到墙了:向上回退2.尝试当下的每一种可能3.确定一种可能之后,继续">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo-搭建博客-博客图床 picgo（2）">
-<meta property="og:url" content="https://fan-yu-feng.github.io/2021/11/19/Hexo%E6%90%AD%E5%BB%BA/hexo-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A%20picgo%EF%BC%882%EF%BC%89/index.html">
+<meta property="og:title" content="算法学习">
+<meta property="og:url" content="https://fan-yu-feng.github.io/2022/01/12/algorithm/base-algorithm/index.html">
 <meta property="og:site_name" content="FYF&#39;s Blog">
-<meta property="og:description" content="记录一下，以防以后踩坑。 使用 blog 写文章的时候需要上传一些图片，不然只能在本地看。这时候就需要图床来保存博客中的图片。 我使用的是 typora + picgo 的方式。">
+<meta property="og:description" content="线性表排序算法栈和队列字符串数组和广义表图深度优先搜索深度优先搜索的关键是解决当下应该怎么做，下一步的做法和当下的做法是一样的。当下的做法如何做到尝试每一种可能，我们用for循环遍历，对于每一种可能的确定后，我们继续下一步，当前的可能等到从下一步会退之后再处理DFS常见的模型:DFS(当前这一步的逻辑){1.判断边界,是否已经撞到墙了:向上回退2.尝试当下的每一种可能3.确定一种可能之后,继续">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119154827385.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119154917309.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119155220988.png">
-<meta property="article:published_time" content="2021-11-19T08:34:11.000Z">
-<meta property="article:modified_time" content="2021-12-24T03:26:59.022Z">
+<meta property="article:published_time" content="2022-01-12T08:50:45.000Z">
+<meta property="article:modified_time" content="2022-01-19T07:39:25.478Z">
 <meta property="article:author" content="FYF">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119154827385.png">
 
 
-<link rel="canonical" href="https://fan-yu-feng.github.io/2021/11/19/Hexo%E6%90%AD%E5%BB%BA/hexo-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A%20picgo%EF%BC%882%EF%BC%89/">
+<link rel="canonical" href="https://fan-yu-feng.github.io/2022/01/12/algorithm/base-algorithm/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2021/11/19/Hexo%E6%90%AD%E5%BB%BA/hexo-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A%20picgo%EF%BC%882%EF%BC%89/","path":"2021/11/19/Hexo搭建/hexo-搭建博客-博客图床 picgo（2）/","title":"hexo-搭建博客-博客图床 picgo（2）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2022/01/12/algorithm/base-algorithm/","path":"2022/01/12/algorithm/base-algorithm/","title":"算法学习"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>hexo-搭建博客-博客图床 picgo（2） | FYF's Blog</title>
+<title>算法学习 | FYF's Blog</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -154,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">前提准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-picgo"><span class="nav-number">2.</span> <span class="nav-text">配置 picgo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Typora-%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">Typora 配置</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">线性表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">排序算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">栈和队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">数组和广义表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">6.1.</span> <span class="nav-text">深度优先搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="nav-number">6.2.</span> <span class="nav-text">广度优先搜索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">7.</span> <span class="nav-text">树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">7.1.</span> <span class="nav-text">二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">7.2.</span> <span class="nav-text">完全二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">7.3.</span> <span class="nav-text">满二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E7%BE%8E%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">7.4.</span> <span class="nav-text">完美二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">7.5.</span> <span class="nav-text">平衡二叉树</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -224,7 +220,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2021/11/19/Hexo%E6%90%AD%E5%BB%BA/hexo-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A%20picgo%EF%BC%882%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2022/01/12/algorithm/base-algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/me.png">
@@ -237,7 +233,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hexo-搭建博客-博客图床 picgo（2）
+          算法学习
         </h1>
 
         <div class="post-meta-container">
@@ -248,14 +244,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-11-19 16:34:11" itemprop="dateCreated datePublished" datetime="2021-11-19T16:34:11+08:00">2021-11-19</time>
+      <time title="创建时间：2022-01-12 16:50:45" itemprop="dateCreated datePublished" datetime="2022-01-12T16:50:45+08:00">2022-01-12</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
+        <time title="修改时间：2022-01-19 15:39:25" itemprop="dateModified" datetime="2022-01-19T15:39:25+08:00">2022-01-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,12 +259,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
+          <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
         </span>
     </span>
 
   
-    <span id="/2021/11/19/Hexo%E6%90%AD%E5%BB%BA/hexo-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2-%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A%20picgo%EF%BC%882%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="hexo-搭建博客-博客图床 picgo（2）" title="阅读次数">
+    <span id="/2022/01/12/algorithm/base-algorithm/" class="post-meta-item leancloud_visitors" data-flag-title="算法学习" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -280,7 +276,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>368</span>
+      <span>393</span>
     </span>
 </div>
 
@@ -291,22 +287,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>记录一下，以防以后踩坑。</p>
-<p>使用 blog 写文章的时候需要上传一些图片，不然只能在本地看。这时候就需要图床来保存博客中的图片。</p>
-<p>我使用的是 typora + picgo 的方式。</p>
-<a id="more"></a>
+        <a id="more"></a>
 
-<h2 id="前提准备"><a href="#前提准备" class="headerlink" title="前提准备"></a>前提准备</h2><p>picgo 下载在GitHub上有安装包。或者打开阿里云盘吧，有 windows 64bit 的安装包。</p>
-<p><a target="_blank" rel="noopener" href="https://molunerfinn.com/PicGo/">PicGo官网</a>   <a target="_blank" rel="noopener" href="https://www.aliyundrive.com/s/2dHNyobJTMr">阿里云盘</a></p>
-<p>还有就是下载  <a target="_blank" rel="noopener" href="https://typora.io/">Typora</a></p>
-<h2 id="配置-picgo"><a href="#配置-picgo" class="headerlink" title="配置 picgo"></a>配置 picgo</h2><p>下载安装完后，需要安装上传插件 gitee，有三种，任意下一种，不同的配置不一样的。</p>
-<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119154827385.png" alt="image-20211119154827385"></p>
-<p>然后再gitee 上进行配置再验证上传就好了，配置如下。刚开始路径写错了导致不成功，所以可以注意一下路径。</p>
-<p>owner 是你的账号名，repo 是仓库，token是码云私人令牌。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/102594554">私人令牌申请</a></p>
-<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119154917309.png" alt="image-20211119154917309"></p>
-<h2 id="Typora-配置"><a href="#Typora-配置" class="headerlink" title="Typora 配置"></a>Typora 配置</h2><p>最后在 Typora 中配置一下 picgo 的安装路径的exe文件和验证上传就可以了。</p>
-<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/hexo/image-20211119155220988.png" alt="image-20211119155220988"></p>
-
+<h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><h2 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h2><h2 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h2><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h2 id="数组和广义表"><a href="#数组和广义表" class="headerlink" title="数组和广义表"></a>数组和广义表</h2><h2 id="图"><a href="#图" class="headerlink" title="图"></a>图</h2><h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><p>深度优先搜索的关键是解决当下应该怎么做，下一步的做法和当下的做法是一样的。当下的做法如何做到尝试每一种可能，我们用for循环遍历，对于每一种可能的确定后，我们继续下一步，当前的可能等到从下一步会退之后再处理<br>DFS常见的模型:<br>DFS(当前这一步的逻辑)<br>{<br>1.判断边界,是否已经撞到墙了:向上回退<br>2.尝试当下的每一种可能<br>3.确定一种可能之后,继续下一步,DFS(下一步)<br>}</p>
+<h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><p>广度优先搜索类似于树的层次遍历。从图中的某一顶点出发，遍历每一个顶点时，依次遍历其所有的邻接点，然后再从这些邻接点出发，同样依次访问它们的邻接点。按照此过程，直到图中所有被访问过的顶点的邻接点都被访问到。最后还需要做的操作就是查看图中是否存在尚未被访问的顶点，若有，则以该顶点为起始点，重复上述遍历的过程。</p>
+<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><h3 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h3><h3 id="满二叉树"><a href="#满二叉树" class="headerlink" title="满二叉树"></a>满二叉树</h3><h3 id="完美二叉树"><a href="#完美二叉树" class="headerlink" title="完美二叉树"></a>完美二叉树</h3><h3 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h3>
     </div>
 
     
@@ -315,21 +300,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/11/19/Linux/Linux-%E6%97%A5%E5%BF%97%E6%9F%A5%E7%9C%8B/" rel="prev" title="Linux-日志查看">
-                  <i class="fa fa-chevron-left"></i> Linux-日志查看
+                <a href="/2022/01/05/Git/git-commands/" rel="prev" title="git-commands">
+                  <i class="fa fa-chevron-left"></i> git-commands
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/11/22/Hexo%E6%90%AD%E5%BB%BA/hexo-config-3/" rel="next" title="hexo-搭建博客-博客配置(3)">
-                  hexo-搭建博客-博客配置(3) <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -414,7 +396,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"7de263eee8a9ad5e264a161c774396a9"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"61e5a90871ea048c99ef7f826d915b4b"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>

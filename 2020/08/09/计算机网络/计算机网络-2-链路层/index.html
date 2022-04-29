@@ -1,332 +1,150 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="3.数据链路层一些基本概念 数据链路层的信道主要有以下两种类型：  点对点信道：这种信道使用一对一的点对点通信方式。  广播信道：这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上连接的主机很多，因此必须使用专业的共享信道协议来协调这些主机的数据发送   主机1向主机二发送数据，数据从应用层向下流动，到达物理层变成比特流，经过路由器转发，通过检查MAC地址，查看IP地址，然后选择路由，">
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算机网络-2-链路层 | FYF's Blog</title><meta name="keywords" content="408,计算机网络"><meta name="author" content="FYF,1905145967@qq.com"><meta name="copyright" content="FYF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="3.数据链路层一些基本概念 数据链路层的信道主要有以下两种类型：  点对点信道：这种信道使用一对一的点对点通信方式。  广播信道：这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上连接的主机很多，因此必须使用专业的共享信道协议来协调这些主机的数据发送   主机1向主机二发送数据，数据从应用层向下流动，到达物理层变成比特流，经过路由器转发，通过检查MAC地址，查看IP地址，然后选择路由，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络-2-链路层">
 <meta property="og:url" content="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
 <meta property="og:site_name" content="FYF&#39;s Blog">
 <meta property="og:description" content="3.数据链路层一些基本概念 数据链路层的信道主要有以下两种类型：  点对点信道：这种信道使用一对一的点对点通信方式。  广播信道：这种信道使用一对多的广播通信方式，因此过程比较复杂。广播信道上连接的主机很多，因此必须使用专业的共享信道协议来协调这些主机的数据发送   主机1向主机二发送数据，数据从应用层向下流动，到达物理层变成比特流，经过路由器转发，通过检查MAC地址，查看IP地址，然后选择路由，">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E7%BD%91%E7%BB%9C%E5%B1%82/%E4%B8%BB%E6%9C%BA1%E5%90%91%E4%B8%BB%E6%9C%BA2%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/2.%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%A8%A1%E5%9E%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93%E7%9A%84%E9%97%AE%E9%A2%98.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/CRC%E5%8E%9F%E7%90%86.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7%E5%AE%9A%E7%95%8C%E5%9B%BE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/ppp%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B8%A7%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/PPP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/0%E6%AF%94%E7%89%B9%E5%A1%AB%E5%85%85.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="g:/计算机网络笔记/2-链路层.assets/适配器与局域网通信">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E7%94%B5%E7%A3%81%E6%B3%A2%E5%9C%A8%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%9C%89%E9%99%90%E4%BC%A0%E6%92%AD%E9%80%9F%E7%8E%87%E7%9A%84%E5%BD%B1%E5%93%8D.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-%E4%BB%A5%E5%A4%AA%E7%BD%91.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%8F%91%E9%80%81%E4%B8%80%E5%B8%A7%E7%9A%84%E5%B9%B3%E5%9D%87%E6%97%B6%E9%97%B4%E5%9B%BE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%9F%A5%E7%9C%8BMAC%E5%9C%B0%E5%9D%80.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/MAC%E5%B8%A7%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%8A%93%E5%8C%851.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%9C%A8%E7%89%A9%E7%90%86%E5%B1%82%E4%B8%8A%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%B1%80%E5%9F%9F%E7%BD%91.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E7%9A%84%E7%A2%B0%E6%92%9E%E5%9F%9F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E8%BD%AC%E5%8F%91%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B%E4%B8%BE%E4%BE%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E7%BD%91%E6%A1%A5%E7%9A%84%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%80%8F%E6%98%8E%E7%BD%91%E6%A1%A5%E4%BD%BF%E7%94%A8%E4%BA%86%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%9A%94%E7%A6%BB%E7%BD%91%E6%AE%B5-%E7%BD%91%E6%A1%A5.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BA%A4%E6%8D%A2%E8%8A%82.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%B8%A7%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%8E%A5%E5%85%A5%E4%B8%BE%E4%BE%8B.png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
 <meta property="article:published_time" content="2020-08-09T11:48:18.000Z">
 <meta property="article:modified_time" content="2021-12-24T03:26:59.122Z">
 <meta property="article:author" content="FYF">
 <meta property="article:tag" content="408">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E7%BD%91%E7%BB%9C%E5%B1%82/%E4%B8%BB%E6%9C%BA1%E5%90%91%E4%B8%BB%E6%9C%BA2%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE.png">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机网络-2-链路层',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-24 11:26:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-<link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/">
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/","path":"2020/08/09/计算机网络/计算机网络-2-链路层/","title":"计算机网络-2-链路层"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>计算机网络-2-链路层 | FYF's Blog</title>
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-
-  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
-  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">FYF's Blog</h1>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">3.数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%BD%BF%E7%94%A8%E7%82%B9%E5%AF%B9%E7%82%B9%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">3.1  使用点对点信道的数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%92%8C%E5%B8%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">3.1.1 数据链路和帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">3.1.2 三个基本问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">封装成帧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">透明传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">差错控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AE-PPP-Point-to-Point-Protocol-%E3%80%82"><span class="nav-number">1.2.</span> <span class="nav-text">3.2  点对点协议 PPP (Point-to-Point Protocol)。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.1.</span> <span class="nav-text">3.2.1 PPP 协议的特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-PPP-%E5%8D%8F%E8%AE%AE%E5%BA%94%E6%BB%A1%E8%B6%B3%E7%9A%84%E9%9C%80%E6%B1%82"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. PPP 协议应满足的需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-PPP-%E5%8D%8F%E8%AE%AE%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. PPP 协议不需要的功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3.  PPP 协议的组成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">3.2.2 PPP 协议的帧格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.2.3 PPP 协议的工作状态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.3.</span> <span class="nav-text">3.3  使用广播信道的数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.3.1 局域网的数据链路层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">局域网</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">适配器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%AD%90%E5%B1%82"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">数据链路层的两个子层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-CSMA-CD-%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.3.2 CSMA&#x2F;CD 协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%BD%E6%B3%A2%E7%9B%91%E5%90%AC%E5%A4%9A%E7%82%B9%E6%8E%A5%E5%85%A5-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B-CSMA-CD"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">载波监听多点接入&#x2F;碰撞检测  CSMA&#x2F;CD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">碰撞检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%89%E7%94%A8%E6%9C%9F%E4%B8%8E%E9%80%80%E9%81%BF%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">争用期与退避算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.4.</span> <span class="nav-text">3.4  使用广播信道的以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E4%BD%BF%E7%94%A8%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E6%98%9F%E5%BD%A2%E6%8B%93%E6%89%91"><span class="nav-number">1.4.1.</span> <span class="nav-text">3.4.1  使用集线器的星形拓扑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">集线器的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10Base-T-%E5%9F%BA%E4%BA%8E%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%A0%87%E5%87%86"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">10Base-T 基于集线器的以太网标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%9C%A8%E5%B1%80%E5%9F%9F%E7%BD%91%E4%B8%AD%E7%9A%84%E7%BB%9F%E6%B2%BB%E5%9C%B0%E4%BD%8D"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">以太网在局域网中的统治地位</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87"><span class="nav-number">1.4.2.</span> <span class="nav-text">3.4.2  以太网的信道利用率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84-MAC-%E5%B1%82"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.4.3  以太网的 MAC 层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E6%89%A9%E5%B1%95%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 扩展的以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E5%9C%A8%E7%89%A9%E7%90%86%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.5.1.</span> <span class="nav-text">3.5.1  在物理层扩展以太网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E5%9C%A8%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.5.2.</span> <span class="nav-text">3.5.2  在数据链路层扩展以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A1%A5"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">网桥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E4%BC%98%E7%82%B9%E4%B8%8E%E7%BC%BA%E7%82%B9"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">网桥的优点与缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E7%BD%91%E6%A1%A5"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">透明网桥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">网桥的自学习算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E8%87%AA%E5%AD%A6%E4%B9%A0%E5%92%8C%E8%BD%AC%E5%8F%91%E5%B8%A7%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%BD%92%E7%BA%B3"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">网桥的自学习和转发帧的步骤归纳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E5%8F%91%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="nav-number">1.5.2.6.</span> <span class="nav-text">转发表的建立过程举例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.2.7.</span> <span class="nav-text">生成树算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="nav-number">1.5.2.8.</span> <span class="nav-text">交换机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E8%8A%82%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.5.2.9.</span> <span class="nav-text">交换节的特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-3-%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91%EF%BC%88VLAN%EF%BC%89"><span class="nav-number">1.5.3.</span> <span class="nav-text">3.5.3 虚拟局域网（VLAN）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 高速以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-100BASE-T-%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.6.1.</span> <span class="nav-text">3.6.1  100BASE-T 以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#100BASE-T-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">100BASE-T 以太网的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E6%A0%87%E5%87%86"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">三种不同的物理层标准</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-2-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.6.2.</span> <span class="nav-text">3.6.2  吉比特以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">吉比特以太网的物理层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-3-10-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.6.3.</span> <span class="nav-text">3.6.3  10 吉比特以太网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%BE%E4%BE%8B"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">吉比特以太网的配置举例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-4-%E4%BD%BF%E7%94%A8%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91%E8%BF%9B%E8%A1%8C%E5%AE%BD%E5%B8%A6%E6%8E%A5%E5%85%A5"><span class="nav-number">1.6.4.</span> <span class="nav-text">3.6.4  使用高速以太网进行宽带接入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%AB%98%E9%80%9F%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.7.</span> <span class="nav-text">3.7  其他类型的高速局域网接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-10-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="nav-number">1.7.1.</span> <span class="nav-text">3.7.1 10 吉比特以太网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82"><span class="nav-number">1.7.2.</span> <span class="nav-text">3.7.2 吉比特以太网的物理层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-3-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BC%A0%E8%BE%93"><span class="nav-number">1.7.3.</span> <span class="nav-text">3.7.3 端到端的以太网传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-4-%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BB%8E-10-Mb-s-%E5%88%B010-Gb-s-%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="nav-number">1.7.4.</span> <span class="nav-text">3.7.4 以太网从 10 Mb&#x2F;s 到10 Gb&#x2F;s 的演进</span></a></li></ol></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="FYF"
-      src="/images/me.png">
-  <p class="site-author-name" itemprop="name">FYF</p>
-  <div class="site-description" itemprop="description">Welcome to my world</div>
-</div>
-<div class="site-state-wrap site-overview-item animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">9</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author site-overview-item animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-
-
-        </div>
-      </div>
-    </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
-
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="FYF">
-      <meta itemprop="description" content="Welcome to my world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FYF's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          计算机网络-2-链路层
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-09 19:48:18" itemprop="dateCreated datePublished" datetime="2020-08-09T19:48:18+08:00">2020-08-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">计算机基础知识</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络-2-链路层" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>12k</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="3-数据链路层"><a href="#3-数据链路层" class="headerlink" title="3.数据链路层"></a>3.数据链路层</h1><p><strong>一些基本概念</strong></p>
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/my.css"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-list-alt"></i><span> ToDo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">FYF's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-list-alt"></i><span> ToDo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机网络-2-链路层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-09T11:48:18.000Z" title="发表于 2020-08-09 19:48:18">2020-08-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-24T03:26:59.122Z" title="更新于 2021-12-24 11:26:59">2021-12-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">计算机基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机网络-2-链路层"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="3-数据链路层"><a href="#3-数据链路层" class="headerlink" title="3.数据链路层"></a>3.数据链路层</h1><p><strong>一些基本概念</strong></p>
 <p><strong>数据链路层的信道</strong>主要有以下两种类型：</p>
 <ul>
 <li><p><strong>点对点信道：</strong>这种信道使用一对一的点对点通信方式。</p>
@@ -359,7 +177,7 @@
 <li>首部和尾部的一个重要作用就是进行帧定界</li>
 </ul>
 <blockquote>
-<p>MTU  最大传送单元&lt;=1500个字节</p>
+<p>MTU  最大传送单元&lt;&#x3D;1500个字节</p>
 </blockquote>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B8%A7.png" alt="image-20200801224539546"></p>
 <p>计算机在接受一个帧时，收到了帧的首部和尾部才能认为这个帧是一个完整的数据帧，若没有收到一个完整的数据帧，则认为他是不完整的，则会将其丢弃。</p>
@@ -381,8 +199,8 @@
 <p>数据链路层广泛使用<strong>循环冗余检验CRC</strong>：</p>
 <ol>
 <li>在发送端，先把数据划分为组。假定每组 k 个比特。</li>
-<li>假设待传送的一组数据 M = 101001（现在 k = 6）。我们在 M 的后面再添加供差错检测用的 n 位冗余码一起发送。  </li>
-<li>用二进制的模 2 运算进行 2的n次方 乘 M 的运算，这相当于在 M 后面添加 n 个 0（如n=3，M=101001000）。</li>
+<li>假设待传送的一组数据 M &#x3D; 101001（现在 k &#x3D; 6）。我们在 M 的后面再添加供差错检测用的 n 位冗余码一起发送。  </li>
+<li>用二进制的模 2 运算进行 2的n次方 乘 M 的运算，这相当于在 M 后面添加 n 个 0（如n&#x3D;3，M&#x3D;101001000）。</li>
 <li>得到的 (k + n) 位的数除以事先选定好的长度为 (n + 1) 位的除数 P，得出商是 Q 而余数是 R，余数 R 比除数 P 少1 位，即 R 是 n 位。 </li>
 <li>在接收端接受到数据后，进行CRC校验，将发送端发送的数据除于余数R（异或运算），运算的<strong>余数为0</strong>则说明没有差错，就<strong>接受</strong>；如果余数R<strong>不等于0，</strong>就说明这个帧有差错就<strong>丢弃</strong>。</li>
 </ol>
@@ -395,14 +213,14 @@
 </blockquote>
 <p>例题：</p>
 <ul>
-<li>现在 k = 6, M = 101001。</li>
-<li>设 n = 3, 除数 P = 1101（除数n+1位）</li>
-<li>被除数是 2nM = 101001000。 </li>
-<li>模 2 运算的结果是：商 Q = 110101，余数 R = 001。</li>
-<li>把余数 R 作为冗余码添加在数据 M 的后面发送出去。发送的数据是：2nM + R ，   即：101001001，共 (k + n) 位。 </li>
+<li>现在 k &#x3D; 6, M &#x3D; 101001。</li>
+<li>设 n &#x3D; 3, 除数 P &#x3D; 1101（除数n+1位）</li>
+<li>被除数是 2nM &#x3D; 101001000。 </li>
+<li>模 2 运算的结果是：商 Q &#x3D; 110101，余数 R &#x3D; 001。</li>
+<li>把余数 R 作为冗余码添加在数据 M 的后面发送出去。发送的数据是：2nM + R ，   即：101001001，共 (k + n) 位。</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85.png" alt="image-20200802112614613"></p>
-<p>传送的数据为101001+余数R=101001001  接收端收到数据则使用该数据除于1101（P），余数为0，则无误，余数不为0，则说明传送过程中出错。</p>
+<p>传送的数据为101001+余数R&#x3D;101001001  接收端收到数据则使用该数据除于1101（P），余数为0，则无误，余数不为0，则说明传送过程中出错。</p>
 <blockquote>
 <p>除数是由数据链路层的协议实现的，我们不用关心这个除数是多少和余数是</p>
 </blockquote>
@@ -417,50 +235,48 @@
 <li>检测连接状态 </li>
 <li>最大传送单元 </li>
 <li>网络层地址协商 </li>
-<li>数据压缩协商  </li>
+<li>数据压缩协商</li>
 </ul>
 <h4 id="2-PPP-协议不需要的功能"><a href="#2-PPP-协议不需要的功能" class="headerlink" title="2. PPP 协议不需要的功能"></a>2. PPP 协议不需要的功能</h4><ul>
 <li>纠错 </li>
 <li>流量控制 </li>
 <li>序号 </li>
 <li>多点线路 </li>
-<li>半双工或单工链路 </li>
+<li>半双工或单工链路</li>
 </ul>
 <h4 id="3-PPP-协议的组成"><a href="#3-PPP-协议的组成" class="headerlink" title="3.  PPP 协议的组成"></a>3.  PPP 协议的组成</h4><p>ppp协议由三个部分组成</p>
 <ol>
 <li>一个将 IP 数据报封装到串行链路的方法。</li>
 <li>链路控制协议 LCP (Link Control Protocol)。</li>
-<li>网络控制协议 NCP (Network Control Protocol)。   </li>
+<li>网络控制协议 NCP (Network Control Protocol)。</li>
 </ol>
 <h3 id="3-2-2-PPP-协议的帧格式"><a href="#3-2-2-PPP-协议的帧格式" class="headerlink" title="3.2.2 PPP 协议的帧格式"></a>3.2.2 PPP 协议的帧格式</h3><p>PPP帧的首部和尾部分别有四个字段和两个字段</p>
 <ul>
-<li>首部的第一个字段和尾部第二个字段是标志字段F=0x7E(0111 1110)</li>
+<li>首部的第一个字段和尾部第二个字段是标志字段F&#x3D;0x7E(0111 1110)</li>
 <li>地址字段地址字段 A 只置为 0xFF。地址字段实际上并不起作用。控制字段 C 通常置为 0x03。</li>
 </ul>
 <p>协议字段：</p>
 <ul>
 <li>当协议字段为 0x0021 时，PPP 帧的信息字段就是IP 数据报。</li>
 <li>若为 0xC021, 则信息字段是 PPP 链路控制数据。</li>
-<li>若为 0x8021，则表示这是网络控制数据。  </li>
+<li>若为 0x8021，则表示这是网络控制数据。</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/ppp%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B8%A7%E6%A0%BC%E5%BC%8F.png" alt="image-20200802135713449"></p>
 <p><strong>PPP帧实现透明传输问题：</strong></p>
 <ol>
-<li><p>字节填充</p>
-<ol>
+<li>字节填充<ol>
 <li>当信息部分出现了0x7E时，将0x7E变成2字节的序列（0x7D,0x5E)</li>
 <li>若信息部分出现了0x7D字节时，将其变为2字节的序列（0x7D,0x5D）</li>
 <li>若信息部分出现了ASCII码的控制字符（即数值小于0x20的字符），则在字符前面要加入一个0x7D字节，同时将该字符的编码加以改变。</li>
 </ol>
 </li>
-<li><p>零比特填充</p>
-<ol>
-<li>PPP 协议用在 SONET/SDH 链路时，是使用同步传输（一连串的比特连续传送，不是字节）。这时 PPP 协议采用零比特填充方法来实现透明传输。</li>
+<li>零比特填充<ol>
+<li>PPP 协议用在 SONET&#x2F;SDH 链路时，是使用同步传输（一连串的比特连续传送，不是字节）。这时 PPP 协议采用零比特填充方法来实现透明传输。</li>
 <li>在发送端，只要发现有 5 个连续 1，则立即填入一个 0。接收端对帧中的比特流进行扫描。每当发现 5 个连续1时，就把这 5 个连续 1 后的一个 0 删除，</li>
 </ol>
-<p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/PPP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81.png" alt="image-20200802150345153"></p>
 </li>
 </ol>
+<p> <img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/PPP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81.png" alt="image-20200802150345153"></p>
 <p>PPP 协议之所以<strong>不使用序号和确认机制</strong>是出于以下的考虑：</p>
 <ul>
 <li>在数据链路层出现差错的概率不大时，使用比较简单的 PPP 协议较为合理。</li>
@@ -471,7 +287,7 @@
 <li>当用户拨号接入 ISP 时，路由器的调制解调器对拨号做出确认，并建立一条物理连接。</li>
 <li>PC 机向路由器发送一系列的 LCP 分组（封装成多个 PPP 帧）。</li>
 <li>这些分组及其响应选择一些 PPP 参数，和进行网络层配置，NCP 给新接入的 PC机分配一个临时的 IP 地址，使 PC 机成为因特网上的一个主机。</li>
-<li>通信完毕时，NCP 释放网络层连接，收回原来分配出去的 IP 地址。接着，LCP 释放数据链路层连接。最后释放的是物理层的连接。    </li>
+<li>通信完毕时，NCP 释放网络层连接，收回原来分配出去的 IP 地址。接着，LCP 释放数据链路层连接。最后释放的是物理层的连接。</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/0%E6%AF%94%E7%89%B9%E5%A1%AB%E5%85%85.png" alt="image-20200802151340359"></p>
 <h2 id="3-3-使用广播信道的数据链路层"><a href="#3-3-使用广播信道的数据链路层" class="headerlink" title="3.3  使用广播信道的数据链路层"></a>3.3  使用广播信道的数据链路层</h2><h3 id="3-3-1-局域网的数据链路层"><a href="#3-3-1-局域网的数据链路层" class="headerlink" title="3.3.1 局域网的数据链路层"></a>3.3.1 局域网的数据链路层</h3><h4 id="局域网"><a href="#局域网" class="headerlink" title="局域网"></a>局域网</h4><p><strong>局域网最主要的特点是：网络为一个单位所拥有，且地理范围和站点数目均有限。</strong> </p>
@@ -497,17 +313,17 @@
 <li>子层媒体接入控制 MAC (Medium Access Control)子层。</li>
 </ul>
 </li>
-<li>与接入到传输媒体有关的内容都放在 MAC子层，而 LLC 子层则与传输媒体无关，不管采用何种协议的局域网对 LLC 子层来说都是透明的 </li>
+<li>与接入到传输媒体有关的内容都放在 MAC子层，而 LLC 子层则与传输媒体无关，不管采用何种协议的局域网对 LLC 子层来说都是透明的</li>
 </ul>
 <p>![image-20200802213914491](<a target="_blank" rel="noopener" href="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%AF%B9">https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/计算机网络/3.链路层/局域网对</a> LLC 子层来说都是透明.png)</p>
 <blockquote>
-<p>由于 TCP/IP 体系经常使用的局域网是 DIX Ethernet V2 而不是 802.3 标准中的几种局域网，因此现在 802 委员会制定的逻辑链路控制子层 LLC（即 802.2 标准）的作用已经不大了。<br>很多厂商生产的适配器上就仅装有 MAC 协议而没有 LLC 协议。 </p>
+<p>由于 TCP&#x2F;IP 体系经常使用的局域网是 DIX Ethernet V2 而不是 802.3 标准中的几种局域网，因此现在 802 委员会制定的逻辑链路控制子层 LLC（即 802.2 标准）的作用已经不大了。<br>很多厂商生产的适配器上就仅装有 MAC 协议而没有 LLC 协议。 </p>
 </blockquote>
-<h3 id="3-3-2-CSMA-CD-协议"><a href="#3-3-2-CSMA-CD-协议" class="headerlink" title="3.3.2 CSMA/CD 协议"></a>3.3.2 CSMA/CD 协议</h3><h4 id="载波监听多点接入-碰撞检测-CSMA-CD"><a href="#载波监听多点接入-碰撞检测-CSMA-CD" class="headerlink" title="载波监听多点接入/碰撞检测  CSMA/CD"></a>载波监听多点接入/碰撞检测  CSMA/CD</h4><ul>
-<li><strong>CSMA/CD 表示 Carrier Sense Multiple Access with Collision Detection。</strong></li>
+<h3 id="3-3-2-CSMA-x2F-CD-协议"><a href="#3-3-2-CSMA-x2F-CD-协议" class="headerlink" title="3.3.2 CSMA&#x2F;CD 协议"></a>3.3.2 CSMA&#x2F;CD 协议</h3><h4 id="载波监听多点接入-x2F-碰撞检测-CSMA-x2F-CD"><a href="#载波监听多点接入-x2F-碰撞检测-CSMA-x2F-CD" class="headerlink" title="载波监听多点接入&#x2F;碰撞检测  CSMA&#x2F;CD"></a>载波监听多点接入&#x2F;碰撞检测  CSMA&#x2F;CD</h4><ul>
+<li><strong>CSMA&#x2F;CD 表示 Carrier Sense Multiple Access with Collision Detection。</strong></li>
 <li>“<strong>多点接入</strong>”表示许多计算机以多点接入的方式连接在一根总线上。</li>
 <li>“<strong>载波监听</strong>”是指每一个站在发送数据之前先要检测一下总线上是否有其他计算机在发送数据，如果有，则暂时不要发送数据，以免发生碰撞。 </li>
-<li>总线上并没有什么“载波”。因此， “载波监听”就是用电子技术检测总线上有没有其他计算机发送的数据信号。  </li>
+<li>总线上并没有什么“载波”。因此， “载波监听”就是用电子技术检测总线上有没有其他计算机发送的数据信号。</li>
 </ul>
 <h4 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h4><ul>
 <li><strong>“碰撞检测”</strong>就是计算机边发送数据边检测信道上的信号电压大小。</li>
@@ -522,10 +338,10 @@
 <p>如图所示，电磁波在1KM电缆的传播时延为5us，单程端到端的传播时延为τ，从图中可知，判断是否发送碰撞的时间<strong>最多为2τ</strong></p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E7%94%B5%E7%A3%81%E6%B3%A2%E5%9C%A8%E6%80%BB%E7%BA%BF%E4%B8%8A%E7%9A%84%E6%9C%89%E9%99%90%E4%BC%A0%E6%92%AD%E9%80%9F%E7%8E%87%E7%9A%84%E5%BD%B1%E5%93%8D.png" alt="image-20200802223813715"></p>
 <blockquote>
-<p> 在使用CSMA/CD协议时，一个站不能同时发送与接收信息（必须边发送边监听信道），因此以太网使用的是<strong>半双工通信</strong>。</p>
+<p> 在使用CSMA&#x2F;CD协议时，一个站不能同时发送与接收信息（必须边发送边监听信道），因此以太网使用的是<strong>半双工通信</strong>。</p>
 </blockquote>
 <h4 id="争用期与退避算法"><a href="#争用期与退避算法" class="headerlink" title="争用期与退避算法"></a>争用期与退避算法</h4><p>最先发送数据帧的站，在发送数据帧后至多经过时间 2τ（两倍的端到端往返时延）就可知道发送的数据帧是否遭受了碰撞。以太网的端到端往返时延 2τ 称为<strong>争用期</strong>，或碰撞窗口。经过争用期这段时间还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
-<p>对于10Mb/s的以太网，通常取 2τ也就是51.2微秒作为争用期的长度，在争用期内可以发送512bit，也就是64字节，以太网发送数据时如果64字节未发生冲突，则后续的数据也不会发生冲突，因此以太网有规定<strong>最短的有效帧的长度</strong></p>
+<p>对于10Mb&#x2F;s的以太网，通常取 2τ也就是51.2微秒作为争用期的长度，在争用期内可以发送512bit，也就是64字节，以太网发送数据时如果64字节未发生冲突，则后续的数据也不会发生冲突，因此以太网有规定<strong>最短的有效帧的长度</strong></p>
 <p><strong>最短有效帧长</strong></p>
 <ul>
 <li>如果发生冲突，就一定时在发送前64字节之内</li>
@@ -536,7 +352,7 @@
 <p>发生碰撞的站在停止发送数据后，要推迟退避一个随机时间才能再发送数据。</p>
 <ul>
 <li>确定基本退避时间，一般是取为争用期 2τ。</li>
-<li>定义重传次数 k ，k &lt;= 10，即k = Min[重传次数, 10]</li>
+<li>定义重传次数 k ，k &lt;&#x3D; 10，即k &#x3D; Min[重传次数, 10]</li>
 <li>从整数集合[0,1,…, (2k −1)]中随机地取出一个数，记为 r。重传所需的时延就是 r 倍的基本退避时间。</li>
 <li>当重传达 16 次仍不能成功时即丢弃该帧，并向高层报告</li>
 </ul>
@@ -568,36 +384,30 @@
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-%E4%BB%A5%E5%A4%AA%E7%BD%91.png" alt="image-20200803112623727"></p>
 <h4 id="集线器的特点"><a href="#集线器的特点" class="headerlink" title="集线器的特点"></a>集线器的特点</h4><ul>
 <li>集线器是使用电子器件来模拟实际电缆线的工作，因此整个系统仍然像一个传统的以太网那样运行。 </li>
-<li>使用集线器的以太网在逻辑上仍是一个总线网，各工作站使用的还是 CSMA/CD 协议，并共享逻辑上的总线。 </li>
-<li>集线器很像一个多接口的转发器，工作在物理层。 </li>
+<li>使用集线器的以太网在逻辑上仍是一个总线网，各工作站使用的还是 CSMA&#x2F;CD 协议，并共享逻辑上的总线。 </li>
+<li>集线器很像一个多接口的转发器，工作在物理层。</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%8F%91%E9%80%81%E4%B8%80%E5%B8%A7%E7%9A%84%E5%B9%B3%E5%9D%87%E6%97%B6%E9%97%B4%E5%9B%BE.png" alt="image-20200803113137698"></p>
 <h4 id="10Base-T-基于集线器的以太网标准"><a href="#10Base-T-基于集线器的以太网标准" class="headerlink" title="10Base-T 基于集线器的以太网标准"></a>10Base-T 基于集线器的以太网标准</h4><ul>
 <li>它的通信距离稍短，每个站到集线器的距离不超过100m。</li>
-<li>这种10MB/s的无屏蔽双绞线星形网的出现，能降低成本和提高可靠性。</li>
+<li>这种10MB&#x2F;s的无屏蔽双绞线星形网的出现，能降低成本和提高可靠性。</li>
 <li>10Base-T的出现有很大的意义，类似标准有100Base-FX，10Base-T，100Base-T4.</li>
 </ul>
 <h4 id="以太网在局域网中的统治地位"><a href="#以太网在局域网中的统治地位" class="headerlink" title="以太网在局域网中的统治地位"></a>以太网在局域网中的统治地位</h4><ul>
-<li><p>10BASE-T 的通信距离稍短，每个站到集线器的距离不超过 100 m。</p>
-</li>
-<li><p>这种 10 Mb/s 速率的无屏蔽双绞线星形网的出现，既降低了成本，又提高了可靠性。 </p>
-</li>
-<li><p>10BASE-T 双绞线以太网的出现，是局域网发展史上的一个非常重要的里程碑，它为以太网在局域网中的统治地位奠定了牢固的基础。 </p>
-<h3 id="3-4-2-以太网的信道利用率"><a href="#3-4-2-以太网的信道利用率" class="headerlink" title="3.4.2  以太网的信道利用率"></a>3.4.2  以太网的信道利用率</h3></li>
+<li>10BASE-T 的通信距离稍短，每个站到集线器的距离不超过 100 m。</li>
+<li>这种 10 Mb&#x2F;s 速率的无屏蔽双绞线星形网的出现，既降低了成本，又提高了可靠性。 </li>
+<li>10BASE-T 双绞线以太网的出现，是局域网发展史上的一个非常重要的里程碑，它为以太网在局域网中的统治地位奠定了牢固的基础。</li>
 </ul>
-<p>以太网的信道被占用的情况：<br>争用期长度为 2t，即端到端传播时延的两倍。检测到碰撞后不发送干扰信号。<br>帧长为 L (bit)，数据发送速率为 C (b/s)，因而帧的发送时间为 L/C = T0 (s)。</p>
+<h3 id="3-4-2-以太网的信道利用率"><a href="#3-4-2-以太网的信道利用率" class="headerlink" title="3.4.2  以太网的信道利用率"></a>3.4.2  以太网的信道利用率</h3><p>以太网的信道被占用的情况：<br>争用期长度为 2t，即端到端传播时延的两倍。检测到碰撞后不发送干扰信号。<br>帧长为 L (bit)，数据发送速率为 C (b&#x2F;s)，因而帧的发送时间为 L&#x2F;C &#x3D; T0 (s)。</p>
 <p>一个帧从开始发送，经可能发生的碰撞后，将再重传数次，到发送成功且信道转为空闲(即再经过时间 t 使得信道上无信号在传播)时为止，是发送一帧所需的平均时间。</p>
 <p> <img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9.png" alt="image-20200803125401169"></p>
-<p>定义信道利用率a=t/T0,是单纯端到端时延t和帧发送时间T0的比值</p>
+<p>定义信道利用率a&#x3D;t&#x2F;T0,是单纯端到端时延t和帧发送时间T0的比值</p>
 <ul>
-<li><p>a→0 表示一发生碰撞就立即可以检测出来，<br>并立即停止发送，因而信道利用率很高。</p>
-</li>
-<li><p>a 越大，表明争用期所占的比例增大，每发<br>生一次碰撞就浪费许多信道资源，使得信道<br>利用率明显降低。 </p>
-</li>
-<li><p>在理想状态下，发送一针需要T0+t的时间，所以理想状态下，极限信道的利用率<strong>Amax=T0/（T0+t）=1/（1+a）</strong>，也就是帧发送时间和检测碰撞的时间</p>
-<h3 id="3-4-3-以太网的-MAC-层"><a href="#3-4-3-以太网的-MAC-层" class="headerlink" title="3.4.3  以太网的 MAC 层"></a>3.4.3  以太网的 MAC 层</h3></li>
+<li>a→0 表示一发生碰撞就立即可以检测出来，<br>并立即停止发送，因而信道利用率很高。</li>
+<li>a 越大，表明争用期所占的比例增大，每发<br>生一次碰撞就浪费许多信道资源，使得信道<br>利用率明显降低。 </li>
+<li>在理想状态下，发送一针需要T0+t的时间，所以理想状态下，极限信道的利用率<strong>Amax&#x3D;T0&#x2F;（T0+t）&#x3D;1&#x2F;（1+a）</strong>，也就是帧发送时间和检测碰撞的时间</li>
 </ul>
-<p>​    在局域网中，<strong>硬件地址</strong>又称为<strong>物理地址</strong>，或者<strong>MAC地址</strong></p>
+<h3 id="3-4-3-以太网的-MAC-层"><a href="#3-4-3-以太网的-MAC-层" class="headerlink" title="3.4.3  以太网的 MAC 层"></a>3.4.3  以太网的 MAC 层</h3><p>​	在局域网中，<strong>硬件地址</strong>又称为<strong>物理地址</strong>，或者<strong>MAC地址</strong></p>
 <p>IEEE 的注册管理机构 RA 负责向厂家分配地址字段的前三个字节(即高位 24 位)。</p>
 <p>地址字段中的后三个字节(即低位 24 位)由厂家自行指派，称为扩展标识符，必须保证生产出的适配器没有重复地址。一个地址块可以生成224个不同的地址。这种 48 位地址称为 MAC-48，它的通用名称是EUI-48。“MAC地址”实际上就是适配器地址或适配器标识符EUI-48。</p>
 <p>查看本机的MAC地址</p>
@@ -641,16 +451,16 @@
 <li>用收到的帧检验序列 FCS 查出有差错；</li>
 <li>数据字段的长度不在 46 ~ 1500 字节之间。</li>
 <li>有效的 MAC 帧长度为 64 ~ 1518 字节之间。</li>
-<li>对于检查出的无效 MAC 帧就简单地丢弃。以太网不负责重传丢弃的帧。 </li>
+<li>对于检查出的无效 MAC 帧就简单地丢弃。以太网不负责重传丢弃的帧。</li>
 </ul>
 <p><strong>帧间最小间隔</strong></p>
 <ul>
 <li>帧间最小间隔为 9.6 us，相当于 96 bit 的发送时间。</li>
 <li>一个站在检测到总线开始空闲后，还要等待 9.6 s 才能再次发送数据。</li>
-<li>这样做是为了使刚刚收到数据帧的站的接收缓存来得及清理，做好接收下一帧的准备。 </li>
+<li>这样做是为了使刚刚收到数据帧的站的接收缓存来得及清理，做好接收下一帧的准备。</li>
 </ul>
 <h2 id="3-5-扩展的以太网"><a href="#3-5-扩展的以太网" class="headerlink" title="3.5 扩展的以太网"></a>3.5 扩展的以太网</h2><h3 id="3-5-1-在物理层扩展以太网"><a href="#3-5-1-在物理层扩展以太网" class="headerlink" title="3.5.1  在物理层扩展以太网"></a>3.5.1  在物理层扩展以太网</h3><ul>
-<li><strong>主机使用光纤和一对光纤调制解调器连接到集线器</strong> </li>
+<li><strong>主机使用光纤和一对光纤调制解调器连接到集线器</strong></li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%9C%A8%E7%89%A9%E7%90%86%E5%B1%82%E4%B8%8A%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91.png" alt="image-20200803145708318"></p>
 <ul>
@@ -667,12 +477,12 @@
 <p><strong>缺点</strong></p>
 <ul>
 <li>碰撞域增大了，但总的吞吐量并未提高。</li>
-<li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来。  </li>
+<li>如果不同的碰撞域使用不同的数据率，那么就不能用集线器将它们互连起来。</li>
 </ul>
 <h3 id="3-5-2-在数据链路层扩展以太网"><a href="#3-5-2-在数据链路层扩展以太网" class="headerlink" title="3.5.2  在数据链路层扩展以太网"></a>3.5.2  在数据链路层扩展以太网</h3><h4 id="网桥"><a href="#网桥" class="headerlink" title="网桥"></a>网桥</h4><p>在数据链路层扩展局域网是<strong>使用网桥</strong>。</p>
 <ul>
 <li>网桥工作在数据链路层，它根据 MAC 帧的目的地址对收到的帧进行转发。</li>
-<li>网桥具有过滤帧的功能。当网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的 MAC 地址，然后再确定将该帧转发到哪一个接口 </li>
+<li>网桥具有过滤帧的功能。当网桥收到一个帧时，并不是向所有的接口转发此帧，而是先检查此帧的目的 MAC 地址，然后再确定将该帧转发到哪一个接口</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E8%BD%AC%E5%8F%91%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B%E4%B8%BE%E4%BE%8B.png" alt="image-20200803152003144"></p>
 <p><strong>网桥使各网段成为隔离开的碰撞域</strong> </p>
@@ -682,7 +492,7 @@
 <li>过滤通信量。 </li>
 <li>扩大了物理范围。</li>
 <li>提高了可靠性。</li>
-<li>可互连不同物理层、不同 MAC 子层和不同速率（如10 Mb/s 和 100 Mb/s 以太网）的局域网。  </li>
+<li>可互连不同物理层、不同 MAC 子层和不同速率（如10 Mb&#x2F;s 和 100 Mb&#x2F;s 以太网）的局域网。</li>
 </ul>
 <p><strong>使用网桥带来的缺点</strong></p>
 <ul>
@@ -694,7 +504,7 @@
 <p>网桥与集线器（转发器）的区别</p>
 <ul>
 <li>集线器在转发帧时，不对传输媒体进行检测。</li>
-<li>网桥在转发帧之前必须执行 CSMA/CD 算法。<ul>
+<li>网桥在转发帧之前必须执行 CSMA&#x2F;CD 算法。<ul>
 <li>若在发送过程中出现碰撞，就必须停止发送和进行退避。</li>
 </ul>
 </li>
@@ -702,7 +512,7 @@
 <h4 id="透明网桥"><a href="#透明网桥" class="headerlink" title="透明网桥"></a>透明网桥</h4><ul>
 <li>目前使用得最多的网桥是透明网桥(transparent bridge)。 </li>
 <li>“透明”是指局域网上的站点并不知道所发送的帧将经过哪几个网桥，因为网桥对各站来说是看不见的。 </li>
-<li>透明网桥是一种即插即用设备，其标准是 IEEE 802.1D。 </li>
+<li>透明网桥是一种即插即用设备，其标准是 IEEE 802.1D。</li>
 </ul>
 <h4 id="网桥的自学习算法"><a href="#网桥的自学习算法" class="headerlink" title="网桥的自学习算法"></a>网桥的自学习算法</h4><ul>
 <li>若从 A 发出的帧从接口 x 进入了某网桥，那么从这个接口出发沿相反方向一定可把一个帧传送到 A。</li>
@@ -728,7 +538,7 @@
 <ul>
 <li>互连在一起的网桥在进行彼此通信后，就能找出原来的网络拓扑的一个子集。在这个子集里，整个连通的网络中不存在回路，即<strong>在任何两个站之间只有一条路径。</strong> </li>
 <li>为了避免产生转发的帧在网络中不断地兜圈子。</li>
-<li>为了得出能够反映网络拓扑发生变化时的生成树，在生成树上的根网桥每隔一段时间还要对生成树的拓扑进行更新。  </li>
+<li>为了得出能够反映网络拓扑发生变化时的生成树，在生成树上的根网桥每隔一段时间还要对生成树的拓扑进行更新。</li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E9%9A%94%E7%A6%BB%E7%BD%91%E6%AE%B5-%E7%BD%91%E6%A1%A5.png" alt="image-20200803202049310"></p>
 <h4 id="交换机"><a href="#交换机" class="headerlink" title="交换机"></a>交换机</h4><p>随着网桥的接口的增加， 后来网桥和集线器合并了，计算机可以直接和交换机连接，这就是交换机。交换机就是网桥和集线器的合并升级版，能全双工，安全通信。端口带宽独享；</p>
@@ -737,8 +547,8 @@
 <li>交换机能同时连通许多对的接口，使每一对相互通信的主机都能像独占通信媒体那样，进行<strong>无碰撞地传输数据</strong>。 </li>
 <li>以太网交换机由于使用了专用的交换结构芯片，其交换速率就较高。    </li>
 <li><strong>独占传输媒体的带宽</strong> <ul>
-<li>对于普通 10 Mb/s 的共享式以太网，若共有 N 个用户，则每个用户占有的平均带宽只有总带宽(10 Mb/s)的 N 分之一。</li>
-<li>使用以太网交换机时，虽然在每个接口到主机的带宽还是 10 Mb/s，但由于一个用户在通信时是<strong>独占</strong>而不是和其他网络用户共享传输媒体的带宽，因此对于拥有 N 对接口的交换机的总容量为 N=10 Mb/s。这正是交换机的最大优点。 </li>
+<li>对于普通 10 Mb&#x2F;s 的共享式以太网，若共有 N 个用户，则每个用户占有的平均带宽只有总带宽(10 Mb&#x2F;s)的 N 分之一。</li>
+<li>使用以太网交换机时，虽然在每个接口到主机的带宽还是 10 Mb&#x2F;s，但由于一个用户在通信时是<strong>独占</strong>而不是和其他网络用户共享传输媒体的带宽，因此对于拥有 N 对接口的交换机的总容量为 N&#x3D;10 Mb&#x2F;s。这正是交换机的最大优点。</li>
 </ul>
 </li>
 </ul>
@@ -753,11 +563,11 @@
 <p>虚拟局域网协议允许在以太网的帧格式中插入一个 4 字节的标识符，称为 VLAN 标记(tag)，用来指明发送该帧的工作站属于哪一个虚拟局域网。 </p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91.png" alt="image-20200803214756925"></p>
 <h2 id="3-6-高速以太网"><a href="#3-6-高速以太网" class="headerlink" title="3.6 高速以太网"></a>3.6 高速以太网</h2><h3 id="3-6-1-100BASE-T-以太网"><a href="#3-6-1-100BASE-T-以太网" class="headerlink" title="3.6.1  100BASE-T 以太网"></a>3.6.1  100BASE-T 以太网</h3><ul>
-<li>速率达到或超过 100 Mb/s 的以太网称为高速以太网。</li>
-<li>在双绞线上传送 100 Mb/s 基带信号的星型拓扑以太网，仍使用 IEEE 802.3 的CSMA/CD 协议。100BASE-T 以太网又称为快速以太网(Fast Ethernet)。 </li>
+<li>速率达到或超过 100 Mb&#x2F;s 的以太网称为高速以太网。</li>
+<li>在双绞线上传送 100 Mb&#x2F;s 基带信号的星型拓扑以太网，仍使用 IEEE 802.3 的CSMA&#x2F;CD 协议。100BASE-T 以太网又称为快速以太网(Fast Ethernet)。</li>
 </ul>
 <h4 id="100BASE-T-以太网的特点"><a href="#100BASE-T-以太网的特点" class="headerlink" title="100BASE-T 以太网的特点"></a>100BASE-T 以太网的特点</h4><ul>
-<li>可在全双工方式下工作而无冲突发生。因此，不使用 CSMA/CD 协议。</li>
+<li>可在全双工方式下工作而无冲突发生。因此，不使用 CSMA&#x2F;CD 协议。</li>
 <li>MAC 帧格式仍然是 802.3 标准规定的。</li>
 <li>保持最短帧长不变，但将一个网段的最大电缆长度减小到 100 m。</li>
 <li>帧间时间间隔从原来的 9.6 us 改为现在的 0.96 us。</li>
@@ -768,18 +578,18 @@
 </ul>
 </li>
 <li><strong>100BASE-FX</strong> <ul>
-<li>使用 2 对光纤。 </li>
+<li>使用 2 对光纤。</li>
 </ul>
 </li>
 <li><strong>100BASE-T4</strong><ul>
-<li>使用 4 对 UTP 3 类线或 5 类线。 </li>
+<li>使用 4 对 UTP 3 类线或 5 类线。</li>
 </ul>
 </li>
 </ul>
 <h3 id="3-6-2-吉比特以太网"><a href="#3-6-2-吉比特以太网" class="headerlink" title="3.6.2  吉比特以太网"></a>3.6.2  吉比特以太网</h3><ul>
-<li>允许在 1 Gb/s 下全双工和半双工两种方式工作。</li>
+<li>允许在 1 Gb&#x2F;s 下全双工和半双工两种方式工作。</li>
 <li>使用 802.3 协议规定的帧格式。</li>
-<li>在半双工方式下使用 CSMA/CD 协议（全双工方式不需要使用 CSMA/CD 协议）。</li>
+<li>在半双工方式下使用 CSMA&#x2F;CD 协议（全双工方式不需要使用 CSMA&#x2F;CD 协议）。</li>
 <li>与 10BASE-T 和 100BASE-T 技术向后兼容。</li>
 </ul>
 <h4 id="吉比特以太网的物理层"><a href="#吉比特以太网的物理层" class="headerlink" title="吉比特以太网的物理层"></a>吉比特以太网的物理层</h4><h3 id="3-6-3-10-吉比特以太网"><a href="#3-6-3-10-吉比特以太网" class="headerlink" title="3.6.3  10 吉比特以太网"></a>3.6.3  10 吉比特以太网</h3><ul>
@@ -790,26 +600,26 @@
 </ul>
 </li>
 <li>1000BASE-T <ul>
-<li>使用 4对 5 类线 UTP </li>
+<li>使用 4对 5 类线 UTP</li>
 </ul>
 </li>
 </ul>
 <h4 id="吉比特以太网的配置举例"><a href="#吉比特以太网的配置举例" class="headerlink" title="吉比特以太网的配置举例"></a>吉比特以太网的配置举例</h4><p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%8E%A5%E5%85%A5%E4%B8%BE%E4%BE%8B.png" alt="image-20200803215414474"></p>
 <h3 id="3-6-4-使用高速以太网进行宽带接入"><a href="#3-6-4-使用高速以太网进行宽带接入" class="headerlink" title="3.6.4  使用高速以太网进行宽带接入"></a>3.6.4  使用高速以太网进行宽带接入</h3><ul>
-<li>以太网已成功地把速率提高到 1 ~ 10 Gb/s ，所覆盖的地理范围也扩展到了城域网和广域网，因此现在人们正在尝试使用以太网进行宽带接入。</li>
+<li>以太网已成功地把速率提高到 1 ~ 10 Gb&#x2F;s ，所覆盖的地理范围也扩展到了城域网和广域网，因此现在人们正在尝试使用以太网进行宽带接入。</li>
 <li>以太网接入的重要特点是它可提供双向的宽带通信，并且可根据用户对带宽的需求灵活地进行带宽升级。</li>
-<li>采用以太网接入可实现端到端的以太网传输，中间不需要再进行帧格式的转换。这就提高了数据的传输效率和降低了传输的成本。  </li>
+<li>采用以太网接入可实现端到端的以太网传输，中间不需要再进行帧格式的转换。这就提高了数据的传输效率和降低了传输的成本。</li>
 </ul>
 <h2 id="3-7-其他类型的高速局域网接口"><a href="#3-7-其他类型的高速局域网接口" class="headerlink" title="3.7  其他类型的高速局域网接口"></a>3.7  其他类型的高速局域网接口</h2><h3 id="3-7-1-10-吉比特以太网"><a href="#3-7-1-10-吉比特以太网" class="headerlink" title="3.7.1 10 吉比特以太网"></a>3.7.1 10 吉比特以太网</h3><ul>
-<li>10 吉比特以太网与 10 Mb/s，100 Mb/s 和 1 Gb/s 以太网的帧格式完全相同。</li>
+<li>10 吉比特以太网与 10 Mb&#x2F;s，100 Mb&#x2F;s 和 1 Gb&#x2F;s 以太网的帧格式完全相同。</li>
 <li>10 吉比特以太网还保留了 802.3 标准规定的以太网最小和最大帧长，便于升级。</li>
 <li>10 吉比特以太网不再使用铜线而只使用光纤作为传输媒体。</li>
-<li>10 吉比特以太网只工作在全双工方式，因此没有争用问题，也不使用 CSMA/CD 协议。    </li>
+<li>10 吉比特以太网只工作在全双工方式，因此没有争用问题，也不使用 CSMA&#x2F;CD 协议。</li>
 </ul>
 <h3 id="3-7-2-吉比特以太网的物理层"><a href="#3-7-2-吉比特以太网的物理层" class="headerlink" title="3.7.2 吉比特以太网的物理层"></a>3.7.2 吉比特以太网的物理层</h3><ul>
-<li>局域网物理层 LAN PHY。局域网物理层的数据率是 10.000 Gb/s。</li>
-<li>可选的广域网物理层 WAN PHY。广域网物理层具有另一种数据率，这是为了和所谓的“Gb/s”的 SONET/SDH（即OC-192/STM-64）相连接。<ul>
-<li>为了使 10 吉比特以太网的帧能够插入到 OC-192/STM-64 帧的有效载荷中，就要使用可选的广域网物理层，其数据率为 9.95328 Gb/s。   </li>
+<li>局域网物理层 LAN PHY。局域网物理层的数据率是 10.000 Gb&#x2F;s。</li>
+<li>可选的广域网物理层 WAN PHY。广域网物理层具有另一种数据率，这是为了和所谓的“Gb&#x2F;s”的 SONET&#x2F;SDH（即OC-192&#x2F;STM-64）相连接。<ul>
+<li>为了使 10 吉比特以太网的帧能够插入到 OC-192&#x2F;STM-64 帧的有效载荷中，就要使用可选的广域网物理层，其数据率为 9.95328 Gb&#x2F;s。</li>
 </ul>
 </li>
 </ul>
@@ -819,130 +629,17 @@
 <li>成熟的技术</li>
 <li>互操作性很好</li>
 <li>在广域网中使用以太网时价格便宜。</li>
-<li>统一的帧格式简化了操作和管理。     </li>
+<li>统一的帧格式简化了操作和管理。</li>
 </ul>
 </li>
 </ul>
-<h3 id="3-7-4-以太网从-10-Mb-s-到10-Gb-s-的演进"><a href="#3-7-4-以太网从-10-Mb-s-到10-Gb-s-的演进" class="headerlink" title="3.7.4 以太网从 10 Mb/s 到10 Gb/s 的演进"></a>3.7.4 以太网从 10 Mb/s 到10 Gb/s 的演进</h3><p>以太网从 10 Mb/s 到 10 Gb/s 的演进证明了以太网是：</p>
+<h3 id="3-7-4-以太网从-10-Mb-x2F-s-到10-Gb-x2F-s-的演进"><a href="#3-7-4-以太网从-10-Mb-x2F-s-到10-Gb-x2F-s-的演进" class="headerlink" title="3.7.4 以太网从 10 Mb&#x2F;s 到10 Gb&#x2F;s 的演进"></a>3.7.4 以太网从 10 Mb&#x2F;s 到10 Gb&#x2F;s 的演进</h3><p>以太网从 10 Mb&#x2F;s 到 10 Gb&#x2F;s 的演进证明了以太网是：</p>
 <ul>
-<li>可扩展的（从 10 Mb/s 到 10 Gb/s）。</li>
-<li>灵活的（多种传输媒体、全/半双工、共享/交换）。</li>
+<li>可扩展的（从 10 Mb&#x2F;s 到 10 Gb&#x2F;s）。</li>
+<li>灵活的（多种传输媒体、全&#x2F;半双工、共享&#x2F;交换）。</li>
 <li>易于安装。</li>
-<li>稳健性好。 </li>
+<li>稳健性好。</li>
 </ul>
 <p><strong>以太网接入举例</strong></p>
 <p>![image-20200803215940931](<a target="_blank" rel="noopener" href="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/3.%E9%93%BE%E8%B7%AF%E5%B1%82/%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%BE%E4%BE%8B">https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/计算机网络/3.链路层/吉比特以太网的配置举例</a> .png)</p>
-
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/408/" rel="tag"># 408</a>
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/" rel="prev" title="计算机网络-物理层">
-                  <i class="fa fa-chevron-left"></i> 计算机网络-物理层
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="next" title="计算机网络-3-网络层">
-                  计算机网络-3-网络层 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-    <div class="comments gitalk-container"></div>
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">FYF</span>
-</div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-      <span>站点总字数：</span>
-    <span title="站点总字数">139k</span>
-  </span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
-  <script src="/js/third-party/statistics/lean-analytics.js"></script>
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
-
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"8ea8db2f08a064fb42aa7050ae8e4a36"}</script>
-<script src="/js/third-party/comments/gitalk.js"></script>
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:1905145967@qq.com">FYF</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/">https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://fan-yu-feng.github.io" target="_blank">FYF's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408/">408</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计算机网络-3-网络层</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机网络概述</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/" title="计算机网络概述"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-08</div><div class="title">计算机网络概述</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/" title="计算机网络-4-运输层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-4-运输层</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/" title="计算机网络-3-网络层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-3-网络层</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-5-%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络-5-应用层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-5-应用层</div></div></a></div><div><a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/" title="计算机网络-物理层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-08</div><div class="title">计算机网络-物理层</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">FYF</div><div class="author-info__description">Welcome to my world</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">3.数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E4%BD%BF%E7%94%A8%E7%82%B9%E5%AF%B9%E7%82%B9%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text">3.1  使用点对点信道的数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%92%8C%E5%B8%A7"><span class="toc-number">1.1.1.</span> <span class="toc-text">3.1.1 数据链路和帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">3.1.2 三个基本问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">封装成帧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">透明传输</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">差错控制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AE-PPP-Point-to-Point-Protocol-%E3%80%82"><span class="toc-number">1.2.</span> <span class="toc-text">3.2  点对点协议 PPP (Point-to-Point Protocol)。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">3.2.1 PPP 协议的特点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-PPP-%E5%8D%8F%E8%AE%AE%E5%BA%94%E6%BB%A1%E8%B6%B3%E7%9A%84%E9%9C%80%E6%B1%82"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">1. PPP 协议应满足的需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-PPP-%E5%8D%8F%E8%AE%AE%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">2. PPP 协议不需要的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">3.  PPP 协议的组成</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">3.2.2 PPP 协议的帧格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-PPP-%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.2.3 PPP 协议的工作状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text">3.3  使用广播信道的数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.3.1 局域网的数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">局域网</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">适配器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%AD%90%E5%B1%82"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">数据链路层的两个子层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-CSMA-x2F-CD-%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.3.2 CSMA&#x2F;CD 协议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%BD%E6%B3%A2%E7%9B%91%E5%90%AC%E5%A4%9A%E7%82%B9%E6%8E%A5%E5%85%A5-x2F-%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B-CSMA-x2F-CD"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">载波监听多点接入&#x2F;碰撞检测  CSMA&#x2F;CD</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">碰撞检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%89%E7%94%A8%E6%9C%9F%E4%B8%8E%E9%80%80%E9%81%BF%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">争用期与退避算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E4%BD%BF%E7%94%A8%E5%B9%BF%E6%92%AD%E4%BF%A1%E9%81%93%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.4.</span> <span class="toc-text">3.4  使用广播信道的以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E4%BD%BF%E7%94%A8%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E6%98%9F%E5%BD%A2%E6%8B%93%E6%89%91"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.4.1  使用集线器的星形拓扑</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">集线器的特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10Base-T-%E5%9F%BA%E4%BA%8E%E9%9B%86%E7%BA%BF%E5%99%A8%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E6%A0%87%E5%87%86"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">10Base-T 基于集线器的以太网标准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E5%A4%AA%E7%BD%91%E5%9C%A8%E5%B1%80%E5%9F%9F%E7%BD%91%E4%B8%AD%E7%9A%84%E7%BB%9F%E6%B2%BB%E5%9C%B0%E4%BD%8D"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">以太网在局域网中的统治地位</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87"><span class="toc-number">1.4.2.</span> <span class="toc-text">3.4.2  以太网的信道利用率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84-MAC-%E5%B1%82"><span class="toc-number">1.4.3.</span> <span class="toc-text">3.4.3  以太网的 MAC 层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-%E6%89%A9%E5%B1%95%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.5.</span> <span class="toc-text">3.5 扩展的以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-%E5%9C%A8%E7%89%A9%E7%90%86%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.5.1.</span> <span class="toc-text">3.5.1  在物理层扩展以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-2-%E5%9C%A8%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%89%A9%E5%B1%95%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.5.2.</span> <span class="toc-text">3.5.2  在数据链路层扩展以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A1%A5"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">网桥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E4%BC%98%E7%82%B9%E4%B8%8E%E7%BC%BA%E7%82%B9"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">网桥的优点与缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E7%BD%91%E6%A1%A5"><span class="toc-number">1.5.2.3.</span> <span class="toc-text">透明网桥</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E8%87%AA%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-number">1.5.2.4.</span> <span class="toc-text">网桥的自学习算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E6%A1%A5%E7%9A%84%E8%87%AA%E5%AD%A6%E4%B9%A0%E5%92%8C%E8%BD%AC%E5%8F%91%E5%B8%A7%E7%9A%84%E6%AD%A5%E9%AA%A4%E5%BD%92%E7%BA%B3"><span class="toc-number">1.5.2.5.</span> <span class="toc-text">网桥的自学习和转发帧的步骤归纳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E5%8F%91%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B%E8%BF%87%E7%A8%8B%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.5.2.6.</span> <span class="toc-text">转发表的建立过程举例：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E6%A0%91%E7%AE%97%E6%B3%95"><span class="toc-number">1.5.2.7.</span> <span class="toc-text">生成树算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.5.2.8.</span> <span class="toc-text">交换机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E6%8D%A2%E8%8A%82%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.5.2.9.</span> <span class="toc-text">交换节的特点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-3-%E8%99%9A%E6%8B%9F%E5%B1%80%E5%9F%9F%E7%BD%91%EF%BC%88VLAN%EF%BC%89"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.5.3 虚拟局域网（VLAN）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.</span> <span class="toc-text">3.6 高速以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-1-100BASE-T-%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.1.</span> <span class="toc-text">3.6.1  100BASE-T 以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#100BASE-T-%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">100BASE-T 以太网的特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82%E6%A0%87%E5%87%86"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">三种不同的物理层标准</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-2-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.2.</span> <span class="toc-text">3.6.2  吉比特以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">吉比特以太网的物理层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-3-10-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.6.3.</span> <span class="toc-text">3.6.3  10 吉比特以太网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E9%85%8D%E7%BD%AE%E4%B8%BE%E4%BE%8B"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">吉比特以太网的配置举例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-4-%E4%BD%BF%E7%94%A8%E9%AB%98%E9%80%9F%E4%BB%A5%E5%A4%AA%E7%BD%91%E8%BF%9B%E8%A1%8C%E5%AE%BD%E5%B8%A6%E6%8E%A5%E5%85%A5"><span class="toc-number">1.6.4.</span> <span class="toc-text">3.6.4  使用高速以太网进行宽带接入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%AB%98%E9%80%9F%E5%B1%80%E5%9F%9F%E7%BD%91%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.7.</span> <span class="toc-text">3.7  其他类型的高速局域网接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-1-10-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.7.1.</span> <span class="toc-text">3.7.1 10 吉比特以太网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-2-%E5%90%89%E6%AF%94%E7%89%B9%E4%BB%A5%E5%A4%AA%E7%BD%91%E7%9A%84%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-number">1.7.2.</span> <span class="toc-text">3.7.2 吉比特以太网的物理层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-3-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BC%A0%E8%BE%93"><span class="toc-number">1.7.3.</span> <span class="toc-text">3.7.3 端到端的以太网传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-4-%E4%BB%A5%E5%A4%AA%E7%BD%91%E4%BB%8E-10-Mb-x2F-s-%E5%88%B010-Gb-x2F-s-%E7%9A%84%E6%BC%94%E8%BF%9B"><span class="toc-number">1.7.4.</span> <span class="toc-text">3.7.4 以太网从 10 Mb&#x2F;s 到10 Gb&#x2F;s 的演进</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/27/CMU/fall2019-project1/" title="fall2019 lab1 buffer pool"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="fall2019 lab1 buffer pool"/></a><div class="content"><a class="title" href="/2022/01/27/CMU/fall2019-project1/" title="fall2019 lab1 buffer pool">fall2019 lab1 buffer pool</a><time datetime="2022-01-27T06:48:02.000Z" title="发表于 2022-01-27 14:48:02">2022-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/05/Git/git-commands/" title="git-commands"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git-commands"/></a><div class="content"><a class="title" href="/2022/01/05/Git/git-commands/" title="git-commands">git-commands</a><time datetime="2022-01-05T07:07:11.000Z" title="发表于 2022-01-05 15:07:11">2022-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/31/CMU/cmu-lab-c/" title="fall2019 lab0 C++ Primer （2020）"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="fall2019 lab0 C++ Primer （2020）"/></a><div class="content"><a class="title" href="/2021/12/31/CMU/cmu-lab-c/" title="fall2019 lab0 C++ Primer （2020）">fall2019 lab0 C++ Primer （2020）</a><time datetime="2021-12-31T07:29:41.000Z" title="发表于 2021-12-31 15:29:41">2021-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/30/CMU/cmu-hw1/" title="cmu 作业1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cmu 作业1"/></a><div class="content"><a class="title" href="/2021/12/30/CMU/cmu-hw1/" title="cmu 作业1">cmu 作业1</a><time datetime="2021-12-30T02:23:09.000Z" title="发表于 2021-12-30 10:23:09">2021-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/29/CMU/CMU-Lab0/" title="cmu 环境搭建"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cmu 环境搭建"/></a><div class="content"><a class="title" href="/2021/12/29/CMU/CMU-Lab0/" title="cmu 环境搭建">cmu 环境搭建</a><time datetime="2021-12-29T01:48:36.000Z" title="发表于 2021-12-29 09:48:36">2021-12-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By FYF</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="my.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

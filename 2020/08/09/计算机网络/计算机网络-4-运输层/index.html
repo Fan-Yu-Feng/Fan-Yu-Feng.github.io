@@ -1,356 +1,170 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.0">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/tapple-touch-icon-nex.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-sdj.jpg">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-sdj.jpg">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"fan-yu-feng.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="传输层概述 回顾 应用层  Http Https  ftp DNS SMTP PoP3 RDP 传输层     TCP    UDP 网络层    IP（RIP OSPF    BGP）     ICMP IGMP ARP">
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算机网络-4-运输层 | FYF's Blog</title><meta name="keywords" content="408,计算机网络"><meta name="author" content="FYF,1905145967@qq.com"><meta name="copyright" content="FYF"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="传输层概述 回顾  应用层  Http Https  ftp DNS SMTP PoP3 RDP 传输层 	TCP	UDP 网络层	IP（RIP OSPF	BGP） 	ICMP IGMP ARP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络-4-运输层">
 <meta property="og:url" content="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/index.html">
 <meta property="og:site_name" content="FYF&#39;s Blog">
-<meta property="og:description" content="传输层概述 回顾 应用层  Http Https  ftp DNS SMTP PoP3 RDP 传输层     TCP    UDP 网络层    IP（RIP OSPF    BGP）     ICMP IGMP ARP">
+<meta property="og:description" content="传输层概述 回顾  应用层  Http Https  ftp DNS SMTP PoP3 RDP 传输层 	TCP	UDP 网络层	IP（RIP OSPF	BGP） 	ICMP IGMP ARP">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%98%B2%E7%81%AB%E5%A2%99%E8%AE%BE%E7%BD%AE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%98%B2%E7%81%AB%E5%A2%99%E7%82%B9%E5%87%BB%E5%87%BA%E7%AB%99%E6%88%96%E8%80%85%E5%85%A5%E7%AB%99%E8%A7%84%E5%88%99.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/UDP%E6%98%AF%E9%9D%A2%E5%90%91%E6%8A%A5%E6%96%87%E7%9A%84.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F2.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/UDP%E8%AE%A1%E7%AE%97%E6%A0%A1%E9%AA%8C%E5%92%8C.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/UDP%E5%9F%BA%E4%BA%8E%E7%AB%AF%E5%8F%A3%E7%9A%84%E5%88%86%E7%94%A8.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%AD%97%E8%8A%82%E7%9A%84%E6%A6%82%E5%BF%B5.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%A5%97%E6%8E%A5%E5%AD%97.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E8%BF%9E%E6%8E%A5%E7%AD%89%E4%BA%8E%E4%B8%A4%E4%B8%AA%E5%A5%97%E6%8E%A5%E5%AD%97.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E7%AA%97%E5%8F%A3%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E6%8A%93%E5%8C%85%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%8A%93%E5%8C%85-TCP%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%98%B2%E7%81%AB%E5%A2%99%E8%AE%BE%E7%BD%AE%E5%87%BA%E7%AB%99%E5%85%A5%E7%AB%99%E7%AB%AF%E5%8F%A3.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/SYN%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%E6%94%BB%E5%87%BB.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E5%B9%B3%E5%9D%87%E5%BE%80%E8%BF%94%E6%97%B6%E9%97%B4.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%85%A8%E9%83%A8%E6%A0%BC%E5%BC%8F.jpg">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86-%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%E5%A4%AA%E4%BD%8E.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E8%BF%9E%E7%BB%AD%E4%BC%A0%E8%BE%93.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%8A%93%E5%8C%85-TCP%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E8%BF%9E%E7%BB%ADARQ%E5%8D%8F%E8%AE%AE.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E6%97%B6%E9%97%B4.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%89%80%E8%B5%B7%E7%9A%84%E4%BD%9C%E7%94%A8.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%85%A2%E5%BC%80%E5%A7%8B%E5%9B%BE%E4%BE%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E5%BF%AB%E9%87%8D%E4%BC%A0%E4%B8%BE%E4%BE%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%85%A2%E5%BC%80%E5%A7%8B%E5%92%8C%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%BE%E4%BE%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E7%9A%84%E4%B8%8A%E9%99%90%E5%80%BC.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%BB%BA%E7%AB%8BTCP%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E7%9A%84%E5%90%84%E7%8A%B6%E6%80%81.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%9F%A5%E7%9C%8BSYN-RCVD%E7%8A%B6%E6%80%81.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E4%BD%BF%E7%94%A8%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E9%87%8A%E6%94%BETCP%E8%BF%9E%E6%8E%A5.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%9F%A5%E7%9C%8B%E5%BB%BA%E7%AB%8B%E4%BC%9A%E8%AF%9D%E7%9A%84%E7%8A%B6%E6%80%81.png">
-<meta property="og:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%9F%A5%E7%9C%8B%E4%BC%9A%E8%AF%9D%E8%BF%9E%E6%8E%A5%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
 <meta property="article:published_time" content="2020-08-09T11:48:46.000Z">
 <meta property="article:modified_time" content="2021-12-24T03:26:59.286Z">
 <meta property="article:author" content="FYF">
 <meta property="article:tag" content="408">
 <meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3.png">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机网络-4-运输层',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-24 11:26:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-<link rel="canonical" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/">
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/","path":"2020/08/09/计算机网络/计算机网络-4-运输层/","title":"计算机网络-4-运输层"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>计算机网络-4-运输层 | FYF's Blog</title>
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-
-  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
-  <script async src="https://hm.baidu.com/hm.js?1f500c78c10b508fc86cbb939f2828aa"></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">FYF's Blog</h1>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">欢迎来到我的blog</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu">
-        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-number">1.</span> <span class="nav-text">传输层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.1.</span> <span class="nav-text">传输层的两个应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E4%B8%8E%E5%BA%94%E7%94%A8%E5%B1%82%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.2.</span> <span class="nav-text">运输层与应用层之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE%E5%92%8C%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.3.</span> <span class="nav-text">应用层协议和服务之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E7%AB%AF%E5%8F%A3%E5%A2%9E%E5%8A%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8"><span class="nav-number">1.1.4.</span> <span class="nav-text">更改端口增加服务器安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.5.</span> <span class="nav-text">Windows防火墙的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.6.</span> <span class="nav-text">网络安全的一些应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE-TCP-UDP%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">运输层协议 TCP&#x2F;UDP（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5UDP"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">一、用户数据报UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="nav-number">1.2.0.1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UDP%E7%9A%84%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.0.1.2.</span> <span class="nav-text">UDP的主要特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.2.0.1.3.</span> <span class="nav-text">UDP首部格式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AETCP"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">二、传输控制协议TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-2"><span class="nav-number">1.2.0.2.1.</span> <span class="nav-text">概述</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E9%A6%96%E9%83%A8"><span class="nav-number">1.3.</span> <span class="nav-text">TCP首部</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90TCP%E9%A6%96%E9%83%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">抓包分析TCP首部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="nav-number">1.3.2.</span> <span class="nav-text">TCP如何实现可靠传输</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E2%80%94%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">工作原理—停止等待</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%E5%A4%AA%E4%BD%8E"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">缺点：信道利用率太低</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%E5%A4%AA%E4%BD%8E%E2%80%94-%E4%BD%BF%E7%94%A8%E8%BF%9E%E7%BB%AD%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6%EF%BC%88%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%89"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">解决信道利用率太低—-使用连续传输机制（流水线）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-%E5%8F%AF%E9%9D%A0%E9%80%9A%E4%BF%A1%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%EF%BC%88%E8%BF%99%E9%83%A8%E5%88%86%E5%B9%B6%E4%B8%8D%E6%98%AF%E5%BE%88%E8%AF%A6%E7%BB%86%EF%BC%8C%E5%8F%AF%E5%8F%82%E7%85%A7%E4%B9%A6%E4%B8%8A%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E5%AD%A6%EF%BC%89"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">TCP 可靠通信的具体实现（这部分并不是很详细，可参照书上的内容来学）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">TCP如何实现流量控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E9%81%BF%E5%85%8D%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E"><span class="nav-number">1.3.4.</span> <span class="nav-text">TCP如何实避免网络拥塞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%89%80%E8%B5%B7%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">拥塞控制所起的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">拥塞控制方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">1.3.4.4.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%85%A2%E5%BC%80%E5%A7%8B%E5%92%8C%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%EF%BC%881988%E5%B9%B4%E6%8F%90%E5%87%BA%EF%BC%89"><span class="nav-number">1.3.4.5.</span> <span class="nav-text">慢开始和拥塞避免（1988年提出）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D%EF%BC%881990%E5%B9%B4%E6%8F%90%E5%87%BA%EF%BC%89"><span class="nav-number">1.3.4.6.</span> <span class="nav-text">快重传和快恢复（1990年提出）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E7%9A%84%E4%B8%8A%E9%99%90%E5%80%BC"><span class="nav-number">1.3.4.7.</span> <span class="nav-text">2.4.发送窗口的上限值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E4%BC%A0%E8%BE%93%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="nav-number">1.4.</span> <span class="nav-text">TCP传输连接管理:三次握手与四次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BC%A0%E8%BE%93%E8%BF%9E%E6%8E%A5%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-number">1.4.1.</span> <span class="nav-text">一、传输连接的三个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">1.1.概述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81TCP-%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="nav-number">1.4.2.</span> <span class="nav-text">二、TCP 的连接建立</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E7%94%A8%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">2.1.用三次握手建立 TCP 连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E4%B8%BA%E4%BD%95%E6%9C%89%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%EF%BC%9F"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">2.2.为何有第三次握手？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%BB%BA%E7%AB%8BTCP%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E7%9A%84%E5%90%84%E7%8A%B6%E6%80%81"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">2.3.三次握手建立TCP连接过程的各状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81TCP%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%87%8A%E6%94%BE"><span class="nav-number">1.4.3.</span> <span class="nav-text">三、TCP的连接释放</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E4%BD%BF%E7%94%A8%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E9%87%8A%E6%94%BETCP%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">3.1.使用四次挥手释放TCP连接</span></a></li></ol></li></ol></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="FYF"
-      src="/images/me.png">
-  <p class="site-author-name" itemprop="name">FYF</p>
-  <div class="site-description" itemprop="description">Welcome to my world</div>
-</div>
-<div class="site-state-wrap site-overview-item animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">9</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author site-overview-item animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/Fan-Yu-Feng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Fan-Yu-Feng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-
-
-        </div>
-      </div>
-    </div>
-  </aside>
-  <div class="sidebar-dimmer"></div>
-
-
-    </header>
-
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/me.png">
-      <meta itemprop="name" content="FYF">
-      <meta itemprop="description" content="Welcome to my world">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FYF's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          计算机网络-4-运输层
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-09 19:48:46" itemprop="dateCreated datePublished" datetime="2020-08-09T19:48:46+08:00">2020-08-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-24 11:26:59" itemprop="dateModified" datetime="2021-12-24T11:26:59+08:00">2021-12-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">计算机基础知识</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/" class="post-meta-item leancloud_visitors" data-flag-title="计算机网络-4-运输层" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>13k</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-        <h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><pre><code> 回顾</code></pre>
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/my.css"><meta name="generator" content="Hexo 5.0.0"><link rel="alternate" href="/atom.xml" title="FYF's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-list-alt"></i><span> ToDo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">FYF's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-book"></i><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/todo/"><i class="fa-fw fas fa-list-alt"></i><span> ToDo</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/contact/"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机网络-4-运输层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-09T11:48:46.000Z" title="发表于 2020-08-09 19:48:46">2020-08-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-24T03:26:59.286Z" title="更新于 2021-12-24 11:26:59">2021-12-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">计算机基础知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机网络-4-运输层"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><pre><code> 回顾
+</code></pre>
 <p><strong>应用层</strong>  Http Https  ftp DNS SMTP PoP3 RDP</p>
-<p><strong>传输层</strong>     TCP    UDP</p>
-<p><strong>网络层</strong>    IP（RIP OSPF    BGP）     ICMP IGMP ARP</p>
+<p><strong>传输层</strong> 	TCP	UDP</p>
+<p><strong>网络层</strong>	IP（RIP OSPF	BGP） 	ICMP IGMP ARP</p>
 <a id="more"></a>
 
 <h3 id="传输层的两个应用场景"><a href="#传输层的两个应用场景" class="headerlink" title="传输层的两个应用场景"></a>传输层的两个应用场景</h3><p><strong>TCP</strong>  分段传输，给每段数据编号，接收端按照编号检查，丢哪个包就叫发送端重传），流量控制，是可靠性传输，建立会话：netstat -n可查看会话。例：下载文件，（发送方要把数据分成多个数据包并编上号，接收端收到之后检查编号是否完整，再把所有数据包按编号串起来才能完整接受）、访问网站、上传文件。</p>
 <p><strong>UDP</strong> 不编号，一个数据包就能完成数据通信，只扔出一个数据包，丢了就连接失败，不建立会话，是不可靠传输。例如：qq聊天、多播（老师把自己的电脑画面播到每个学生电脑上）；</p>
 <h3 id="运输层与应用层之间的关系"><a href="#运输层与应用层之间的关系" class="headerlink" title="运输层与应用层之间的关系"></a>运输层与应用层之间的关系</h3><ul>
-<li>http协议，使用80端口，HTTP=TCP+80</li>
-<li>使用https安全传输时，使用443端口，https=TCP+443</li>
-<li>ftp=TCP+21</li>
-<li>SMTP=TCP+25</li>
-<li>POP3=TCP+110</li>
-<li>RDP=TCP+3389</li>
-<li>共享文件夹=TCP+445</li>
-<li>SQL=TCP+1433</li>
-<li>DNS=UDP+53 or TCP+53;</li>
+<li>http协议，使用80端口，HTTP&#x3D;TCP+80</li>
+<li>使用https安全传输时，使用443端口，https&#x3D;TCP+443</li>
+<li>ftp&#x3D;TCP+21</li>
+<li>SMTP&#x3D;TCP+25</li>
+<li>POP3&#x3D;TCP+110</li>
+<li>RDP&#x3D;TCP+3389</li>
+<li>共享文件夹&#x3D;TCP+445</li>
+<li>SQL&#x3D;TCP+1433</li>
+<li>DNS&#x3D;UDP+53 or TCP+53;</li>
 </ul>
-<p>应用层协议其实就是传输层的两种主要协议加上相应端口来表示是哪一种应用层协议。其实就是传输层协议加上一个使用的端口号就表示一种应用。比如可以这样命名一个应用层协议：KON=TCP+4000 。</p>
+<p>应用层协议其实就是传输层的两种主要协议加上相应端口来表示是哪一种应用层协议。其实就是传输层协议加上一个使用的端口号就表示一种应用。比如可以这样命名一个应用层协议：KON&#x3D;TCP+4000 。</p>
 <h3 id="应用层协议和服务之间的关系"><a href="#应用层协议和服务之间的关系" class="headerlink" title="应用层协议和服务之间的关系"></a>应用层协议和服务之间的关系</h3><p>服务（对外提供的服务）运行后在TCP或UDP的某个端口侦听客户端请求。</p>
 <p>一台计算机上可能运行有多种服务，但是只有一个IP地址。</p>
 <ul>
@@ -384,7 +198,7 @@
 <li>使用网络层安全设置，严格控制流量的出入。如果该计算机只提供Web服务，那么该计算机只允许目标地址或源地址为80端口的数据包通过，从而达到严格管控其他目标地址或源地址非80端口的数据包的出入。比如灰鸽子木马使用的是8000端口，即使用户主动下载并安装了木马程序，由于出去的相关数据包源地址为8000端口（非80端口），所以会被拦截，以此在网络层实现信息安全。</li>
 <li>再如：一个放在公网公开的服务器A，只要能猜对该计算机的用户名和密码，任何网段的计算机都可以通过远程桌面控制该计算机。可以新增的网络层安全措施为：在服务器A上设置只允许计算机B的IP地址通过远程桌面控制服务器A，这样想要黑服务器A必须先获取计算机B的用户名和密码，再获取服务器A的用户名和密码才能成功黑入服务器A。由此通过网络层提高了服务器A的安全性能。</li>
 </ol>
-<h2 id="运输层协议-TCP-UDP（重点）"><a href="#运输层协议-TCP-UDP（重点）" class="headerlink" title="运输层协议 TCP/UDP（重点）"></a>运输层协议 TCP/UDP（重点）</h2><h4 id="一、用户数据报UDP"><a href="#一、用户数据报UDP" class="headerlink" title="一、用户数据报UDP"></a>一、用户数据报UDP</h4><h5 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h5><ul>
+<h2 id="运输层协议-TCP-x2F-UDP（重点）"><a href="#运输层协议-TCP-x2F-UDP（重点）" class="headerlink" title="运输层协议 TCP&#x2F;UDP（重点）"></a>运输层协议 TCP&#x2F;UDP（重点）</h2><h4 id="一、用户数据报UDP"><a href="#一、用户数据报UDP" class="headerlink" title="一、用户数据报UDP"></a>一、用户数据报UDP</h4><h5 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h5><ul>
 <li>UDP 只在 IP 的数据报服务之上增加了很少一点的功能，即端口的功能和差错检测的功能。</li>
 <li>虽然 UDP 用户数据报只能提供不可靠的交付，但 UDP 在某些方面有其特殊的优点。</li>
 </ul>
@@ -425,7 +239,7 @@
 <li><p>TCP 连接的端点不是主机，不是主机的IP 地址，不是应用进程，也不是运输层的协议端口。TCP 连接的端点叫做<strong>套接字</strong>(socket)或<strong>插口</strong>。</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E5%A5%97%E6%8E%A5%E5%AD%97.png" alt="TCP套接字"></p>
 </li>
-<li><p>端口号拼接到(contatenated with) IP 地址即构成了套接字。即端点=IP地址+端口号。</p>
+<li><p>端口号拼接到(contatenated with) IP 地址即构成了套接字。即端点&#x3D;IP地址+端口号。</p>
 </li>
 <li><p>每一条 <strong>TCP</strong> 连接唯一地被通信两端的两个端点（即两个套接字）所确定。即：</p>
 </li>
@@ -442,20 +256,20 @@
 </li>
 <li><p><strong>确认号</strong>字段——占 4 字节，是期望收到对方的下一个报文段的数据的第一个字节的序号。比如接收端收到由文件1<del>4个字节数据+TCP首部组成的数据包后，删除首部提取1</del>4个字节数据，返回的确认号为5，即告诉发送端下一次应该发送文件的第5个字节及其之后字节组成的数据包过来</p>
 </li>
-<li><p><strong>数据偏移</strong>（即首部长度）——占 4 位，它指出 TCP 报文段的数据起始处距离 TCP 报文段的起始处有多远，也就是TCP首部的长度。“数据偏移”的单位是 32 位字（以 4 字节为计算单位），最大1111表示15x4=60个字节，即表示TCP首部最大长度为60个字节，因此“选项”部分最多40个字节。</p>
+<li><p><strong>数据偏移</strong>（即首部长度）——占 4 位，它指出 TCP 报文段的数据起始处距离 TCP 报文段的起始处有多远，也就是TCP首部的长度。“数据偏移”的单位是 32 位字（以 4 字节为计算单位），最大1111表示15x4&#x3D;60个字节，即表示TCP首部最大长度为60个字节，因此“选项”部分最多40个字节。</p>
 </li>
 <li><p><strong>保留</strong>字段——占 6 位，保留为今后使用，但目前应置为 0。</p>
 </li>
 <li><p>这里的六位二进制位，分别表示不同含义：</p>
 <ul>
-<li><p><strong>紧急 URG</strong> —— 当 URG = 1 时，表明紧急指针字段有效。它告诉系统此报文段中有紧急数据，应尽快传送(相当于高优先级的数据)。 即URG=1的数据包不用排队直接优先传输。</p>
+<li><p><strong>紧急 URG</strong> —— 当 URG &#x3D; 1 时，表明紧急指针字段有效。它告诉系统此报文段中有紧急数据，应尽快传送(相当于高优先级的数据)。 即URG&#x3D;1的数据包不用排队直接优先传输。</p>
 </li>
-<li><p><strong>同步 SYN</strong> —— 同步 SYN = 1 表示这是一个连接请求或连接接受报文。即A想与B建立连接，发送过去的第一个数据包（第一次握手）中SYN=1；B返回的数据包（第二次握手）中SYN=1表示同意建立连接。</p>
+<li><p><strong>同步 SYN</strong> —— 同步 SYN &#x3D; 1 表示这是一个连接请求或连接接受报文。即A想与B建立连接，发送过去的第一个数据包（第一次握手）中SYN&#x3D;1；B返回的数据包（第二次握手）中SYN&#x3D;1表示同意建立连接。</p>
 </li>
-<li><p><strong>确认 ACK</strong> —— 只有当 ACK = 1 时确认号字段才有效。当 ACK = 0 时，确认号无效。</p>
-<p>ACK是对已接受数据的确认，当A与B还在请求连接阶段，A向B发送的第一个数据包（第一次握手）中ACK=0，无效，所以数据包中不显示，表示还没从B中接收到数据；序号Seq也为0，表示A还未向B发送数据；SYN=1，表示正在建立连接。</p>
-<p>同理，B向A返回一个数据包（第二次握手）中，确认号ACK=1，表示B收到了A序号为0的数据包；序号Seq=0，也表示B还未向A发送数据；SYN=1表示同意建立连接。</p>
-<p>A再向B发送一个数据包（第三次握手）中，确认号ACK=1，表示A收到了B发出的数据包；序号Seq=1，表示A已向B发送了1个数据包（即第一次握手）；SYN=0，表示已建立连接。</p>
+<li><p><strong>确认 ACK</strong> —— 只有当 ACK &#x3D; 1 时确认号字段才有效。当 ACK &#x3D; 0 时，确认号无效。</p>
+<p>ACK是对已接受数据的确认，当A与B还在请求连接阶段，A向B发送的第一个数据包（第一次握手）中ACK&#x3D;0，无效，所以数据包中不显示，表示还没从B中接收到数据；序号Seq也为0，表示A还未向B发送数据；SYN&#x3D;1，表示正在建立连接。</p>
+<p>同理，B向A返回一个数据包（第二次握手）中，确认号ACK&#x3D;1，表示B收到了A序号为0的数据包；序号Seq&#x3D;0，也表示B还未向A发送数据；SYN&#x3D;1表示同意建立连接。</p>
+<p>A再向B发送一个数据包（第三次握手）中，确认号ACK&#x3D;1，表示A收到了B发出的数据包；序号Seq&#x3D;1，表示A已向B发送了1个数据包（即第一次握手）；SYN&#x3D;0，表示已建立连接。</p>
 </li>
 </ul>
 </li>
@@ -470,14 +284,14 @@
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E7%AA%97%E5%8F%A3%E5%AD%97%E6%AE%B5%E5%A4%A7%E5%B0%8F.png" alt="TCP首部格式"></p>
 <h3 id="抓包分析TCP首部"><a href="#抓包分析TCP首部" class="headerlink" title="抓包分析TCP首部"></a>抓包分析TCP首部</h3><p>我打开惠州学院的官网 <a target="_blank" rel="noopener" href="https://www.hzu.edu.cn/">https://www.hzu.edu.cn/</a></p>
-<p>刚开始，先建立连接，seq（序号=0），同步 SYN = 1 表示这是一个连接请求或连接接受报文。</p>
+<p>刚开始，先建立连接，seq（序号&#x3D;0），同步 SYN &#x3D; 1 表示这是一个连接请求或连接接受报文。</p>
 <p>这边的主机请求连接，目的主机给予回应，主机在确认，如图，为三次握手的过程，期间，主机和目的服务器协商TCP缓存、请求连接的事情</p>
-<p>服务端同意连接，确认号ACK=1，Win是TCP连接缓存，相互告知自己TCP连接的缓存大小</p>
-<p>主机发送确认号ACK=1，确认连接，序号Seq=1。然后就正式开始通信。可以看出请求通信是post请求。</p>
+<p>服务端同意连接，确认号ACK&#x3D;1，Win是TCP连接缓存，相互告知自己TCP连接的缓存大小</p>
+<p>主机发送确认号ACK&#x3D;1，确认连接，序号Seq&#x3D;1。然后就正式开始通信。可以看出请求通信是post请求。</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/TCP%E6%8A%93%E5%8C%85%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F.png" alt="TCP抓包首部格式"></p>
-<p>可以看到计算机发出的第一个数据包（第一次握手）中，SYN=1，Seq=1，ACK=0无效，所以在蓝色框内只能看到序号Seq，看不到确认号ACK；</p>
+<p>可以看到计算机发出的第一个数据包（第一次握手）中，SYN&#x3D;1，Seq&#x3D;1，ACK&#x3D;0无效，所以在蓝色框内只能看到序号Seq，看不到确认号ACK；</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%8A%93%E5%8C%85-TCP%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="抓包-TCP第一次握手"></p>
-<p>而在第三次握手中，请求建立连接的过程结束，SYN=0，ACK都为1</p>
+<p>而在第三次握手中，请求建立连接的过程结束，SYN&#x3D;0，ACK都为1</p>
 <p>所以，抓包时看到大量的SYN数据包，说明计算机在大量建立会话。另外在建立连接（三次握手）时，SYN与ACK的值与正常通讯时不一样。</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%98%B2%E7%81%AB%E5%A2%99%E8%AE%BE%E7%BD%AE%E5%87%BA%E7%AB%99%E5%85%A5%E7%AB%99%E7%AB%AF%E5%8F%A3.png" alt="抓包-TCP第三次握手"></p>
 <p><strong>有一种攻击就是针对建立连接时SYN同步的机制</strong></p>
@@ -487,11 +301,11 @@
 <p>红色框中的地址是攻击软件瞎编的不存在的地址，蓝色框中显示建立的会话全是请求连接的TCP报文。</p>
 <p>可以看到在Land攻击时捕获的数据包，都是请求同步SYN数据包且源地址和目标地址都为攻击对象地址 192.168.80.66 。</p>
 <ul>
-<li><p><strong>推送 PSH</strong> (PuSH) —— 接收 TCP 收到 PSH = 1 的报文段，就尽快地交付接收应用进程，而不再等到整个缓存都填满了后再向上交付。</p>
+<li><p><strong>推送 PSH</strong> (PuSH) —— 接收 TCP 收到 PSH &#x3D; 1 的报文段，就尽快地交付接收应用进程，而不再等到整个缓存都填满了后再向上交付。</p>
 </li>
-<li><p><strong>复位 RST</strong> (ReSeT) —— 当 RST = 1 时，表明 TCP 连接中出现严重差错（如由于主机崩溃或其他原因），必须释放连接，然后再重新建立运输连接。</p>
+<li><p><strong>复位 RST</strong> (ReSeT) —— 当 RST &#x3D; 1 时，表明 TCP 连接中出现严重差错（如由于主机崩溃或其他原因），必须释放连接，然后再重新建立运输连接。</p>
 </li>
-<li><p><strong>终止 FIN</strong> (FINis) —— 用来释放一个连接。FIN = 1 表明此报文段的发送端的数据已发送完毕，并要求释放运输连接。</p>
+<li><p><strong>终止 FIN</strong> (FINis) —— 用来释放一个连接。FIN &#x3D; 1 表明此报文段的发送端的数据已发送完毕，并要求释放运输连接。</p>
 </li>
 <li><p><strong>窗口</strong>字段 —— 占 2 字节，用来让对方设置发送窗口的依据，单位为字节。</p>
 </li>
@@ -546,14 +360,14 @@
 <ul>
 <li>式中RTTs表示<strong>加权平均往返时间</strong> （又称为<strong>平滑的往返时间</strong>），即传输数据时多次往返时间RTT的平均值。</li>
 <li>式中，0 &lt; a &lt; 1。若 a 接近于零，表示新RTTs值较依赖旧RTT值，说明 RTT 值更新较慢，网速稳定；若选择 a 接近于 1，表示新RTTs值较依赖新RTT值，说明 RTT 值更新较快，网速不稳定。</li>
-<li>RFC 2988 推荐的 a 值为 1/8，即 0.125。</li>
+<li>RFC 2988 推荐的 a 值为 1&#x2F;8，即 0.125。</li>
 </ul>
 <p>超时重传时间 RTO (RetransmissionTime-Out)</p>
 <ul>
 <li><p>RTO 应略大于上面得出的加权平均往返时间 RTTs。</p>
 </li>
 <li><p>RFC 2988 建议使用下式计算 RTO：</p>
-<p><strong>RTO = RTTs + 4 x RTTd</strong></p>
+<p><strong>RTO &#x3D; RTTs + 4 x RTTd</strong></p>
 </li>
 <li><p>RTTd 是 <strong>RTT 的偏差的加权平均值</strong>。</p>
 </li>
@@ -561,14 +375,14 @@
 </li>
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E6%97%B6%E9%97%B4.png" alt="选择重传时间"></p>
-<p>β 是个小于 1 的系数，其推荐值是 1/4，即 0.25。</p>
+<p>β 是个小于 1 的系数，其推荐值是 1&#x2F;4，即 0.25。</p>
 <h3 id="TCP如何实现流量控制"><a href="#TCP如何实现流量控制" class="headerlink" title="TCP如何实现流量控制"></a>TCP如何实现流量控制</h3><p><strong>利用滑动窗口实现流量控制</strong></p>
 <ul>
 <li>一般说来，我们总是希望数据传输得更快一些。但如果发送方把数据发送得过快，接收方就可能来不及接收，这就会造成数据的丢失。</li>
 <li><strong>流量控制</strong>(flow control)就是让发送方的发送速率不要太快，既要让接收方来得及接收，也不要使网络发生拥塞。</li>
 <li><strong>流量控制举例：</strong></li>
 </ul>
-<p>A 向 B 发送数据。在连接建立时，B 告诉 A：“我的接收窗口 rwnd = 400（字节）”。</p>
+<p>A 向 B 发送数据。在连接建立时，B 告诉 A：“我的接收窗口 rwnd &#x3D; 400（字节）”。</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6.png" alt="流量控制"></p>
 <h3 id="TCP如何实避免网络拥塞"><a href="#TCP如何实避免网络拥塞" class="headerlink" title="TCP如何实避免网络拥塞"></a>TCP如何实避免网络拥塞</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
 <li><p>在某段时间，若对网络中某资源的需求超过了该资源所能提供的可用部分，网络的性能就要变坏——产生<strong>拥塞</strong>(congestion)。</p>
@@ -583,7 +397,7 @@
 </ul>
 <h4 id="拥塞控制所起的作用"><a href="#拥塞控制所起的作用" class="headerlink" title="拥塞控制所起的作用"></a>拥塞控制所起的作用</h4><p><a target="_blank" rel="noopener" href="https://gitee.com/ahuntsun/BlogImgs/raw/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.7.TCP%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/1.png"><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%89%80%E8%B5%B7%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="image-20200129215454048"></a></p>
 <ul>
-<li>吞吐量(throughput)表示在单位时间内通过某个网络（或信道、接口）的数据量。比如某网络的带宽为100M，那么该网络的最大吞吐量为100M/s 。</li>
+<li>吞吐量(throughput)表示在单位时间内通过某个网络（或信道、接口）的数据量。比如某网络的带宽为100M，那么该网络的最大吞吐量为100M&#x2F;s 。</li>
 <li>可以看到，理想的拥塞控制为：随着传输数据量（负载）的增加，数据传输速度（吞吐量）越来越快，当吞吐量达到网络的最大带宽时，继续增大传输数据量，传输的速度（吞吐量）也不会再增加，所以这样并不会造成网络拥塞导致传输速度（吞吐量）下降。例如，路由器间的带宽为100M，当传输150M数据时，路由器把处理不过来的50M数据扔掉，继续保持100M的传输速度。</li>
 <li>当无拥塞控制时，假设两路由器间的网络带宽为100M，当传输的数据小于100M时，随着数据量（负载）的增加丢包情况越来越明显，此时成为轻度拥塞；当传输的数据量（负载）大于100M时，大量的数据包使路由器无法及时处理，错误情况越来越多，最后路由器死机，无法传输数据导致<strong>死锁</strong>，此时吞吐量为0。</li>
 <li>在实际的拥塞控制中，网络设备随着传输的数据量（提供的负载）越来越大，传输的速度（吞吐量）越快，丢包率也越来越大，依靠拥塞控制机制会适当降低数据传输的速度（吞吐量），以减少拥塞。</li>
@@ -605,9 +419,9 @@
 </ul>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%85%A2%E5%BC%80%E5%A7%8B%E5%9B%BE%E4%BE%8B.png" alt="image-20200129222757313"></p>
 <p>发送窗口一般等于拥塞窗口。</p>
-<p>第一轮：刚开始cwnd=1，发送窗口也为1，发送方先发送一个报文M1测试连接通畅程度，当收到对M1报文的确认之后，cwnd+1，即发送窗口变为2，可以同时发送两个报文M2~M3；</p>
-<p>第二轮：发送方发送两个报文M2<del>M3，发送方收到了M2报文的确 认后使cwnd+1变为3，收到了M3报文确认后cwnd+1变为4，即每收到一个对新报文的确认（重传的不算在内）就使cwnd+1。由此cwnd=4，即发送窗口也为4，可以同时发送四个报文M4</del>M7 。</p>
-<p>以此类推第三轮之后cwnd=8。传输速度由慢开始，每轮翻倍，最后传输速度越来越快。</p>
+<p>第一轮：刚开始cwnd&#x3D;1，发送窗口也为1，发送方先发送一个报文M1测试连接通畅程度，当收到对M1报文的确认之后，cwnd+1，即发送窗口变为2，可以同时发送两个报文M2~M3；</p>
+<p>第二轮：发送方发送两个报文M2<del>M3，发送方收到了M2报文的确 认后使cwnd+1变为3，收到了M3报文确认后cwnd+1变为4，即每收到一个对新报文的确认（重传的不算在内）就使cwnd+1。由此cwnd&#x3D;4，即发送窗口也为4，可以同时发送四个报文M4</del>M7 。</p>
+<p>以此类推第三轮之后cwnd&#x3D;8。传输速度由慢开始，每轮翻倍，最后传输速度越来越快。</p>
 <blockquote>
 <p><strong>传输轮次 (transmission round)</strong></p>
 </blockquote>
@@ -622,7 +436,7 @@
 <li>当 cwnd &lt; ssthresh 时，使用慢开始算法（cwnd每轮加倍）。</li>
 <li>当 cwnd &gt; ssthresh 时，停止使用慢开始算法而改用拥塞避免算法。</li>
 <li><strong>拥塞避免算法</strong>的思路是让拥塞窗口 cwnd 缓慢地增大，即每经过一个往返时间 RTT 就把发送方的拥塞窗口 cwnd 加 1，而不是加倍，使拥塞窗口 cwnd 按线性规律缓慢增长。</li>
-<li>当 cwnd = ssthresh 时，既可使用慢开始算法，也可使用拥塞避免算法。</li>
+<li>当 cwnd &#x3D; ssthresh 时，既可使用慢开始算法，也可使用拥塞避免算法。</li>
 </ul>
 <blockquote>
 <p><strong>当网络出现拥塞时</strong></p>
@@ -637,8 +451,8 @@
 </blockquote>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E5%BF%AB%E9%87%8D%E4%BC%A0%E4%B8%BE%E4%BE%8B.png" alt="image-20200129225121695"></p>
 <ul>
-<li>可以看到，开始时采用慢开始算法，每经历一轮cwnd翻倍，传输的数据包翻倍，到第4轮时cwnd=16，意味着可以同时发送16个数据包，到达了设定的慢开始门限值ssthresh，随后采用拥塞避免算法。</li>
-<li>采用拥塞避免算法期间，每经历一轮cwnd+1。当cwnd=24时，发送方不能准时收到确认数据包（即丢包），判断出现网络拥塞，于是把慢开始门限值ssthresh重新设为当前cwnd值（24）的一半，即12，并把cwnd重置为1 ，再次进入慢开始阶段。</li>
+<li>可以看到，开始时采用慢开始算法，每经历一轮cwnd翻倍，传输的数据包翻倍，到第4轮时cwnd&#x3D;16，意味着可以同时发送16个数据包，到达了设定的慢开始门限值ssthresh，随后采用拥塞避免算法。</li>
+<li>采用拥塞避免算法期间，每经历一轮cwnd+1。当cwnd&#x3D;24时，发送方不能准时收到确认数据包（即丢包），判断出现网络拥塞，于是把慢开始门限值ssthresh重新设为当前cwnd值（24）的一半，即12，并把cwnd重置为1 ，再次进入慢开始阶段。</li>
 <li>可以看到：采用慢开始算法，cwnd按指数规律增长；采用拥塞避免算法，cwnd按线性规律增长。</li>
 </ul>
 <blockquote>
@@ -666,13 +480,13 @@
 <li><p>当发送端收到连续三个重复的确认时，就执行“乘法减小”算法，把慢开始门限 ssthresh 减半。但接下去不执行慢开始算法。</p>
 </li>
 <li><p>由于发送方现在认为网络很可能没有发生拥塞，因此现在不执行慢开始算法，即拥塞窗口 cwnd 现在不设置为 1 。而是将cwnd当前值减半作为新的慢开始门限 ssthresh 值，并让cwnd的值等于这个新的慢开始门限ssthresh值。</p>
-<p>也有人认为，由于接收了三个重复的ACK，按照上述规律没收到一个ACK，cwnd+1，所以cwnd=新ssthresh+3，这里采用前一种观点。</p>
+<p>也有人认为，由于接收了三个重复的ACK，按照上述规律没收到一个ACK，cwnd+1，所以cwnd&#x3D;新ssthresh+3，这里采用前一种观点。</p>
 <p>随后开始执行拥塞避免算法（“加法增大”），使拥塞窗口缓慢地线性增大。 这便是快恢复算法。</p>
 </li>
 <li><p>下为图例：</p>
 </li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://gitee.com/ahuntsun/BlogImgs/raw/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.7.TCP%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/5.png">![image-20200129234028843](https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/运输层/快恢复算法 .png)</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/ahuntsun/BlogImgs/raw/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/5.7.TCP%E7%9A%84%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/5.png">![image-20200129234028843](https://gitee.com/Fan_Yu_Feng&#x2F;blogImage&#x2F;raw&#x2F;master&#x2F;img&#x2F;运输层&#x2F;快恢复算法 .png)</a></p>
 <p>快恢复算法 </p>
 <p>可以看到，当发送端收到3个重复的确认后，执行快重传算法，cwnd</p>
 <p>快恢复是配套着快重传使用的，快恢复是相对于慢开始算法而言的。使用快恢复算法时，cwnd从较大值开始，通过拥塞避免算法逐渐线性增大，经过较短时间便能恢复比较快的传输速度；使用慢开始算法时，cwnd从1开始，需要较常时间才能达到较快的速度。</p>
@@ -704,16 +518,16 @@
 <li><p>第一次握手：A先向B发送一个同步数据包（报文）。</p>
 <p>在报文的TCP首部中：标志位：<strong>同步SYN</strong>为1，表示这是一个请求建立连接的数据包；确认标记位ACK为0，说明该数据包的确认号无效，所以该标志位可省略；序号<code>Seq=x</code>，<code>x</code>为所传送数据的第一个字节的序号。</p>
 </li>
-<li><p>第二次握手：B收到A发送的第一个数据包后，根据标志位SYN=1与ACK=1，判断出为主动建立连接的数据包。若B同意连接，则B发送一个数据包进行回应。</p>
-<p>在数据包的TCP首部中：标志位：<strong>同步SYN</strong>=1；标志位：<strong>确认ACK</strong>=1；序号seq=y，y的值由B指定表示B发送数据时的第一个数据字节的序号；确认号ack=x+1，表示已经收到A发送的x个字节数据，并告诉A下次应从数据的第x+1个字节开始发送。</p>
+<li><p>第二次握手：B收到A发送的第一个数据包后，根据标志位SYN&#x3D;1与ACK&#x3D;1，判断出为主动建立连接的数据包。若B同意连接，则B发送一个数据包进行回应。</p>
+<p>在数据包的TCP首部中：标志位：<strong>同步SYN</strong>&#x3D;1；标志位：<strong>确认ACK</strong>&#x3D;1；序号seq&#x3D;y，y的值由B指定表示B发送数据时的第一个数据字节的序号；确认号ack&#x3D;x+1，表示已经收到A发送的x个字节数据，并告诉A下次应从数据的第x+1个字节开始发送。</p>
 </li>
 </ul>
 <blockquote>
-<p>注意区分ACK和ack：在TCP首部中前者为标志位<strong>确认 ACK</strong> ——占 1 字节，只有当 ACK = 1 时确认号字段才有效。当 ACK = 0 时，确认号无效。；后者为<strong>确认号</strong>字段——占 4 字节，是期望收到对方的下一个报文段的数据的第一个字节的序号。</p>
+<p>注意区分ACK和ack：在TCP首部中前者为标志位<strong>确认 ACK</strong> ——占 1 字节，只有当 ACK &#x3D; 1 时确认号字段才有效。当 ACK &#x3D; 0 时，确认号无效。；后者为<strong>确认号</strong>字段——占 4 字节，是期望收到对方的下一个报文段的数据的第一个字节的序号。</p>
 </blockquote>
 <ul>
 <li><p>第三次握手：A收到B的确认之后，再给A发送一个数据包。</p>
-<p>在数据包的TCP首部中：已经没有有效的标志位：<strong>同步SYN</strong>了（即SYN=0），表示双方已同意建立连接；标志位<strong>确认ACK</strong>=1，表示收到B的确认数据包；序号seq=x+1，表示发出的数据包就是数据的第x+1个字节；确认号ack=y+1，表示收到了B发送y字节数据，并告诉B下次应从数据的第y+1个字节开始发送。</p>
+<p>在数据包的TCP首部中：已经没有有效的标志位：<strong>同步SYN</strong>了（即SYN&#x3D;0），表示双方已同意建立连接；标志位<strong>确认ACK</strong>&#x3D;1，表示收到B的确认数据包；序号seq&#x3D;x+1，表示发出的数据包就是数据的第x+1个字节；确认号ack&#x3D;y+1，表示收到了B发送y字节数据，并告诉B下次应从数据的第y+1个字节开始发送。</p>
 </li>
 </ul>
 <h4 id="2-2-为何有第三次握手？"><a href="#2-2-为何有第三次握手？" class="headerlink" title="2.2.为何有第三次握手？"></a>2.2.为何有第三次握手？</h4><p>客户端向服务器发出建立连接的请求以及服务器向客户端确认这个请求，这两个数据包（前两次握手）足以证明客户端与服务器之间的网络是畅通的，并且协商数据通信所需要的参数。比如协商接收窗口大小，所支持的数据包最大字节数等。</p>
@@ -743,132 +557,19 @@
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%9F%A5%E7%9C%8B%E5%BB%BA%E7%AB%8B%E4%BC%9A%E8%AF%9D%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="image-20200130183903175"></p>
 <ul>
 <li><p>第一次挥手：首先A向B发送连接释放请求报文（数据包），并停止发送数据。</p>
-<p>在连接释放报文（数据包）的TCP首部中：标志位：<strong>终止FIN</strong>=1，意味着A要主动释放A—&gt;B的TCP连接；序号位seq为u，u值由A指定。随后等待B的确认。</p>
+<p>在连接释放报文（数据包）的TCP首部中：标志位：<strong>终止FIN</strong>&#x3D;1，意味着A要主动释放A—&gt;B的TCP连接；序号位seq为u，u值由A指定。随后等待B的确认。</p>
 </li>
 <li><p>第二次挥手：B收到连接释放报文之后，给A发送确认报文，此时TCP服务器进程通知高层应用进程，这样从A到B这个方向上的连接就释放了，TCP连接处于半关闭状态。此时A没有数据要发给B了，但是B还有数据要发送给A，A仍可以接收。</p>
-<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>=1，表示收到了A发送的数据包，同意A释放连接；序号位seq=v，v值由B指定；确认号ack=u+1，表示已经收到A发送的u个字节数据，并告诉A下次应从数据的第u+1个字节开始发送，下面同理；此时B还可以向A传输数据。</p>
+<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>&#x3D;1，表示收到了A发送的数据包，同意A释放连接；序号位seq&#x3D;v，v值由B指定；确认号ack&#x3D;u+1，表示已经收到A发送的u个字节数据，并告诉A下次应从数据的第u+1个字节开始发送，下面同理；此时B还可以向A传输数据。</p>
 </li>
 <li><p>第三次握手：若B已经没有向A发送的数据了，其应用进程就通知TCP释放连接，并向A发送确认报文。</p>
-<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>=1，表示B已经把需要发给A的数据发完了；标志位：<strong>终止FIN</strong>=1，意味着B要释放B—&gt;A的TCP连接；序号seq=w，w值由B指定；确认号ack=u+1；此后B不再向A发送数据，但能接收数据。</p>
+<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>&#x3D;1，表示B已经把需要发给A的数据发完了；标志位：<strong>终止FIN</strong>&#x3D;1，意味着B要释放B—&gt;A的TCP连接；序号seq&#x3D;w，w值由B指定；确认号ack&#x3D;u+1；此后B不再向A发送数据，但能接收数据。</p>
 </li>
 <li><p>第四次挥手：A收到B的连接释放报文段后，向B发出确认报文。</p>
-<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>=1，表示收到B的确认报文，并同意B释放连接；序号seq=u+1；确认号ack=w+1；</p>
+<p>在确认报文的TCP首部中：标志位：<strong>确认ACK</strong>&#x3D;1，表示收到B的确认报文，并同意B释放连接；序号seq&#x3D;u+1；确认号ack&#x3D;w+1；</p>
 </li>
 </ul>
 <p>由此通过四次挥手释放了TCP连接。</p>
 <p>查看会话连接状态</p>
 <p><img src="https://gitee.com/Fan_Yu_Feng/blogImage/raw/master/img/%E8%BF%90%E8%BE%93%E5%B1%82/%E6%9F%A5%E7%9C%8B%E4%BC%9A%E8%AF%9D%E8%BF%9E%E6%8E%A5%E7%8A%B6%E6%80%81.png" alt="image-20200811165349507"></p>
-
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/408/" rel="tag"># 408</a>
-              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="prev" title="计算机网络-3-网络层">
-                  <i class="fa fa-chevron-left"></i> 计算机网络-3-网络层
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-5-%E5%BA%94%E7%94%A8%E5%B1%82/" rel="next" title="计算机网络-5-应用层">
-                  计算机网络-5-应用层 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-    <div class="comments gitalk-container"></div>
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-
-<div class="copyright">
-  &copy; 2020 – 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">FYF</span>
-</div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-      <span>站点总字数：</span>
-    <span title="站点总字数">139k</span>
-  </span>
-</div>
-<div class="busuanzi-count">
-    <span class="post-meta-item" id="busuanzi_container_site_uv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
-
-  
-<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-
-
-
-
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"FwWV7XdhRzlX8OMOb0AmQS2D-gzGzoHsz","app_key":"vDwqKC2MlntliNMY3zc5XMCF","server_url":null,"security":false}</script>
-  <script src="/js/third-party/statistics/lean-analytics.js"></script>
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
-
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Fan-Yu-Feng","repo":"Fan-Yu-Feng.github.io","client_id":"dbe041ce2e296f608913","client_secret":"075de71ff4ed44779fe6334462893050f3109ed5","admin_user":"Fan-Yu-Feng","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"70ce265b109473d9265546a4fe27e27f"}</script>
-<script src="/js/third-party/comments/gitalk.js"></script>
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:1905145967@qq.com">FYF</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/">https://fan-yu-feng.github.io/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-4-%E8%BF%90%E8%BE%93%E5%B1%82/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://fan-yu-feng.github.io" target="_blank">FYF's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/408/">408</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-5-%E5%BA%94%E7%94%A8%E5%B1%82/"><img class="prev-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计算机网络-5-应用层</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机网络-3-网络层</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0/" title="计算机网络概述"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-08</div><div class="title">计算机网络概述</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-2-%E9%93%BE%E8%B7%AF%E5%B1%82/" title="计算机网络-2-链路层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-2-链路层</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-3-%E7%BD%91%E7%BB%9C%E5%B1%82/" title="计算机网络-3-网络层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-3-网络层</div></div></a></div><div><a href="/2020/08/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-5-%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络-5-应用层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="title">计算机网络-5-应用层</div></div></a></div><div><a href="/2020/08/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-1-%E7%89%A9%E7%90%86%E5%B1%82/" title="计算机网络-物理层"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-08</div><div class="title">计算机网络-物理层</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">FYF</div><div class="author-info__description">Welcome to my world</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.1.</span> <span class="toc-text">传输层的两个应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E4%B8%8E%E5%BA%94%E7%94%A8%E5%B1%82%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">运输层与应用层之间的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE%E5%92%8C%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text">应用层协议和服务之间的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E7%AB%AF%E5%8F%A3%E5%A2%9E%E5%8A%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8"><span class="toc-number">1.1.4.</span> <span class="toc-text">更改端口增加服务器安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.5.</span> <span class="toc-text">Windows防火墙的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BA%94%E7%94%A8"><span class="toc-number">1.1.6.</span> <span class="toc-text">网络安全的一些应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE-TCP-x2F-UDP%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">运输层协议 TCP&#x2F;UDP（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5UDP"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">一、用户数据报UDP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="toc-number">1.2.0.1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UDP%E7%9A%84%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="toc-number">1.2.0.1.2.</span> <span class="toc-text">UDP的主要特点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.0.1.3.</span> <span class="toc-text">UDP首部格式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AETCP"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">二、传输控制协议TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-2"><span class="toc-number">1.2.0.2.1.</span> <span class="toc-text">概述</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E9%A6%96%E9%83%A8"><span class="toc-number">1.3.</span> <span class="toc-text">TCP首部</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90TCP%E9%A6%96%E9%83%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">抓包分析TCP首部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="toc-number">1.3.2.</span> <span class="toc-text">TCP如何实现可靠传输</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E2%80%94%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">工作原理—停止等待</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%E5%A4%AA%E4%BD%8E"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">缺点：信道利用率太低</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%E5%A4%AA%E4%BD%8E%E2%80%94-%E4%BD%BF%E7%94%A8%E8%BF%9E%E7%BB%AD%E4%BC%A0%E8%BE%93%E6%9C%BA%E5%88%B6%EF%BC%88%E6%B5%81%E6%B0%B4%E7%BA%BF%EF%BC%89"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">解决信道利用率太低—-使用连续传输机制（流水线）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP-%E5%8F%AF%E9%9D%A0%E9%80%9A%E4%BF%A1%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0%EF%BC%88%E8%BF%99%E9%83%A8%E5%88%86%E5%B9%B6%E4%B8%8D%E6%98%AF%E5%BE%88%E8%AF%A6%E7%BB%86%EF%BC%8C%E5%8F%AF%E5%8F%82%E7%85%A7%E4%B9%A6%E4%B8%8A%E7%9A%84%E5%86%85%E5%AE%B9%E6%9D%A5%E5%AD%A6%EF%BC%89"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">TCP 可靠通信的具体实现（这部分并不是很详细，可参照书上的内容来学）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">TCP如何实现流量控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP%E5%A6%82%E4%BD%95%E5%AE%9E%E9%81%BF%E5%85%8D%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E"><span class="toc-number">1.3.4.</span> <span class="toc-text">TCP如何实避免网络拥塞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%89%80%E8%B5%B7%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">拥塞控制所起的作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.4.3.</span> <span class="toc-text">拥塞控制方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">1.3.4.4.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%85%A2%E5%BC%80%E5%A7%8B%E5%92%8C%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%EF%BC%881988%E5%B9%B4%E6%8F%90%E5%87%BA%EF%BC%89"><span class="toc-number">1.3.4.5.</span> <span class="toc-text">慢开始和拥塞避免（1988年提出）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%AB%E9%87%8D%E4%BC%A0%E5%92%8C%E5%BF%AB%E6%81%A2%E5%A4%8D%EF%BC%881990%E5%B9%B4%E6%8F%90%E5%87%BA%EF%BC%89"><span class="toc-number">1.3.4.6.</span> <span class="toc-text">快重传和快恢复（1990年提出）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E7%9A%84%E4%B8%8A%E9%99%90%E5%80%BC"><span class="toc-number">1.3.4.7.</span> <span class="toc-text">2.4.发送窗口的上限值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCP%E4%BC%A0%E8%BE%93%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-number">1.4.</span> <span class="toc-text">TCP传输连接管理:三次握手与四次挥手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BC%A0%E8%BE%93%E8%BF%9E%E6%8E%A5%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">1.4.1.</span> <span class="toc-text">一、传输连接的三个阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">1.1.概述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81TCP-%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">二、TCP 的连接建立</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E7%94%A8%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%BB%BA%E7%AB%8B-TCP-%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">2.1.用三次握手建立 TCP 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E4%B8%BA%E4%BD%95%E6%9C%89%E7%AC%AC%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%EF%BC%9F"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">2.2.为何有第三次握手？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%BB%BA%E7%AB%8BTCP%E8%BF%9E%E6%8E%A5%E8%BF%87%E7%A8%8B%E7%9A%84%E5%90%84%E7%8A%B6%E6%80%81"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">2.3.三次握手建立TCP连接过程的各状态</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81TCP%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%87%8A%E6%94%BE"><span class="toc-number">1.4.3.</span> <span class="toc-text">三、TCP的连接释放</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E4%BD%BF%E7%94%A8%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E9%87%8A%E6%94%BETCP%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">3.1.使用四次挥手释放TCP连接</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/01/27/CMU/fall2019-project1/" title="fall2019 lab1 buffer pool"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="fall2019 lab1 buffer pool"/></a><div class="content"><a class="title" href="/2022/01/27/CMU/fall2019-project1/" title="fall2019 lab1 buffer pool">fall2019 lab1 buffer pool</a><time datetime="2022-01-27T06:48:02.000Z" title="发表于 2022-01-27 14:48:02">2022-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/05/Git/git-commands/" title="git-commands"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git-commands"/></a><div class="content"><a class="title" href="/2022/01/05/Git/git-commands/" title="git-commands">git-commands</a><time datetime="2022-01-05T07:07:11.000Z" title="发表于 2022-01-05 15:07:11">2022-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/31/CMU/cmu-lab-c/" title="fall2019 lab0 C++ Primer （2020）"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="fall2019 lab0 C++ Primer （2020）"/></a><div class="content"><a class="title" href="/2021/12/31/CMU/cmu-lab-c/" title="fall2019 lab0 C++ Primer （2020）">fall2019 lab0 C++ Primer （2020）</a><time datetime="2021-12-31T07:29:41.000Z" title="发表于 2021-12-31 15:29:41">2021-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/30/CMU/cmu-hw1/" title="cmu 作业1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cmu 作业1"/></a><div class="content"><a class="title" href="/2021/12/30/CMU/cmu-hw1/" title="cmu 作业1">cmu 作业1</a><time datetime="2021-12-30T02:23:09.000Z" title="发表于 2021-12-30 10:23:09">2021-12-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/12/29/CMU/CMU-Lab0/" title="cmu 环境搭建"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cmu 环境搭建"/></a><div class="content"><a class="title" href="/2021/12/29/CMU/CMU-Lab0/" title="cmu 环境搭建">cmu 环境搭建</a><time datetime="2021-12-29T01:48:36.000Z" title="发表于 2021-12-29 09:48:36">2021-12-29</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By FYF</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="my.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
